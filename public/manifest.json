@@ -1,13 +1,33 @@
 {
   "short_name": "BondPro",
   "name": "BondPro",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
-  ],
+  "icons": [{
+          "src": "./images/icon-128.png",
+          "type": "image/png",
+          "sizes": "128x128"
+        }, {
+          "src": "./images/icon-152.png",
+          "type": "image/png",
+          "sizes": "152x152"
+        }, {
+          "src": "./images/icon-144.png",
+          "type": "image/png",
+          "sizes": "144x144"
+        }, {
+          "src": "./images/icon-192.png",
+          "type": "image/png",
+          "sizes": "192x192"
+        },
+        {
+          "src": "./images/icon-256.png",
+          "type": "image/png",
+          "sizes": "256x256"
+        },
+        {
+          "src": "./images/icon-512.png",
+          "type": "image/png",
+          "sizes": "512x512"
+        }],
   "start_url": "./index.html",
   "display": "standalone",
   "theme_color": "#000000",
