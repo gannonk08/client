@@ -11,39 +11,51 @@ const Example = React.createClass({
         locked: true
       },
       {
-        key: 'task',
-        name: 'Title',
-        width: 200,
+        key: 'name',
+        name: 'Client Household Name',
+        width: 150,
         sortable: true
       },
       {
-        key: 'priority',
-        name: 'Priority',
-        width: 200,
+        key: 'account',
+        name: 'Client Account Number',
+        width: 150,
         sortable: true
       },
       {
-        key: 'issueType',
-        name: 'Issue Type',
-        width: 200,
+        key: '2017',
+        name: '2017',
+        width: 150,
         sortable: true
       },
       {
-        key: 'complete',
-        name: '% Complete',
-        width: 200,
+        key: '2018',
+        name: '2018',
+        width: 150,
         sortable: true
       },
       {
-        key: 'startDate',
-        name: 'Start Date',
-        width: 200,
+        key: '2019',
+        name: '2019',
+        width: 150,
         sortable: true
       },
       {
-        key: 'completeDate',
-        name: 'Expected Complete',
-        width: 200,
+        key: '2020',
+        name: '2020',
+        width: 150,
+        sortable: true
+      },
+      {
+        key: '2021',
+        name: '2021',
+        width: 150,
+        sortable: true
+      },
+      {
+        key: '2022',
+        name: '2022',
+        width: 150,
         sortable: true
       }
     ];
@@ -62,13 +74,15 @@ const Example = React.createClass({
     let rows = [];
     for (let i = 1; i < 50; i++) {
       rows.push({
-        id: i,
-        task: 'Task ' + i,
-        complete: Math.min(100, Math.round(Math.random() * 110)),
-        priority: ['Critical', 'High', 'Medium', 'Low'][Math.floor((Math.random() * 3) + 1)],
-        issueType: ['Bug', 'Improvement', 'Epic', 'Story'][Math.floor((Math.random() * 3) + 1)],
-        startDate: this.getRandomDate(new Date(2015, 3, 1), new Date()),
-        completeDate: this.getRandomDate(new Date(), new Date(2016, 0, 1))
+        id: '+',
+        name: 'Client ' + i,
+        account: '#' + Math.min(100000, Math.round(Math.random() * 110000)),
+        2017: '$ ' + Math.min(100000, Math.round(Math.random() * 110000)),
+        2018: '$ ' + Math.min(100000, Math.round(Math.random() * 110000)),
+        2019: '$ ' + Math.min(100000, Math.round(Math.random() * 110000)),
+        2020: '$ ' + Math.min(100000, Math.round(Math.random() * 110000)),
+        2021: '$ ' + Math.min(100000, Math.round(Math.random() * 110000)),
+        2022: '$ ' + Math.min(100000, Math.round(Math.random() * 110000))
       });
     }
 
@@ -103,12 +117,9 @@ const Example = React.createClass({
   }
 });
 
-const exampleDescription = (<p>While ReactDataGrid does not provide the ability to sort directly, it does provide hooks that allow you to provide your own sort function. This is done via the <code>onGridSort</code> prop. To enable sorting for a given column, set <code>column.sortable = true</code> for that column. Now when the header cell is clicked for that column, <code>onGridSort</code> will be triggered passing the column name and the sort direction.</p>);
-
 export default exampleWrapper({
   WrappedComponent: Example,
   exampleName: 'Sortable Columns Example',
-  exampleDescription,
   examplePath: './scripts/example08-sortable-cols.js',
   examplePlaygroundLink: 'https://jsfiddle.net/k7tfnw1n/8/'
 });
