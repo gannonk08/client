@@ -17,14 +17,39 @@ class App extends Component {
           <div>
             <header>
               <Link to={"/"}>
-                <h1>BondPro</h1>
+                <h1>BondLadderPro</h1>
               </Link>
+              <div className="header-links">
+                <Link to={"/"}>ABOUT &nbsp;&nbsp; |</Link>
+                <Link to={"/"}>CONTACT &nbsp;&nbsp; |</Link>
+                <Link to={"/"}>&nbsp;&nbsp;LOG IN</Link>
+              </div>
             </header>
+            <nav>
+              <div>
+                Log In
+              </div>
+              <div>
+                Imports
+              </div>
+              <div>
+                Clients
+              </div>
+              <div>
+                Rebalance
+              </div>
+              <div className="header-space"></div>
+            </nav>
+            <div className="log-in">
+            </div>
           </div>
         </Router>
       </Provider>
     );
   }
 }
+
+// <Route exact path={"/"} component={AccountList} />
+// <Route path={"/accounts/:id"} component={OneAccount} />
 
 export default App;

@@ -1,5 +1,6 @@
 @import url("https://meyerweb.com/eric/tools/css/reset/reset.css");
 @import url("https://fonts.googleapis.com/css?family=Indie+Flower%7COpen+Sans");
+@import url('https://fonts.googleapis.com/css?family=Audiowide|Averia+Serif+Libre|Chelsea+Market|Comfortaa|Fredericka+the+Great|Josefin+Slab|Kranky|Merienda+One|Mukta+Vaani|Overlock|Poiret+One|Reem+Kufi|Righteous');
 
 body {
   color: #333;
@@ -29,21 +30,101 @@ a {
 }
 
 header {
-  background-color: #4db36f;
+  background-color: #375a7f;
   padding: 1rem;
   box-shadow: 0 1px 1px #999;
-}
-header h1 {
-  font-size: 2rem;
-  color: #fff;
-  font-family: "Open Sans";
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  border-bottom: 3px solid #333;
 }
 
-main {
+header h1 {
+  font-size: 2rem;
+  color: white;
+  font-family: 'Fredericka the Great', cursive;
+}
+
+div.header-links {
+  display: flex;
+  margin-right: 30px;
+}
+
+div.header-links a {
+  color: #eee;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+div.header-links a:hover {
+  color: #eee;
+}
+
+nav {
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #333;
+}
+
+nav div.header-space {
+  width: 20vw;
+  background-color: #333;
+}
+
+nav div {
+  width: 20vw;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  border: 3px solid #333;
+  border-bottom: 1px solid #333;
+  border-radius: 6px;
+  background-color: #375a7f;
+  color: #eee;
+}
+
+nav div:first-child {
+  border-left: 3px solid #333;
+  border-bottom: none !important;
+  background-color: #eee;
+  color: #375a7f;
+  border-radius: 0px;
+  font-weight: bold;
+}
+
+nav div:last-child {
+  border-right: 6px solid #333;
+}
+
+main, div.log-in {
+  border: 3px solid #333;
   padding: 3rem;
   position: relative;
+  left: 0;
+  right: 0;
   min-height: calc(100vh - 112px);
+  display: block;
+  position: relative;
 }
+
+div.log-in::after {
+  content: "";
+  background-image: url("stock1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
 main h2 {
   font-size: 2rem;
   font-weight: 700;
