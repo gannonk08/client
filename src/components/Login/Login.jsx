@@ -1,4 +1,9 @@
 import React, {Component} from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom';
 
 class Login extends Component {
 	render() {
@@ -15,7 +20,7 @@ class Login extends Component {
               <input name="pass" type="text"/>
             </div>
             <div className="buttons">
-              <button className="log-in-button" type="submit">Log In</button>
+              <button className="log-in-button" type="submit"><Link to={"/imports"}>Log In</Link></button>
               <button className="sign-up-button" type="submit">Sign Up</button>
             </div>
           </form>

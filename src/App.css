@@ -29,6 +29,11 @@ a {
   color: #333;
 }
 
+a:active, a:visited, a:focus {
+  text-decoration: none;
+  color: #eee;
+}
+
 main {
   border: 3px solid #eee;
   padding: 3rem;

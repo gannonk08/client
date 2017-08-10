@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactDataGrid from 'react-data-grid';
+
+import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import './components/Imports/Imports.css';
 import './components/Login/Login.css';
