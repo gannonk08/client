@@ -1,0 +1,91 @@
+@import url("https://meyerweb.com/eric/tools/css/reset/reset.css");
+@import url("https://fonts.googleapis.com/css?family=Indie+Flower%7COpen+Sans");
+@import url('https://fonts.googleapis.com/css?family=Audiowide|Averia+Serif+Libre|Chelsea+Market|Comfortaa|Fredericka+the+Great|Josefin+Slab|Kranky|Merienda+One|Mukta+Vaani|Overlock|Poiret+One|Reem+Kufi|Righteous');
+
+body {
+  color: #333;
+  background-color: #eee;
+  font-family: "Open Sans";
+}
+
+input, label {
+  display: block;
+  width: 100%;
+}
+
+label {
+  font-style: italic;
+  margin-bottom: 0.25rem;
+}
+
+input {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  border: none;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+main {
+  border: 3px solid #eee;
+  padding: 3rem;
+}
+
+main h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+footer {
+  padding: 1rem;
+  background-color: #333;
+  color: #eee;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.accounts {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.account-listing {
+  max-width: 80rem;
+  margin: 1rem;
+  box-shadow: 2px 2px 2px #999;
+  transition: all 0.2s;
+}
+.account-listing:hover {
+  transform: scale(1.01);
+}
+.account-listing h3 {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  background-color: black;
+  padding: 1rem;
+  color: #eee;
+}
+.account-listing figure {
+  margin-right: 1rem;
+  padding: 1rem;
+}
+.account-listing figure img {
+  max-width: 160px;
+}
+.account-listing figure figcaption {
+  font-style: italic;
+}
+.account-listing section {
+  display: flex;
+}
+.account-listing p {
+  padding: 1rem;
+  line-height: 1.5;
+}

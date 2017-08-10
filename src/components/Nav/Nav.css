@@ -1,0 +1,102 @@
+header {
+  background-color: #375a7f;
+  padding: 1rem;
+  box-shadow: 0 1px 1px #999;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  border-bottom: 3px solid #333;
+}
+
+header h1 {
+  font-size: 2rem;
+  color: white;
+  font-family: 'Fredericka the Great', cursive;
+}
+
+div.header-links {
+  display: flex;
+  margin-right: 30px;
+}
+
+div.header-links a {
+  color: #eee;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+div.header-links a:hover {
+  color: #eee;
+}
+
+nav {
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #eee;
+  box-shadow: 2px 2px 2px #999;
+  transition: all 0.2s;
+}
+
+nav div.header-space {
+  width: 70vw;
+  background-color: #eee;
+}
+
+nav div {
+  width: 7.5vw;
+  padding: 10px;
+  margin-top: 2px;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  border-radius: 3px;
+  background-color: #375a7f;
+  color: #eee;
+}
+
+nav div a {
+  color: #eee;
+}
+
+#log-in-link {
+  color: #375a7f;
+}
+
+nav div:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+  background-color: rgba(66, 141, 221, 0.61);
+  color: #333;
+  font-weight: bold;
+}
+
+nav div:first-child {
+  border: 1px solid #375a7f;
+  border-bottom: none;
+  background-color: #eee;
+  color: #375a7f;
+  border-radius: 0px;
+  font-weight: bold;
+}
+
+nav div:first-child:hover {
+  background-color: rgba(66, 141, 221, 0.61);
+  color: #333;
+  font-weight: bold;
+}
+
+nav div:last-child {
+  border-right: none;
+  border-radius: 0;
+}
+
+nav div:last-child:hover {
+  cursor: default;
+  transform: none;
+  background-color: #eee;
+}
