@@ -2,60 +2,62 @@ import React from 'react';
 import ReactDataGrid from 'react-data-grid';
 import exampleWrapper from './exampleWrapper';
 
+// eslint-disable-next-line
 const Example = React.createClass({
   getInitialState() {
     this._columns = [
       {
         key: 'id',
         name: 'ID',
+        width: 25,
         locked: true
       },
       {
         key: 'name',
-        name: 'Client Household Name',
-        width: 150,
+        name: 'Client Household',
+        width: 160,
         sortable: true
       },
       {
         key: 'account',
-        name: 'Client Account Number',
-        width: 150,
+        name: 'Client Account',
+        width: 160,
         sortable: true
       },
       {
         key: '2017',
         name: '2017',
-        width: 150,
+        width: 160,
         sortable: true
       },
       {
         key: '2018',
         name: '2018',
-        width: 150,
+        width: 160,
         sortable: true
       },
       {
         key: '2019',
         name: '2019',
-        width: 150,
+        width: 160,
         sortable: true
       },
       {
         key: '2020',
         name: '2020',
-        width: 150,
+        width: 160,
         sortable: true
       },
       {
         key: '2021',
         name: '2021',
-        width: 150,
+        width: 160,
         sortable: true
       },
       {
         key: '2022',
         name: '2022',
-        width: 150,
+        width: 160,
         sortable: true
       }
     ];

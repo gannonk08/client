@@ -63,10 +63,6 @@ nav div a {
   color: #eee;
 }
 
-#log-in-link {
-  color: #375a7f;
-}
-
 nav div:hover {
   cursor: pointer;
   transform: scale(1.02);
@@ -75,13 +71,20 @@ nav div:hover {
   font-weight: bold;
 }
 
-nav div:first-child {
+nav div.active-tab {
   border: 1px solid #375a7f;
   border-bottom: none;
   background-color: #eee;
   color: #375a7f;
-  border-radius: 0px;
   font-weight: bold;
+}
+
+a.active-tab-link {
+  color: #375a7f;
+}
+
+nav div:first-child {
+  border-left: none;
 }
 
 nav div:first-child:hover {
@@ -92,7 +95,6 @@ nav div:first-child:hover {
 
 nav div:last-child {
   border-right: none;
-  border-radius: 0;
 }
 
 nav div:last-child:hover {
