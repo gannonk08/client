@@ -1,0 +1,72 @@
+div.sign-up {
+  border: 3px solid #eee;
+  position: relative;
+  left: 0;
+  min-height: 87vh;
+  display: flex;
+}
+
+div.sign-up::after {
+  content: "";
+  background-image: url("../Login/stock1.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+div.sign-up div.row {
+  display: flex;
+  flex-direction: column;
+  margin-right: 0;
+}
+
+#signup-form {
+  width: 100%;
+  margin-top: 5vh;
+}
+
+#signup-form-container {
+  background-color: #eee;
+  height: 100%;
+  padding-left: 2.5vw;
+  opacity: 0.9;
+}
+
+div.card-title {
+  font-weight: bold;
+  font-size: 200%;
+  margin-bottom: 5vh;
+}
+
+div.card-action {
+  margin-bottom: 5vh;
+}
+
+p.already-member {
+  margin-bottom: 2.5vh;
+}
+
+div.btn {
+  cursor: pointer;
+}
+
+div.btn:hover {
+  transform: scale(1.05);
+}
+
+@media (min-width: 769px) {
+  div.sign-up div.row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  div#signup-form-container input {
+    width: 100% !important;
+  }
+}

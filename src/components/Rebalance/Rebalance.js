@@ -1,11 +1,10 @@
 import React from 'react';
-import ReactDataGrid from 'react-data-grid';
-import exampleWrapper from './exampleWrapper';
-import './exampleWrapper.css';
+import exampleWrapper2 from './exampleWrapper2';
+import './Rebalance.css';
 import Nav from '../Nav/Nav';
 
 // eslint-disable-next-line
-const Example = React.createClass({
+const Example2 = React.createClass({
   getInitialState() {
     this._columns = [
       {
@@ -37,36 +36,6 @@ const Example = React.createClass({
         name: '2017',
         width: 160,
         sortable: true
-      },
-      {
-        key: '2018',
-        name: '2018',
-        width: 160,
-        sortable: true
-      },
-      {
-        key: '2019',
-        name: '2019',
-        width: 160,
-        sortable: true
-      },
-      {
-        key: '2020',
-        name: '2020',
-        width: 160,
-        sortable: true
-      },
-      {
-        key: '2021',
-        name: '2021',
-        width: 160,
-        sortable: true
-      },
-      {
-        key: '2022',
-        name: '2022',
-        width: 160,
-        sortable: true
       }
     ];
 
@@ -91,8 +60,8 @@ const Example = React.createClass({
       rows.push({
         id: '+',
         name: 'Client ' + i,
-        account: '',
-        description: '',
+        account: '#' + Math.min(100000, Math.round(Math.random() * 110000)),
+        description: this.getRandomDescription(Math.floor(Math.random() * 5)),
         2017: '$ ' + Math.min(100000, Math.round(Math.random() * 110000)),
         2018: '$ ' + Math.min(100000, Math.round(Math.random() * 110000)),
         2019: '$ ' + Math.min(100000, Math.round(Math.random() * 110000)),
@@ -128,21 +97,31 @@ const Example = React.createClass({
       <div>
         <Nav
           imports="inactive-tab"
-          clients="active-tab"
-          rebalance="inactive-tab"
+          clients="inactive-tab"
+          rebalance="active-tab"
         />
-        <ReactDataGrid
-          onGridSort={this.handleGridSort}
-          columns={this._columns}
-          rowGetter={this.rowGetter}
-          rowsCount={this.state.rows.length} />
+        <div className="rebalance-body">
+          <div className="rebalance-nav">
+            <div className="date-today">15-Aug-2017</div>
+            <button className="smo btn btn-success" type="button" data-toggle="modal" data-target="#smo">Secondary Market Offer</button>
+          </div>
+          <div className="add-form">
+            <label for="cusip">CUSIP</label>
+            <input type="number" name="cusip"/>
+            <label for="quantity">Quantity</label>
+            <input type="number" name="quantity"/>
+            <label for="price">Price</label>
+            <input type="number" name="price"/>
+            <button type="submit" className="btn btn-primary">Submit</button>
+          </div>
+        </div>
       </div>
     );
   }
 });
 
-export default exampleWrapper({
-  WrappedComponent: Example,
+export default exampleWrapper2({
+  WrappedComponent: Example2,
   exampleName: 'Sortable Columns Example',
   examplePath: './scripts/example08-sortable-cols.js',
   examplePlaygroundLink: 'https://jsfiddle.net/k7tfnw1n/8/'

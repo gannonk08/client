@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import './Nav.css';
 
-class Imports extends Component {
+class Nav extends Component {
   constructor(props) {
     super(props);
     this.toggleNav = this.toggleNav.bind(this);
@@ -25,36 +26,37 @@ class Imports extends Component {
   }
 
 	render() {
+    const { imports, clients, rebalance } = this.props;
 		return (
       <div>
-        <header>
-          <Link to={"/"}>
-            <h1>BondLadderPro</h1>
-          </Link>
-          <div className="header-links">
-            <Link to={"/about"}>ABOUT &nbsp;&nbsp; |</Link>
-            <Link to={"/contact"}>CONTACT &nbsp;&nbsp; |</Link>
-            <Link to={"/"}>&nbsp;&nbsp;LOG IN</Link>
-          </div>
-        </header>
         <nav>
-          <div onClick={this.toggleNav} className="active-tab">
-            <Link className="active-tab-link" to={"/"}>Log In</Link>
+          <div className="col-lg-1 col-md-1 col-sm-2 col-xs-3">
+            <div onClick={this.toggleNav} className={this.props.imports}>
+              <Link to={"/imports"} className={this.props.imports}>Imports</Link>
+            </div>
           </div>
-          <div onClick={this.toggleNav}>
-            <Link to={"/imports"}>Imports</Link>
+          <div className="col-lg-1 col-md-1 col-sm-2 col-xs-3">
+            <div onClick={this.toggleNav} className={this.props.clients}>
+              <Link to={"/clients"} className={this.props.clients}>Clients</Link>
+            </div>
           </div>
-          <div onClick={this.toggleNav}>
-            <Link to={"/clients"}>Clients</Link>
+          <div className="col-lg-1 col-md-1 col-sm-2 col-xs-3">
+            <div onClick={this.toggleNav}>
+              <Link to={"/rebalance"} className={this.props.rebalance}>Rebalance</Link>
+            </div>
           </div>
-          <div onClick={this.toggleNav}>
-            <Link to={"/rebalance"}>Rebalance</Link>
+          <div className="col-lg-8 col-md-8 col-sm-4 col-xs-0">
+            <div className="header-space"></div>
           </div>
-          <div className="header-space"></div>
+          <div className="col-lg-1 col-md-1 col-sm-2 col-xs-3">
+            <div onClick={this.toggleNav} id="log-out-div">
+              <Link to={"/"} id="log-out">Log Out</Link>
+            </div>
+          </div>
         </nav>
       </div>
 		)
 	}
 }
 
-export default Imports;
+export default Nav;

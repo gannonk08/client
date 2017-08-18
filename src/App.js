@@ -5,20 +5,23 @@ import {
 } from 'react-router-dom';
 
 import Login from './components/Login/Login';
+import Signup from './components/Signup/Signup';
 import Imports from './components/Imports/Imports';
-import Nav from './components/Nav/Nav';
+import Header from './components/Header/Header';
 import Clients from './components/Clients/Clients';
+import Rebalance from './components/Rebalance/Rebalance';
 
 class App extends Component {
   render() {
     return (
       <Router>
         <div>
-          <Nav />
+          <Header />
           <Route exact path={"/"} component={Login} />
+          <Route path={"/signup"} component={Signup} />
           <Route path={"/imports"} component={Imports} />
           <Route path={"/clients"} component={Clients} />
-          <Route path={"/rebalance"} component={Clients} />
+          <Route path={"/rebalance"} component={Rebalance} />
         </div>
       </Router>
     );

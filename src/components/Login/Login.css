@@ -1,12 +1,12 @@
 div.log-in {
   border: 3px solid #eee;
-  padding: 3rem;
+  border-left: none;
   position: relative;
   left: 0;
   right: 0;
-  min-height: 80vh;
+  min-height: 90vh;
   display: flex;
-  position: relative;
+  justify-content: center;
 }
 
 div.log-in::after {
@@ -23,37 +23,66 @@ div.log-in::after {
   z-index: -1;
 }
 
-div.login-form-container {
-  width: 15vw;
+div.log-in div.row {
+  display: flex;
+  flex-direction: column;
+  margin-right: 0;
 }
 
-div.login-form-container input {
+div.row.about-section {
+  display: flex;
+  flex-direction: column;
+}
+
+div.about, div.solution {
+  position: relative;
+  height: 75vh;
+  width: 100%;
+  display: flex;
+  content: "";
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.25;
+}
+
+div.about {
+  background-image: url("./paperwork.jpg");
+  border-left: 3px solid #eee;
+}
+
+div.solution {
+  background-image: url("./relaxing.jpg");
+  border-right: 3px solid #eee;
+}
+
+div#login-form-container input {
   font-size: 1rem;
   padding: 5px;
   border-radius: 4px;
+  width: 50%;
 }
 
-div.login-form-container button {
-  font-size: 1.25rem;
-  padding: 10px;
-  margin-top: 20px;
-  margin-left: 5px;
-  border-radius: 6px;
+div#login-form-container {
+  background-color: #eee;
+  opacity: 0.9;
 }
 
-div.login-form-container button:hover {
+#login-form {
+  width: 100%;
+  margin-top: 5vh;
+}
+
+a.sign-up-button:hover, div.log-in-button:hover {
   cursor: pointer;
   transform: scale(1.03);
 }
 
-.log-in-button {
-  background-color: green;
+div.log-in-button {
+  margin-bottom: 5vh;
 }
 
-div.buttons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+p.already-member {
+  margin-bottom: 2.5vh;
 }
 
 div.hero-text {
@@ -65,13 +94,30 @@ div.hero-text {
   color: #eee;
 }
 
+div.col-md-9.col-sm-8.col-xs-12 {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 30vh;
+}
+
 div.hero-text h1 {
-  font-size: 3rem;
-  margin-bottom: 30px;
-  margin-top: 30px;
+  font-size: 200%;
+  margin-bottom: 5vh;
 }
 
 div.hero-text p {
-  margin-top: 10px;
-  font-size: 1.5rem;
+  font-size: 125%;
+}
+
+@media (min-width: 769px) {
+  div.log-in div.row, div.row.about-section {
+    display: flex;
+    flex-direction: row;
+  }
+  div.about, div.solution {
+    width: 48.75%;
+  }
+  div#login-form-container input {
+    width: 100%;
+  }
 }

@@ -39,6 +39,7 @@ div.import-loader button {
   margin-top: 20px;
   margin-left: 5px;
   border-radius: 6px;
+  opacity: 0.5;
 }
 
 div.login-form-container button:hover {
