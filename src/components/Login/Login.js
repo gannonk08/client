@@ -3,25 +3,55 @@ import {Link} from 'react-router-dom';
 import './Login.css';
 
 const PATH_BASE = 'http://localhost:9000';
-const PATH_LOGIN = '/login';
+const PATH_SIGNIN = '/signin';
+const PATH_LOGIN = '/signin';
 
 class Login extends Component {
 	constructor(props) {
     super(props);
     this.postLogin = this.postLogin.bind(this);
+    this.getClients = this.getClients.bind(this);
   }
 
 	postLogin() {
 		var formData = JSON.stringify({
-			username: document.getElementById('username').value,
+			email: document.getElementById('email').value,
 			password: document.getElementById('password').value
 		})
-		fetch(PATH_BASE + PATH_LOGIN, {
+		fetch(PATH_BASE + PATH_SIGNIN, {
 		  method: "POST",
+			headers: {
+		    'Accept': 'application/json',
+		    'Content-Type': 'application/x-www-form-urlencoded'
+		  },
 		  body: formData
 		})
-		.then(response => response.json()).catch(e => console.log(e));
+		.then(response => response.json())
+		.then(res => {
+			console.log(res);
+		})
+		.catch(e => console.log(e));
   }
+
+	getClients() {
+	// 	function getCookie(name) {
+	//     let cookies = document.cookie.split(';');
+	//     for(var i=0 ; i < cookies.length ; ++i) {
+  //       var pair = cookies[i].trim().split('=');
+  //       if(pair[0] == name)
+  //         return pair[1];
+	//     }
+	//     return null;
+	// };
+	// 	let sessionCookie = getCookie('bondladderpro_session')
+		fetch(PATH_BASE, {
+			credentials: 'same-origin',
+			method: "GET",
+			headers: {
+				''
+			}
+		})
+	}
 
 	render() {
 		return (
@@ -30,9 +60,9 @@ class Login extends Component {
 					<div className="row">
 		        <div id="login-form-container" className="col-md-3 col-sm-4 col-xs-12">
 		          <form id="login-form">
-		            <div className="username">
-		              <label for="username">Username</label>
-		              <input id="username" name="username" type="text"/>
+		            <div className="email">
+		              <label for="email">Email</label>
+		              <input id="email" name="email" type="text"/>
 		            </div>
 		            <div className="pass">
 		              <label for="pass">Password</label>

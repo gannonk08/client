@@ -27,6 +27,7 @@ div.log-in div.row {
   display: flex;
   flex-direction: column;
   margin-right: 0;
+  width: 100%;
 }
 
 div.row.about-section {
