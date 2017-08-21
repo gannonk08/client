@@ -17,17 +17,25 @@ class Login extends Component {
 			email: document.getElementById('email').value,
 			password: document.getElementById('password').value
 		})
+
+		var fakeData = {
+			"email": "justinhart90@gmail.com",
+			"password": "Ricohsuav3"
+		}
+		console.log(fakeData);
 		fetch(PATH_BASE + PATH_SIGNIN, {
-		  method: "POST",
+			mode: 'cors',
+		  method: 'POST',
 			headers: {
+				'Access-Control-Allow-Origin': '*',
 		    'Accept': 'application/json',
-		    'Content-Type': 'application/x-www-form-urlencoded'
+		    'Content-Type': 'application/json'
 		  },
-		  body: formData
+		  body: fakeData
 		})
 		.then(response => response.json())
 		.then(res => {
-			console.log(res);
+			console.log(res)
 		})
 		.catch(e => console.log(e));
   }
@@ -41,11 +49,11 @@ class Login extends Component {
 		          <form id="login-form">
 		            <div className="email">
 		              <label for="email">Email</label>
-		              <input id="email" name="email" type="text"/>
+		              <input className="form-control" name="email" type="text"/>
 		            </div>
 		            <div className="pass">
 		              <label for="pass">Password</label>
-		              <input id="password" name="pass" type="password"/>
+		              <input className="form-control" name="pass" type="password"/>
 		            </div>
 		            <div className="buttons">
 		              <div className="log-in-button btn btn-success" onClick={this.postLogin}>Log In</div>

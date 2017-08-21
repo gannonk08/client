@@ -35,12 +35,16 @@ div.log-in div.row {
   color: #eee;
 }
 
-div#login-form-container input {
+#about-link:hover {
+  text-decoration: underline;
+}
+
+/*div#login-form-container input {
   font-size: 1rem;
   padding: 5px;
   border-radius: 4px;
   width: 50%;
-}
+}*/
 
 div#login-form-container {
   background-color: #eee;
@@ -48,7 +52,6 @@ div#login-form-container {
 }
 
 #login-form {
-  width: 100%;
   margin-top: 5vh;
 }
 
@@ -95,6 +98,6 @@ div.hero-text p {
     flex-direction: row;
   }
   div#login-form-container input {
-    width: 100%;
+    width: 80%;
   }
 }
