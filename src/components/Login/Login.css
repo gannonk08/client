@@ -53,11 +53,23 @@ div#login-form-container {
 
 #login-form {
   margin-top: 5vh;
+  margin-left: 1vw;
 }
 
 a.sign-up-button:hover, div.log-in-button:hover {
   cursor: pointer;
   transform: scale(1.03);
+}
+
+a.sign-up-button:hover {
+  font-size: 87.5%;
+}
+
+a.sign-up-button {
+  color: #375a7f;
+  font-size: 85%;
+  text-decoration: underline;
+  margin-left: 0.1vw;
 }
 
 div.log-in-button {

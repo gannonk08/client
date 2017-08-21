@@ -38,25 +38,25 @@ class Login extends Component {
 												<div className="row">
 													<div className="input-field col-sm-12">
 														<label for="input-username">Username</label>
-														<input id="input-username" type="text" className="form-control validate" name="username" value="" />
+														<input id="input-username" type="text" className="form-control" name="username" value="" />
 													</div>
 												</div>
 												<div className="row">
 													<div className="input-field col-sm-12">
 														<label for="input-email">Email</label>
-														<input id="input-email" type="email" className="form-control validate" name="email" value="" />
+														<input id="input-email" type="email" className="form-control" name="email" value="" />
 													</div>
 												</div>
 												<div className="row">
 													<div className="input-field col-sm-12">
 														<label for="input-password">Password</label>
-														<input id="input-password" type="password" className="form-control validate" name="password" value="" />
+														<input id="input-password" type="password" className="form-control" name="password" value="" />
 													</div>
 												</div>
 												<div className="row">
 													<div className="input-field col-sm-12">
 														<label for="input-passwordConfirm">Confirm Password</label>
-														<input id="input-passwordConfirm" type="password" className="form-control validate" name="passwordConfirm" value="" />
+														<input id="input-passwordConfirm" type="password" className="form-control" name="passwordConfirm" value="" />
 													</div>
 												</div>
 											</div>
@@ -66,7 +66,7 @@ class Login extends Component {
 										</div>
 										<div>
 											<p className="already-member">Already a member?</p>
-											<Link to={"/"} className="btn btn-primary">Log In</Link>
+											<Link to={"/"} id="log-in-link">Log In</Link>
 										</div>
 									</div>
 								</div>

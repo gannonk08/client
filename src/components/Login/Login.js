@@ -60,7 +60,7 @@ class Login extends Component {
 		            </div>
 								<div>
 									<p className="already-member">Not a member?</p>
-									<Link to={"/signup"} className="sign-up-button btn btn-primary">Sign Up</Link>
+									<Link to={"/signup"} className="sign-up-button">Sign Up</Link>
 								</div>
 		          </form>
 		        </div>

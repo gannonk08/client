@@ -52,6 +52,17 @@ p.already-member {
   margin-bottom: 2.5vh;
 }
 
+#log-in-link:hover {
+  font-size: 87.5%;
+}
+
+#log-in-link {
+  color: #375a7f;
+  font-size: 85%;
+  text-decoration: underline;
+  margin-left: 0.1vw;
+}
+
 div.btn {
   cursor: pointer;
 }
