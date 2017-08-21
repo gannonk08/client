@@ -30,30 +30,9 @@ div.log-in div.row {
   width: 100%;
 }
 
-div.row.about-section {
-  display: flex;
-  flex-direction: column;
-}
-
-div.about, div.solution {
-  position: relative;
-  height: 75vh;
-  width: 100%;
-  display: flex;
-  content: "";
-  background-size: cover;
-  background-repeat: no-repeat;
-  opacity: 0.25;
-}
-
-div.about {
-  background-image: url("./paperwork.jpg");
-  border-left: 3px solid #eee;
-}
-
-div.solution {
-  background-image: url("./relaxing.jpg");
-  border-right: 3px solid #eee;
+#about-link {
+  text-decoration: none;
+  color: #eee;
 }
 
 div#login-form-container input {
@@ -111,12 +90,9 @@ div.hero-text p {
 }
 
 @media (min-width: 769px) {
-  div.log-in div.row, div.row.about-section {
+  div.log-in div.row {
     display: flex;
     flex-direction: row;
-  }
-  div.about, div.solution {
-    width: 48.75%;
   }
   div#login-form-container input {
     width: 100%;

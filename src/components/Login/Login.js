@@ -10,7 +10,6 @@ class Login extends Component {
 	constructor(props) {
     super(props);
     this.postLogin = this.postLogin.bind(this);
-    this.getClients = this.getClients.bind(this);
   }
 
 	postLogin() {
@@ -32,26 +31,6 @@ class Login extends Component {
 		})
 		.catch(e => console.log(e));
   }
-
-	getClients() {
-	// 	function getCookie(name) {
-	//     let cookies = document.cookie.split(';');
-	//     for(var i=0 ; i < cookies.length ; ++i) {
-  //       var pair = cookies[i].trim().split('=');
-  //       if(pair[0] == name)
-  //         return pair[1];
-	//     }
-	//     return null;
-	// };
-	// 	let sessionCookie = getCookie('bondladderpro_session')
-		fetch(PATH_BASE, {
-			credentials: 'same-origin',
-			method: "GET",
-			headers: {
-				''
-			}
-		})
-	}
 
 	render() {
 		return (
@@ -79,18 +58,12 @@ class Login extends Component {
 		        </div>
 						<div className="col-md-9 col-sm-8 col-xs-12">
 							<div className="hero-text">
-			          <h1>Catchy tagline here...</h1>
-			          <p>Find out more here</p>
+			          <h1>Bond Ladder Automation made easy</h1>
+			          <p><Link to={"/about"} id="about-link">Find out more here</Link></p>
 			        </div>
 						</div>
 					</div>
 	      </div>
-				<div className="row about-section">
-					<div className="about">
-					</div>
-					<div className="solution">
-					</div>
-				</div>
 			</div>
 		)
 	}
