@@ -23,4 +23,5 @@
 #change-password:hover, #log-out:hover {
   text-decoration: underline;
   font-size: 105%;
+  cursor: pointer;
 }

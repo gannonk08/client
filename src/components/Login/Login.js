@@ -33,7 +33,7 @@ class Login extends Component {
 		.then(res => {
 			console.log(res);
 			if (res.status === "OK") {
-				this.props.history.push('/imports');
+				this.props.history.push('/clients');
 			}
 		})
 		.catch(e => console.log(e));

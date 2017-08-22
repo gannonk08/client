@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import './HeaderMenu.css';
 
 const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
@@ -68,4 +68,4 @@ class HeaderMenu extends Component {
 	}
 }
 
-export default HeaderMenu;
+export default withRouter(HeaderMenu);
