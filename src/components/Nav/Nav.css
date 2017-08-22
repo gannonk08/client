@@ -43,7 +43,7 @@ img.nav-image {
   width: 25px;
 }
 
-div.true {
+div#importsNav.true, div#rebalanceNav.true {
   height: 35px;
   width: 35px;
   margin-left: 1.5vw;
@@ -54,7 +54,7 @@ div.true {
   border-radius: 10px;
 }
 
-div.false {
+div#importsNav.false, div#rebalanceNav.false, div#exportCsv.false {
   margin-left: 1.5vw;
 }
 
@@ -67,17 +67,6 @@ div.date-today {
   margin-left: 30px;
 }
 
-#log-out-div {
-  border: none;
-  padding: 0;
-}
-
-#log-out {
-  color: #375a7f;
-  margin-right: 1vw;
-  cursor: pointer;
-}
-
 a {
   color: #eee;
 }
@@ -85,6 +74,7 @@ a {
 div.clients-label {
   padding: 10px;
   margin-top: 2px;
+  margin-left: 5px;
   display: flex;
   justify-content: center;
   border: 1px solid #375a7f;

@@ -3,6 +3,7 @@ import ReactDataGrid from 'react-data-grid';
 import exampleWrapper from './exampleWrapper';
 import './exampleWrapper.css';
 import Nav from '../Nav/Nav';
+import Header from '../Header/Header';
 
 // eslint-disable-next-line
 const Example = React.createClass({
@@ -126,6 +127,9 @@ const Example = React.createClass({
   render() {
     return  (
       <div>
+        <Header
+        showMenu={true}
+        />
         <Nav />
         <ReactDataGrid
           onGridSort={this.handleGridSort}

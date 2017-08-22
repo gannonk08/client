@@ -1,0 +1,26 @@
+#header-menu {
+  z-index: 100;
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #375a7f;
+}
+
+#header-menu div {
+  height: 5vh;
+  display: flex;
+  align-items: center;
+}
+
+#change-password, #log-out {
+  color: white;
+  width: 12.5vw;
+  margin: 10px;
+}
+
+#change-password:hover, #log-out:hover {
+  text-decoration: underline;
+  font-size: 105%;
+}

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import './Login.css';
+import Header from '../Header/Header';
 
 const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
 const PATH_SIGNIN = '/signin';
@@ -41,6 +42,9 @@ class Login extends Component {
 	render() {
 		return (
 			<div>
+				<Header
+					showMenu={false}
+				/>
 	      <div className="log-in">
 					<div className="row">
 		        <div id="login-form-container" className="col-md-3 col-sm-4 col-xs-12">

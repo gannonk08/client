@@ -16,19 +16,32 @@ header h1 {
   margin-left: 0.25vw;
 }
 
-header div {
+div#nav-dropdown {
   display: flex;
   align-items: center;
   margin-right: 0.25vw;
 }
 
-header div div {
+div#nav-dropdown.false {
+  display: none;
+}
+
+div#nav-dropdown.true:hover {
+  cursor: pointer;
+}
+
+#user-name {
   color: white;
   font-weight: bold;
   font-size: 85%;
 }
 
-/*img.profile-arrow {
-  height: 0.5vh;
+#up-arrow, #down-arrow {
+  height: 1vh;
   width: auto;
-}*/
+  margin-left: 0.5vw;
+}
+
+#up-arrow.false, #down-arrow.true {
+  display: none;
+}
