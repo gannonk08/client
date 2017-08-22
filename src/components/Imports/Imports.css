@@ -3,28 +3,14 @@ div.imports-form-container {
 }
 
 div.imports {
-  border: 3px solid #eee;
+  background-color: #eee;
   padding: 3rem;
   position: relative;
   left: 0;
   right: 0;
-  min-height: 80vh;
+  min-height: 20vh;
   display: flex;
   position: relative;
-}
-
-div.imports::after {
-  content: "";
-  background-image: url("../Login/stock1.webp");
-  background-size: cover;
-  background-repeat: no-repeat;
-  opacity: 0.9;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;
 }
 
 div.imports-form-container input {

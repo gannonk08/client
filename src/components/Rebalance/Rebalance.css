@@ -1,26 +1,5 @@
-div.rebalance-body {
-  height: 80vh;
-}
-
-div.rebalance-nav {
-  display: flex;
-  align-items: center;
-  width: 100vw;
-  background-color: #333;
-  color: #eee;
-  border: 3px solid #eee;
-}
-
-div.date-today {
-  margin: 10px;
-}
-
-button.smo.btn.btn-success {
-  margin: 10px;
-}
 
 div.add-form {
-  margin-left: 2.5vw;
-  margin-top: 2.5vw;
+  margin: 2.5vw;  
   width: 20vw;
 }

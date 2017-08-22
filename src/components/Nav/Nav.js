@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
+import SMO from '../SMO/SMO';
+import Imports from '../Imports/Imports';
 import './Nav.css';
 
 const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
@@ -8,24 +10,13 @@ const PATH_SIGNOUT = '/signout';
 class Nav extends Component {
   constructor(props) {
     super(props);
-    this.toggleNav = this.toggleNav.bind(this);
     this.getLogout = this.getLogout.bind(this);
+    this.showRebalanceBanner = this.showRebalanceBanner.bind(this);
+    this.showImports = this.showImports.bind(this);
     this.state = {
-      active: false,
+      rebalanceToolsVisible: false,
+      importsVisible: false
     };
-  }
-
-  toggleNav() {
-    // console.log(e.currentTarget.classList.contains("active-tab"));
-    // if (e.currentTarget.classList.contains("active-tab")) {
-    //   let currentState = true;
-    //   this.setState({ active: currentState });
-    //   console.log(this.state.active);
-    // } else {
-    //   let currentState = this.state.active;
-    //   this.setState({ active: !currentState });
-    //   console.log(this.state.active);
-    // }
   }
 
   getLogout() {
@@ -48,35 +39,46 @@ class Nav extends Component {
 		.catch(e => console.log(e));
   }
 
+  showRebalanceBanner() {
+    this.setState({ rebalanceToolsVisible: !this.state.rebalanceToolsVisible });
+  }
+
+  showImports() {
+    this.setState({ importsVisible: !this.state.importsVisible });
+  }
+
 	render() {
-    const { imports, clients, rebalance } = this.props;
 		return (
       <div>
         <nav>
-          <div className="col-lg-1 col-md-1 col-sm-2 col-xs-3">
-            <div onClick={this.toggleNav} className={this.props.imports}>
-              <Link to={"/imports"} className={this.props.imports}>Imports</Link>
+          <div className="nav-left">
+            <div className="clients-label">
+              <img className="nav-image" src={require("./clients.png")} alt="clients" />
             </div>
-          </div>
-          <div className="col-lg-1 col-md-1 col-sm-2 col-xs-3">
-            <div onClick={this.toggleNav} className={this.props.clients}>
-              <Link to={"/clients"} className={this.props.clients}>Clients</Link>
+            <div className={this.state.importsVisible}>
+              <img className="nav-image" onClick={this.showImports}  src={require("./imports.png")} alt="imports" />
             </div>
-          </div>
-          <div className="col-lg-1 col-md-1 col-sm-2 col-xs-3">
-            <div onClick={this.toggleNav} className={this.props.rebalance}>
-              <Link to={"/rebalance"} className={this.props.rebalance}>Rebalance</Link>
+            <div className={this.state.rebalanceToolsVisible}>
+              <img className="nav-image" onClick={this.showRebalanceBanner} src={require("./rebalance.png")} alt="rebalance" />
             </div>
+            <div className="date-today">22-Aug-2017</div>
           </div>
-          <div className="col-lg-8 col-md-8 col-sm-4 col-xs-0">
-            <div className="header-space"></div>
-          </div>
-          <div className="col-lg-1 col-md-1 col-sm-2 col-xs-3">
-            <div onClick={this.toggleNav} id="log-out-div">
+          <div className="nav-right">
+            <div id="log-out-div">
               <div id="log-out" onClick={this.getLogout}>Log Out</div>
             </div>
           </div>
         </nav>
+        {
+          this.state.importsVisible
+            ? <Imports />
+            : null
+        }
+        {
+          this.state.rebalanceToolsVisible
+            ? <SMO />
+            : null
+        }
       </div>
 		)
 	}

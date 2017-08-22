@@ -126,11 +126,7 @@ const Example = React.createClass({
   render() {
     return  (
       <div>
-        <Nav
-          imports="inactive-tab"
-          clients="active-tab"
-          rebalance="inactive-tab"
-        />
+        <Nav />
         <ReactDataGrid
           onGridSort={this.handleGridSort}
           columns={this._columns}

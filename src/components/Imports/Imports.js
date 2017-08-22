@@ -6,11 +6,6 @@ class Imports extends Component {
 	render() {
 		return (
       <div>
-				<Nav
-					imports="active-tab"
-					clients="inactive-tab"
-					rebalance="inactive-tab"
-				/>
 				<div className="imports">
 	        <div className="imports-form-container">
 	          <form>
