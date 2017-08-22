@@ -1,18 +1,21 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import './Nav.css';
+
+const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
+const PATH_SIGNOUT = '/signout';
 
 class Nav extends Component {
   constructor(props) {
     super(props);
     this.toggleNav = this.toggleNav.bind(this);
+    this.getLogout = this.getLogout.bind(this);
     this.state = {
       active: false,
     };
   }
 
   toggleNav() {
-    console.log('clicked');
     // console.log(e.currentTarget.classList.contains("active-tab"));
     // if (e.currentTarget.classList.contains("active-tab")) {
     //   let currentState = true;
@@ -23,6 +26,26 @@ class Nav extends Component {
     //   this.setState({ active: !currentState });
     //   console.log(this.state.active);
     // }
+  }
+
+  getLogout() {
+		fetch(PATH_BASE + PATH_SIGNOUT, {
+			mode: 'cors',
+		  method: 'GET',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+		    'Accept': '*/*',
+		    'Content-Type': 'application/json'
+		  }
+		})
+		.then(response => response.json())
+		.then(res => {
+			console.log(res);
+			if (res.status === "OK") {
+				this.props.history.push('/');
+			}
+		})
+		.catch(e => console.log(e));
   }
 
 	render() {
@@ -41,7 +64,7 @@ class Nav extends Component {
             </div>
           </div>
           <div className="col-lg-1 col-md-1 col-sm-2 col-xs-3">
-            <div onClick={this.toggleNav}>
+            <div onClick={this.toggleNav} className={this.props.rebalance}>
               <Link to={"/rebalance"} className={this.props.rebalance}>Rebalance</Link>
             </div>
           </div>
@@ -50,7 +73,7 @@ class Nav extends Component {
           </div>
           <div className="col-lg-1 col-md-1 col-sm-2 col-xs-3">
             <div onClick={this.toggleNav} id="log-out-div">
-              <Link to={"/"} id="log-out">Log Out</Link>
+              <div id="log-out" onClick={this.getLogout}>Log Out</div>
             </div>
           </div>
         </nav>
@@ -59,4 +82,4 @@ class Nav extends Component {
 	}
 }
 
-export default Nav;
+export default withRouter(Nav);

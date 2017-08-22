@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import './Signup.css';
 
-const PATH_BASE = 'http://localhost:9000';
+const PATH_BASE = 'https://bondladderpro-v1.herokuapp.com';
 const PATH_SIGNUP = '/signup';
 
 class Login extends Component {
@@ -12,16 +12,30 @@ class Login extends Component {
   }
 
 	postSignup() {
-		var formData = JSON.stringify({
-			username: document.getElementById('username').value,
-			email: document.getElementById('email').value,
-			password: document.getElementById('password').value
+		var signupData = JSON.stringify({
+			username: document.getElementById('register-username').value,
+			email: document.getElementById('register-email').value,
+			password: document.getElementById('register-password').value,
+			passwordConfirm: document.getElementById('register-passwordConfirm').value
 		})
 		fetch(PATH_BASE + PATH_SIGNUP, {
-		  method: "POST",
-		  body: formData
+			mode: 'cors',
+		  method: 'POST',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+		    'Accept': '*/*',
+		    'Content-Type': 'application/json'
+		  },
+		  body: signupData
 		})
-		.then(response => response.json()).catch(e => console.log(e));
+		.then(response => response.json())
+		.then(res => {
+			console.log(res);
+			if (res.status === "OK") {
+				this.props.history.push('/imports');
+			}
+		})
+		.catch(e => console.log(e));
   }
 
 	render() {
@@ -37,26 +51,26 @@ class Login extends Component {
 											<div className="card-content">
 												<div className="row">
 													<div className="input-field col-sm-12">
-														<label for="input-username">Username</label>
-														<input id="input-username" type="text" className="form-control" name="username" value="" />
+														<label for="register-username">Username</label>
+														<input id="register-username" type="text" className="form-control" name="username"/>
 													</div>
 												</div>
 												<div className="row">
 													<div className="input-field col-sm-12">
-														<label for="input-email">Email</label>
-														<input id="input-email" type="email" className="form-control" name="email" value="" />
+														<label for="register-email">Email</label>
+														<input id="register-email" type="email" className="form-control" name="email"/>
 													</div>
 												</div>
 												<div className="row">
 													<div className="input-field col-sm-12">
-														<label for="input-password">Password</label>
-														<input id="input-password" type="password" className="form-control" name="password" value="" />
+														<label for="register-password">Password</label>
+														<input id="register-password" type="password" className="form-control" name="password"/>
 													</div>
 												</div>
 												<div className="row">
 													<div className="input-field col-sm-12">
-														<label for="input-passwordConfirm">Confirm Password</label>
-														<input id="input-passwordConfirm" type="password" className="form-control" name="passwordConfirm" value="" />
+														<label for="register-passwordConfirm">Confirm Password</label>
+														<input id="register-passwordConfirm" type="password" className="form-control" name="passwordConfirm"/>
 													</div>
 												</div>
 											</div>
@@ -80,4 +94,4 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+export default withRouter(Login);

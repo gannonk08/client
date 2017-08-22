@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import './Login.css';
 
-const PATH_BASE = 'http://localhost:9000';
+const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
 const PATH_SIGNIN = '/signin';
-const PATH_LOGIN = '/signin';
 
 class Login extends Component {
 	constructor(props) {
@@ -18,24 +17,23 @@ class Login extends Component {
 			password: document.getElementById('password').value
 		})
 
-		var fakeData = {
-			"email": "justinhart90@gmail.com",
-			"password": "Ricohsuav3"
-		}
-		console.log(fakeData);
+		console.log(formData);
 		fetch(PATH_BASE + PATH_SIGNIN, {
 			mode: 'cors',
 		  method: 'POST',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
-		    'Accept': 'application/json',
+		    'Accept': '*/*',
 		    'Content-Type': 'application/json'
 		  },
-		  body: fakeData
+		  body: formData
 		})
 		.then(response => response.json())
 		.then(res => {
-			console.log(res)
+			console.log(res);
+			if (res.status === "OK") {
+				this.props.history.push('/imports');
+			}
 		})
 		.catch(e => console.log(e));
   }
@@ -49,11 +47,11 @@ class Login extends Component {
 		          <form id="login-form">
 		            <div className="email">
 		              <label for="email">Email</label>
-		              <input className="form-control" name="email" type="text"/>
+		              <input id="email" className="form-control" name="email" type="text"/>
 		            </div>
 		            <div className="pass">
 		              <label for="pass">Password</label>
-		              <input className="form-control" name="pass" type="password"/>
+		              <input id="password" className="form-control" name="pass" type="password"/>
 		            </div>
 		            <div className="buttons">
 		              <div className="log-in-button btn btn-success" onClick={this.postLogin}>Log In</div>
@@ -77,4 +75,4 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+export default withRouter(Login);

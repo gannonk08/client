@@ -55,10 +55,12 @@ nav div div {
 #log-out-div {
   background-color: #eee;
   border: none;
+  padding: 0;
 }
 
 #log-out {
   color: #375a7f;
+  background-color: #eee;
 }
 
 a {
