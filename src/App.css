@@ -46,22 +46,6 @@ main h2 {
   margin-bottom: 1rem;
 }
 
-footer {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  padding-bottom: 0;
-  margin-bottom: 0;
-  background-color: #333;
-  color: #eee;
-  position: relative;
-  width: 100%;
-}
-
-footer small {
-  margin-bottom: 5px;
-}
-
 .accounts {
   display: flex;
   flex-flow: column wrap;

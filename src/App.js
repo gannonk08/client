@@ -11,6 +11,7 @@ import Imports from './components/Imports/Imports';
 import Header from './components/Header/Header';
 import Clients from './components/Clients/Clients';
 import Rebalance from './components/Rebalance/Rebalance';
+import Footer from './components/Footer/Footer';
 
 class App extends Component {
   render() {
@@ -24,6 +25,7 @@ class App extends Component {
           <Route path={"/imports"} component={Imports} />
           <Route path={"/clients"} component={Clients} />
           <Route path={"/rebalance"} component={Rebalance} />
+          <Footer />
         </div>
       </Router>
     );
