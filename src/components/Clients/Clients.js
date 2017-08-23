@@ -128,7 +128,7 @@ const Example = React.createClass({
     return  (
       <div>
         <Header
-        showMenu={true}
+          showMenu={true}
         />
         <Nav />
         <ReactDataGrid

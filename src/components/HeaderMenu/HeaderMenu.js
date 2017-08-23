@@ -23,7 +23,6 @@ class HeaderMenu extends Component {
 		})
 		.then(response => response.json())
 		.then(res => {
-			console.log(res);
 			if (res.status === "OK") {
 				this.props.history.push('/');
 			}

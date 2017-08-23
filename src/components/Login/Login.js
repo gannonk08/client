@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
+import {connector} from '../../redux/userStore';
 import './Login.css';
 import Header from '../Header/Header';
 
@@ -18,7 +19,6 @@ class Login extends Component {
 			password: document.getElementById('password').value
 		})
 
-		console.log(formData);
 		fetch(PATH_BASE + PATH_SIGNIN, {
 			mode: 'cors',
 		  method: 'POST',
@@ -31,9 +31,12 @@ class Login extends Component {
 		})
 		.then(response => response.json())
 		.then(res => {
-			console.log(res);
 			if (res.status === "OK") {
 				this.props.history.push('/clients');
+				this.props.addUserEmail(res.record.email);
+				if (this.props.emails) {
+					this.props.addUserEmail(res.record.email);
+				}
 			}
 		})
 		.catch(e => console.log(e));
@@ -79,4 +82,4 @@ class Login extends Component {
 	}
 }
 
-export default withRouter(Login);
+export default withRouter(connector(Login));
