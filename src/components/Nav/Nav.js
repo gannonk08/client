@@ -14,9 +14,12 @@ class Nav extends Component {
     this.showRebalanceBanner = this.showRebalanceBanner.bind(this);
     this.showImports = this.showImports.bind(this);
     this.hideAll = this.hideAll.bind(this);
+    this.mouseEnter = this.mouseEnter.bind(this);
+    this.mouseLeave = this.mouseLeave.bind(this);
     this.state = {
       rebalanceToolsVisible: false,
-      importsVisible: false
+      importsVisible: false,
+      rebalanceImageSrc: 'rebalance.png'
     };
   }
 
@@ -43,6 +46,14 @@ class Nav extends Component {
     }
   }
 
+  mouseEnter() {
+    this.setState({ rebalanceImageSrc: 'rebalance-flipped.png'});
+  }
+
+  mouseLeave() {
+    this.setState({ rebalanceImageSrc: 'rebalance.png'});
+  }
+
 	render() {
 		return (
       <div>
@@ -58,9 +69,9 @@ class Nav extends Component {
                 <img className="nav-image" onClick={this.showImports}  src={require("./imports.png")} alt="imports" />
               </Tooltip>
             </div>
-            <div id="rebalanceNav" className={this.state.rebalanceToolsVisible}>
+            <div id="rebalanceNav" className={this.state.rebalanceToolsVisible} onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
               <Tooltip title='Rebalance Accounts' position='top'>
-                <img className="nav-image" onClick={this.showRebalanceBanner} src={require("./rebalance.png")} alt="rebalance" />
+                <img className="nav-image" onClick={this.showRebalanceBanner} src={require('./' + this.state.rebalanceImageSrc)} alt="rebalance"/>
               </Tooltip>
             </div>
             <div id="exportCsv" className="false">
