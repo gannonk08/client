@@ -34,9 +34,6 @@ class Login extends Component {
 			if (res.status === "OK") {
 				this.props.history.push('/clients');
 				this.props.addUserEmail(res.record.email);
-				if (this.props.emails) {
-					this.props.addUserEmail(res.record.email);
-				}
 			}
 		})
 		.catch(e => console.log(e));

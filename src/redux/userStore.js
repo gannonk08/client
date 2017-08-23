@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 const RECORD_USER_EMAIL = 'RECORD_USER_EMAIL';
 
-const initialState = {emails: ["bondladderpro@gmail.com"]};
+const initialState = {emails: ["useremail@domain.com"]};
 
 function rootReducer(state=initialState, action) {
 	switch (action.type) {

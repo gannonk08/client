@@ -13,6 +13,7 @@ class Nav extends Component {
     super(props);
     this.showRebalanceBanner = this.showRebalanceBanner.bind(this);
     this.showImports = this.showImports.bind(this);
+    this.hideAll = this.hideAll.bind(this);
     this.state = {
       rebalanceToolsVisible: false,
       importsVisible: false
@@ -33,6 +34,15 @@ class Nav extends Component {
     this.setState({ importsVisible: !this.state.importsVisible });
   }
 
+  hideAll() {
+    if (this.state.rebalanceToolsVisible) {
+      this.setState({ rebalanceToolsVisible: false });
+    }
+    if (this.state.importsVisible) {
+      this.setState({ importsVisible: false });
+    }
+  }
+
 	render() {
 		return (
       <div>
@@ -40,7 +50,7 @@ class Nav extends Component {
           <div className="nav-left">
             <div className="clients-label">
               <Tooltip title='Clients' position='top'>
-                <img className="nav-image" src={require("./clients.png")} alt="clients" />
+                <img className="nav-image" onClick={this.hideAll} src={require("./clients.png")} alt="clients" />
               </Tooltip>
             </div>
             <div id="importsNav" className={this.state.importsVisible}>

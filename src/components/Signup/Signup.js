@@ -1,18 +1,20 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
+import {connector} from '../../redux/userStore';
 import './Signup.css';
 import Header from '../Header/Header';
 
 const PATH_BASE = 'https://bondladderpro-v1.herokuapp.com';
 const PATH_SIGNUP = '/signup';
 
-class Login extends Component {
+class Signup extends Component {
 	constructor(props) {
     super(props);
     this.postSignup = this.postSignup.bind(this);
   }
 
 	postSignup() {
+		let newUserEmail = document.getElementById('register-email').value;
 		var signupData = JSON.stringify({
 			username: document.getElementById('register-username').value,
 			email: document.getElementById('register-email').value,
@@ -32,7 +34,9 @@ class Login extends Component {
 		.then(response => response.json())
 		.then(res => {
 			if (res.status === "OK") {
+				console.log(newUserEmail);
 				this.props.history.push('/clients');
+				this.props.addUserEmail(newUserEmail);
 			}
 		})
 		.catch(e => console.log(e));
@@ -97,4 +101,4 @@ class Login extends Component {
 	}
 }
 
-export default withRouter(Login);
+export default withRouter(connector(Signup));
