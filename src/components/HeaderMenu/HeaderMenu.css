@@ -16,12 +16,28 @@
 
 #change-password, #log-out {
   color: white;
-  width: 12.5vw;
-  margin: 10px;
+  width: 17.5vw;
+  margin: 7.5px;
 }
 
 #change-password:hover, #log-out:hover {
   text-decoration: underline;
   font-size: 105%;
   cursor: pointer;
+}
+
+div.row#cancelChange {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 1vw;
+}
+
+div#header-menu div.false {
+  display: none;
+}
+
+div#header-menu div.true {
+  display: flex;
+  margin-bottom: 1vh;
 }
