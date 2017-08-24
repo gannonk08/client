@@ -41,12 +41,26 @@ div.nav-left, div.nav-right {
 img.nav-image {
   height: 25px;
   width: 25px;
+
+}
+
+#importsNav, #rebalanceNav, #exportCsv {
+  height: 35px;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+#importsNav:hover, #rebalanceNav:hover, #exportCsv:hover, .clients-label {
+  transform: scale(1.12);
 }
 
 div#importsNav.true, div#rebalanceNav.true {
   height: 35px;
   width: 35px;
-  margin-left: 1.5vw;
+  margin-left: 1vw;
   background-color: rgba(66, 141, 221, 0.61);
   display: flex;
   align-items: center;
@@ -55,12 +69,11 @@ div#importsNav.true, div#rebalanceNav.true {
 }
 
 div#importsNav.false, div#rebalanceNav.false, div#exportCsv.false {
-  margin-left: 1.5vw;
+  margin-left: 1vw;
 }
 
 img.nav-image:hover {
   cursor: pointer;
-  transform: scale(1.08);
 }
 
 div.date-today {

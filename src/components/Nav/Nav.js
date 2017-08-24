@@ -5,9 +5,6 @@ import Imports from '../Imports/Imports';
 import './Nav.css';
 import Tooltip from 'react-tooltip-component';
 
-const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
-const PATH_SIGNOUT = '/signout';
-
 class Nav extends Component {
   constructor(props) {
     super(props);

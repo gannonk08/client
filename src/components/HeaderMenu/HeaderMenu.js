@@ -14,6 +14,7 @@ class HeaderMenu extends Component {
 	getLogout() {
 		fetch(PATH_BASE + PATH_SIGNOUT, {
 			mode: 'cors',
+			credentials: 'include',
 		  method: 'GET',
 			headers: {
 				'Access-Control-Allow-Origin': '*',

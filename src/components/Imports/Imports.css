@@ -3,7 +3,7 @@ div.imports-form-container {
 }
 
 div.imports {
-  background-color: #eee;
+  background-color: #333;
   padding: 3rem;
   position: relative;
   left: 0;
@@ -19,13 +19,22 @@ div.imports-form-container input {
   border-radius: 4px;
 }
 
+div.imports-form-container input, div.imports-form-container label {
+  color: #eee;
+}
+
+div.imports-form-container label {
+  margin-bottom: 20px;
+}
+
 div.import-loader button {
   font-size: 1.25rem;
   padding: 10px;
   margin-top: 20px;
   margin-left: 5px;
   border-radius: 6px;
-  opacity: 0.5;
+  opacity: 1.0;
+  color: black;
 }
 
 div.login-form-container button:hover {

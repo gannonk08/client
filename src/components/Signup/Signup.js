@@ -23,6 +23,7 @@ class Signup extends Component {
 		})
 		fetch(PATH_BASE + PATH_SIGNUP, {
 			mode: 'cors',
+			credentials: 'include',
 		  method: 'POST',
 			headers: {
 				'Access-Control-Allow-Origin': '*',

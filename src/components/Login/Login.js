@@ -14,18 +14,21 @@ class Login extends Component {
   }
 
 	postLogin() {
-		var formData = JSON.stringify({
+		let formData = JSON.stringify({
 			email: document.getElementById('email').value,
 			password: document.getElementById('password').value
 		})
+		let bondladderproAuth = process.env.BONDLADDERPRO_AUTH;
 
 		fetch(PATH_BASE + PATH_SIGNIN, {
 			mode: 'cors',
+			credentials: 'include',
 		  method: 'POST',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 		    'Accept': '*/*',
-		    'Content-Type': 'application/json'
+		    'Content-Type': 'application/json',
+				'Set-Cookie': bondladderproAuth
 		  },
 		  body: formData
 		})
