@@ -1,6 +1,6 @@
 {
-  "short_name": "BondPro",
-  "name": "BondPro",
+  "short_name": "BondLadderPro",
+  "name": "BondLadderPro",
   "icons": [{
           "src": "./images/icon-128.png",
           "type": "image/png",

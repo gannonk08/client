@@ -59,7 +59,7 @@ class ChangePassword extends Component {
 
 	render() {
 		return (
-			<div id="changepass-form-container" className="col-md-3 col-sm-4 col-xs-12">
+			<div id="changepass-form-container">
 				<form id="changepass-form">
 					<div className="row">
 						<label for="current-password">Current Password</label>

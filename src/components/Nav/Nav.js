@@ -58,22 +58,22 @@ class Nav extends Component {
           <div className="nav-left">
             <div className="clients-label">
               <Tooltip title='Clients' position='top'>
-                <img className="nav-image" onClick={this.hideAll} src={require("./clients.png")} alt="clients" />
+                <img className="nav-image" onClick={this.hideAll} src={require("./images/clients.png")} alt="clients" />
               </Tooltip>
             </div>
             <div id="importsNav" className={this.state.importsVisible}>
               <Tooltip title='Import CSV' position='top'>
-                <img className="nav-image" onClick={this.showImports}  src={require("./imports.png")} alt="imports" />
+                <img className="nav-image" onClick={this.showImports}  src={require("./images/imports.png")} alt="imports" />
               </Tooltip>
             </div>
             <div id="rebalanceNav" className={this.state.rebalanceToolsVisible} onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
               <Tooltip title='Rebalance Accounts' position='top'>
-                <img className="nav-image" onClick={this.showRebalanceBanner} src={require('./' + this.state.rebalanceImageSrc)} alt="rebalance"/>
+                <img className="nav-image" onClick={this.showRebalanceBanner} src={require('./images/' + this.state.rebalanceImageSrc)} alt="rebalance"/>
               </Tooltip>
             </div>
             <div id="exportCsv" className="false">
               <Tooltip title='Export to CSV' position='top'>
-                <img className="nav-image" src={require("./download-csv.png")} alt="csv" />
+                <img className="nav-image" src={require("./images/download-csv.png")} alt="csv" />
               </Tooltip>
             </div>
           </div>

@@ -15,12 +15,12 @@ div.about, div.solution {
 }
 
 div.about {
-  background-image: url("./paperwork.jpg");
+  background-image: url("./images/paperwork.jpg");
   border-left: 3px solid #eee;
 }
 
 div.solution {
-  background-image: url("./relaxing.jpg");
+  background-image: url("./images/relaxing.jpg");
   border-right: 3px solid #eee;
 }
 

@@ -11,7 +11,7 @@ div.log-in {
 
 div.log-in::after {
   content: "";
-  background-image: url("./stock1.webp");
+  background-image: url("./images/stock1.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   opacity: 0.9;

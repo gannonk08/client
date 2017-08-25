@@ -30,8 +30,8 @@ class Header extends Component {
           </Link>
 					<div id="nav-dropdown" className={this.props.showMenu} onClick={this.showHeaderMenu}>
 						<div id="user-name">{lastEmail}</div>
-						<img className={this.state.flipped} id="down-arrow" src={require("./down.png")} alt="down" />
-						<img className={this.state.flipped} id="up-arrow" src={require("./up.png")} alt="up" />
+						<img className={this.state.flipped} id="down-arrow" src={require("./images/down.png")} alt="down" />
+						<img className={this.state.flipped} id="up-arrow" src={require("./images/up.png")} alt="up" />
 					</div>
         </header>
 				{

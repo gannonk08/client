@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDataGrid from 'react-data-grid';
 import exampleWrapper from './exampleWrapper';
 import './exampleWrapper.css';
+import './Clients.css';
 import Nav from '../Nav/Nav';
 import Header from '../Header/Header';
 
@@ -131,11 +132,13 @@ const Example = React.createClass({
           showMenu={true}
         />
         <Nav />
-        <ReactDataGrid
-          onGridSort={this.handleGridSort}
-          columns={this._columns}
-          rowGetter={this.rowGetter}
-          rowsCount={this.state.rows.length} />
+        <div id="grid-shell">
+          <ReactDataGrid
+            onGridSort={this.handleGridSort}
+            columns={this._columns}
+            rowGetter={this.rowGetter}
+            rowsCount={this.state.rows.length} />
+        </div>
       </div>
     );
   }

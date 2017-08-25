@@ -8,7 +8,7 @@ div.sign-up {
 
 div.sign-up::after {
   content: "";
-  background-image: url("../Login/stock1.webp");
+  background-image: url("../Login/images/stock1.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   opacity: 0.9;
