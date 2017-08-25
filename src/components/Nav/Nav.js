@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import SMO from '../SMO/SMO';
 import Imports from '../Imports/Imports';
 import './Nav.css';

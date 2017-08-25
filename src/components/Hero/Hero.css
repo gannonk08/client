@@ -1,0 +1,65 @@
+div#hero-section {
+  border: none;
+  position: relative;
+  margin-top: 2vh;
+  left: 0;
+  right: 0;
+  min-height: 45vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+}
+
+div#hero-section::after {
+  content: "";
+  background-image: url("../Authenticate/images/stock1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+#about-link {
+  text-decoration: none;
+  color: #eee;
+}
+
+#about-link:hover {
+  text-decoration: underline;
+}
+
+div.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #eee;
+}
+
+div.hero-text h1 {
+  font-size: 150%;
+  margin-bottom: 5vh;
+}
+
+div.hero-text p {
+  font-size: 125%;
+}
+
+@media (min-width: 769px) {
+  div#hero-section {
+    width: 70vw;
+    border: 3px solid #eee;
+    border-right: none;
+    min-height: 90vh;
+    margin: 0;
+  }
+  div.hero-text h1 {
+    font-size: 175%;
+  }
+}

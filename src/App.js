@@ -6,8 +6,7 @@ import {
 import {Provider} from 'react-redux';
 import {store} from './redux/userStore';
 
-import Login from './components/Login/Login';
-import Signup from './components/Signup/Signup';
+import Authenticate from './components/Authenticate/Authenticate';
 import About from './components/About/About';
 import Clients from './components/Clients/Clients';
 import Footer from './components/Footer/Footer';
@@ -18,8 +17,7 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div>
-            <Route exact path={"/"} component={Login} />
-            <Route path={"/signup"} component={Signup} />
+            <Route exact path={"/"} component={Authenticate} />
             <Route path={"/about"} component={About} />
             <Route path={"/clients"} component={Clients} />
             <Footer />

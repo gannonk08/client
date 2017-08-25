@@ -1,0 +1,90 @@
+div.log-in {
+  border: 3px solid #eee;
+  border-top: none;
+  position: relative;
+  left: 0;
+  right: 0;
+  min-height: 45vh;
+  display: flex;
+  justify-content: center;
+}
+
+div.log-in div.row {
+  display: flex;
+  flex-direction: column;
+  margin: 0 !important;
+  width: 100%;
+}
+
+div#auth-form-container {
+  background-color: #eee;
+  opacity: 0.9;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#auth-form {
+  margin-top: 5vh;
+  width: 90%;
+}
+
+p.sign-up-button:hover, div.log-in-button:hover {
+  cursor: pointer;
+  transform: scale(1.03);
+}
+
+p.sign-up-button:hover {
+  font-size: 87.5%;
+}
+
+p.sign-up-button {
+  color: #375a7f;
+  font-size: 85%;
+  text-decoration: underline;
+  margin-left: 0.1vw;
+}
+
+div.log-in-button {
+  margin-bottom: 5vh;
+}
+
+p.already-member {
+  margin-bottom: 2.5vh;
+}
+
+@media (min-width: 769px) {
+  div.log-in {
+    min-height: 90vh;
+  }
+  div.log-in::after {
+    content: "";
+    background-image: url("../Authenticate/images/stock1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.9;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+  }
+  div#auth-form-container {
+    width: 30vw;
+  }
+  div#hero-section {
+    width: 70vw;
+    border: 3px solid #eee;
+    border-right: none;
+    min-height: 90vh;
+    margin: 0;
+  }
+  div.log-in div.row {
+    display: flex;
+    flex-direction: row;
+  }
+  div.hero-text h1 {
+    font-size: 175%;
+  }
+}

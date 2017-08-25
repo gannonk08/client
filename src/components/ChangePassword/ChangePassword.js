@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import './ChangePassword.css';
 
 const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
