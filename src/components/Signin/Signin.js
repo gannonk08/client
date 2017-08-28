@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {connector} from '../../redux/userStore';
-import './Signin.css';
 
 const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
 const PATH_SIGNIN = '/signin';

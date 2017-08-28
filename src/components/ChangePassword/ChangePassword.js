@@ -23,7 +23,7 @@ class ChangePassword extends Component {
 				'Access-Control-Allow-Origin': '*',
 		    'Accept': '*/*',
 		    'Content-Type': 'application/json',
-				'Set-Cookie': bondladderproAuth
+				'Cookie': bondladderproAuth
 		  }
 		})
 		.then(response => response.json())
@@ -37,6 +37,11 @@ class ChangePassword extends Component {
 
 	changePassword() {
 		let bondladderproAuth = process.env.BONDLADDERPRO_AUTH;
+		var changeData = JSON.stringify({
+			old: document.getElementById('current-password').value,
+			new: document.getElementById('new-password').value,
+			confirm: document.getElementById('confirm-new-password').value
+		})
 		fetch(PATH_BASE + PATH_CHANGEPASSWORD, {
 			mode: 'cors',
 			credentials: 'include',
@@ -45,13 +50,14 @@ class ChangePassword extends Component {
 				'Access-Control-Allow-Origin': '*',
 		    'Accept': '*/*',
 		    'Content-Type': 'application/json',
-				'Set-Cookie': bondladderproAuth
-		  }
+				'Cookie': bondladderproAuth
+		  },
+			body: changeData
 		})
 		.then(response => response.json())
 		.then(res => {
 			if (res.status === "OK") {
-				this.getLogout();
+				return this.getLogout();
 			}
 		})
 		.catch(e => console.log(e));

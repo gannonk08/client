@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {connector} from '../../redux/userStore';
-import './Signup.css';
 
 const PATH_BASE = 'https://bondladderpro-v1.herokuapp.com';
 const PATH_SIGNUP = '/signup';
@@ -68,7 +67,7 @@ class Signup extends Component {
 				</div>
 				<div className="buttons">
 					<div className="log-in-button btn btn-success" onClick={this.postSignup}>Register</div>
-				</div>				
+				</div>
 			</div>
 		)
 	}

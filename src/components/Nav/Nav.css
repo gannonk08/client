@@ -27,6 +27,8 @@ nav {
 
 div.nav-left {
   margin-left: 0.5px;
+  margin-top: 1.5px;
+  margin-bottom: 2px;
 }
 
 div.nav-right {
