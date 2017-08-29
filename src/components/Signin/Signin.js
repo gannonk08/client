@@ -24,13 +24,13 @@ class Signin extends Component {
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 		    'Accept': '*/*',
-		    'Content-Type': 'application/json'
+		    'Content-Type': 'application/json',
+				'DNT': 0
 		  },
 		  body: formData
 		})
 		.then(response => response.json())
 		.then(res => {
-			console.log(res);
 			if (res.status === "OK") {
 				this.props.history.push('/clients');
 				this.props.addUserEmail(res.record.email);

@@ -26,11 +26,10 @@ class HeaderMenu extends Component {
 				'Access-Control-Allow-Origin': '*',
 		    'Accept': '*/*',
 		    'Content-Type': 'application/json',
-				'Cookie': bondladderproAuth
+				'DNT': 0
 		  }
 		})
 		.then(res => {
-			console.log(res);
 			if (res.ok === true) {
 				this.props.history.push('/');
 			}

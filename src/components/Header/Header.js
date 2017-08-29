@@ -20,7 +20,6 @@ class Header extends Component {
 	}
 
 	render() {
-		console.log(this.props);
 		let lastEmail = this.props.emails[this.props.emails.length-1];
 		// eslint-disable-next-line
 		const { showMenu } = this.props;

@@ -27,7 +27,8 @@ class Signup extends Component {
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 		    'Accept': '*/*',
-		    'Content-Type': 'application/json'
+		    'Content-Type': 'application/json',
+				'DNT': 0
 		  },
 		  body: signupData
 		})
