@@ -50,7 +50,7 @@ class Signin extends Component {
 					<input id="password" className="form-control" name="pass" type="password"/>
 				</div>
 				<div className="buttons">
-					<div className="log-in-button btn btn-success" onClick={this.postSignin}>Log In</div>
+					<div className="log-in-button btn btn-primary" onClick={this.postSignin}>Log In</div>
 				</div>
 			</div>
 		)

@@ -53,10 +53,17 @@ p.sign-up-button {
 
 div.log-in-button {
   margin-bottom: 5vh;
+  margin-left: 0.25vw;
+  background-color: gray;
+  border: none;
 }
 
 p.already-member {
   margin-bottom: 2.5vh;
+}
+
+#not-member, #already-member {
+  margin-left: 0.25vw;
 }
 
 #not-member.true, #already-member.false {

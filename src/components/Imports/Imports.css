@@ -41,7 +41,3 @@ div.login-form-container button:hover {
   cursor: pointer;
   transform: scale(1.03);
 }
-
-.log-in-button {
-  background-color: green;
-}

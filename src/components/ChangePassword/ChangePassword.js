@@ -14,7 +14,6 @@ class ChangePassword extends Component {
     super(props);
     this.getLogout = this.getLogout.bind(this);
 		this.changePassword = this.changePassword.bind(this);
-		// console.log(document.cookie('bondladderpro_auth'));
   }
 
 	getLogout() {
@@ -29,9 +28,8 @@ class ChangePassword extends Component {
 		    'Content-Type': 'application/json'
 		  }
 		})
-		.then(response => response.json())
 		.then(res => {
-			if (res.status === "OK") {
+			if (res.ok) {
 				this.props.history.push('/');
 			}
 		})
@@ -39,9 +37,6 @@ class ChangePassword extends Component {
   }
 
 	changePassword() {
-		console.log('gettin cookies soon');
-		// let tokenBlp = document.cookie('bondladderpro_auth');
-
 		var changeData = JSON.stringify({
 			old: document.getElementById('current-password').value,
 			new: document.getElementById('new-password').value,
@@ -54,14 +49,12 @@ class ChangePassword extends Component {
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 		    'Accept': '*',
-		    'Content-Type': 'application/json',
-				'Cookie': 'tokenBlp'
+		    'Content-Type': 'application/json'
 		  },
 			body: changeData
 		})
 		.then(res => {
-			console.log('res', res);
-			if (res.status === "OK") {
+			if (res.ok) {
 				return this.getLogout();
 			}
 		})

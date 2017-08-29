@@ -5078,7 +5078,13 @@ react-tooltip-component@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/react-tooltip-component/-/react-tooltip-component-0.3.0.tgz#fb3ec78c3270fe919692bc31f1404108bcf4785e"
 
-react@^15.0.0, react@^15.6.1:
+react-upload-file@^2.0.0-beta.6:
+  version "2.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/react-upload-file/-/react-upload-file-2.0.0-beta.6.tgz#70f3990df101ea379deaae2b4fe6e0938b5417b9"
+  dependencies:
+    react "^15.4.1"
+
+react@^15.0.0, react@^15.4.1, react@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
   dependencies:

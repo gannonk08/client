@@ -27,8 +27,7 @@ class Signup extends Component {
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 		    'Accept': '*/*',
-		    'Content-Type': 'application/json',
-				'DNT': 0
+		    'Content-Type': 'application/json'
 		  },
 		  body: signupData
 		})
@@ -67,7 +66,7 @@ class Signup extends Component {
 					<input id="register-passwordConfirm" type="password" className="form-control" name="passwordConfirm"/>
 				</div>
 				<div className="buttons">
-					<div className="log-in-button btn btn-success" onClick={this.postSignup}>Register</div>
+					<div className="log-in-button btn btn-primary" onClick={this.postSignup}>Register</div>
 				</div>
 			</div>
 		)
