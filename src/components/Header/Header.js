@@ -17,7 +17,6 @@ class Header extends Component {
   }
 
 	handleClickOutside = evt => {
-    console.log(evt);
 		this.setState({ flipped: false });
   }
 
