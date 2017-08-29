@@ -9,7 +9,7 @@ class Imports extends Component {
 	        <div className="imports-form-container">
 	          <form>
 	            <div className="import-loader">
-	              <label for="file">Upload a CSV file</label>
+	              <label htmlFor="file">Upload a CSV file</label>
 	              <input name="file" type="file" />
 	              <button type="submit">Import File</button>
 	            </div>

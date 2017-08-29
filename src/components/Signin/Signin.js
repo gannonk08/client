@@ -24,8 +24,7 @@ class Signin extends Component {
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 		    'Accept': '*/*',
-		    'Content-Type': 'application/json',
-				'DNT': 0
+		    'Content-Type': 'application/json'
 		  },
 		  body: formData
 		})

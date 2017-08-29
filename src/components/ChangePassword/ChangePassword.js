@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import './ChangePassword.css';
 
+import { instanceOf } from 'prop-types';
+import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
+
 const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
 const PATH_SIGNOUT = '/signout';
 const PATH_CHANGEPASSWORD = '/password/change';
@@ -11,6 +14,7 @@ class ChangePassword extends Component {
     super(props);
     this.getLogout = this.getLogout.bind(this);
 		this.changePassword = this.changePassword.bind(this);
+		// console.log(document.cookie('bondladderpro_auth'));
   }
 
 	getLogout() {
@@ -22,8 +26,7 @@ class ChangePassword extends Component {
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 		    'Accept': '*/*',
-		    'Content-Type': 'application/json',
-				'DNT': 0
+		    'Content-Type': 'application/json'
 		  }
 		})
 		.then(response => response.json())
@@ -36,13 +39,14 @@ class ChangePassword extends Component {
   }
 
 	changePassword() {
-		let bondladderproAuth = process.env.BONDLADDERPRO_AUTH;
+		console.log('gettin cookies soon');
+		// let tokenBlp = document.cookie('bondladderpro_auth');
+
 		var changeData = JSON.stringify({
 			old: document.getElementById('current-password').value,
 			new: document.getElementById('new-password').value,
 			confirm: document.getElementById('confirm-new-password').value
 		})
-		console.log(changeData);
 		fetch(PATH_BASE + PATH_CHANGEPASSWORD, {
 			mode: 'cors',
 			credentials: 'include',
@@ -51,17 +55,20 @@ class ChangePassword extends Component {
 				'Access-Control-Allow-Origin': '*',
 		    'Accept': '*',
 		    'Content-Type': 'application/json',
-				'DNT': 0
+				'Cookie': 'tokenBlp'
 		  },
 			body: changeData
 		})
 		.then(res => {
-			console.log(res);
+			console.log('res', res);
 			if (res.status === "OK") {
 				return this.getLogout();
 			}
 		})
-		.catch(e => console.log(e));
+		.catch(e => {
+			console.log(e);
+			return this.getLogout();
+		});
   }
 
 	render() {
@@ -69,15 +76,15 @@ class ChangePassword extends Component {
 			<div id="changepass-form-container">
 				<form id="changepass-form">
 					<div className="row">
-						<label for="current-password">Current Password</label>
+						<label htmlFor="current-password">Current Password</label>
 						<input id="current-password" type="password" className="form-control" name="current-password"/>
 					</div>
 					<div className="row">
-						<label for="new-password">New Password</label>
+						<label htmlFor="new-password">New Password</label>
 						<input id="new-password" type="password" className="form-control" name="new-password"/>
 					</div>
 					<div className="row">
-						<label for="confirm-new-password">Confirm New Password</label>
+						<label htmlFor="confirm-new-password">Confirm New Password</label>
 						<input id="confirm-new-password" type="password" className="form-control" name="confirm-new-password"/>
 					</div>
 					<div className="row" id="change-button">

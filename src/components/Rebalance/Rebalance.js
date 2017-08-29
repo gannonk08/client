@@ -6,13 +6,13 @@ class Rebalance extends Component {
     return  (
       <div id="add-form-container">
         <div className="add-form">
-          <label for="cusip">CUSIP</label>
+          <label htmlFor="cusip">CUSIP</label>
           <input type="number" name="cusip"/>
 
-          <label for="quantity">Quantity</label>
+          <label htmlFor="quantity">Quantity</label>
           <input type="number" name="quantity"/>
 
-          <label for="price">Price</label>
+          <label htmlFor="price">Price</label>
           <input type="number" name="price"/>
 
           <button type="submit">Submit</button>
