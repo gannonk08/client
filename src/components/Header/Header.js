@@ -37,7 +37,7 @@ class Header extends Component {
 		return (
       <div>
         <header>
-          <Link to={"/"}>
+          <Link to={"/clients"}>
             <h1>BondLadderPro</h1>
           </Link>
 					<div id="nav-dropdown" className={this.props.showMenu} onClick={this.toggleHeaderMenu} onMouseEnter={this.mouseEnter}>

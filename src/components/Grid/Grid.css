@@ -1,0 +1,13 @@
+#grid-container {
+  padding: 10px;
+}
+
+div.public_fixedDataTableCell_cellContent a {
+  color: #333 !important;
+}
+
+div.public_fixedDataTableCell_cellContent a:hover {
+  color: #375a7f !important;
+  text-decoration: none;
+  cursor: pointer;
+}

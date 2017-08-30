@@ -1,5 +1,5 @@
 header {
-  background: linear-gradient(to right, #375a7f, #2e4b6a, #2e4b6a, #333, #333);
+  background: #375a7f;
   padding: 0.5rem;
   box-shadow: 0 1px 1px #999;
   width: 100vw;
@@ -46,4 +46,10 @@ div#nav-dropdown.true:hover {
 
 #up-arrow.false, #down-arrow.true {
   display: none;
+}
+
+@media (min-width: 769px) {
+  header {
+    background: linear-gradient(to right, #375a7f, #2e4b6a, #2e4b6a, #333, #333);
+  }
 }
