@@ -9,6 +9,10 @@ header {
   border-bottom: 3px solid #333;
 }
 
+header > a:hover {
+  text-decoration: none;
+}
+
 header h1 {
   font-size: 2rem;
   color: #eee;

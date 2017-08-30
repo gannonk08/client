@@ -12,7 +12,7 @@ class GridStore {
       avatar: faker.image.avatar(),
       city: faker.address.city(),
       email: faker.internet.email(),
-      firstName: faker.name.firstName(),
+      firstName: faker.name.firstName() + ' ' + faker.name.lastName(),
       lastName: faker.name.lastName(),
       street: faker.address.streetName(),
       zipCode: faker.address.zipCode(),
@@ -22,6 +22,8 @@ class GridStore {
       companyName: faker.company.companyName(),
       words: faker.lorem.words(),
       sentence: faker.lorem.sentence(),
+      percentage: Math.floor(Math.random() * 99) + ' %',
+      value: '$' + Math.floor(Math.random() * 100000)
     };
   }
 
