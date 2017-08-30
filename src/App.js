@@ -9,6 +9,7 @@ import {store} from './redux/userStore';
 import Authenticate from './components/Authenticate/Authenticate';
 import About from './components/About/About';
 import Clients from './components/Clients/Clients';
+import Grid from './components/Grid/Grid';
 import Footer from './components/Footer/Footer';
 
 class App extends Component {
@@ -20,6 +21,7 @@ class App extends Component {
             <Route exact path={"/"} component={Authenticate} />
             <Route path={"/about"} component={About} />
             <Route path={"/clients"} component={Clients} />
+            <Route path={"/test"} component={Grid} />
             <Footer />
           </div>
         </Router>

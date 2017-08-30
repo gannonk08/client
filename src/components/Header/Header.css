@@ -1,6 +1,6 @@
 header {
-  background: linear-gradient(to left, #375a7f, #2e4b6a);
-  padding: 0.75rem;
+  background: linear-gradient(to right, #375a7f, #2e4b6a, #2e4b6a, #333, #333);
+  padding: 0.5rem;
   box-shadow: 0 1px 1px #999;
   width: 100vw;
   display: flex;
@@ -14,7 +14,8 @@ header h1 {
   color: #eee;
   font-family: 'Fredericka the Great', cursive;
   margin-left: 0.25vw;
-  margin-top: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 div#nav-dropdown {

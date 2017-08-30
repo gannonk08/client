@@ -5,7 +5,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background-color: #375a7f;
+  background-color: #333;
+  border: 3px solid #eee;
+  box-shadow: 1px 1px 1px 1px #999;
 }
 
 #header-menu div {

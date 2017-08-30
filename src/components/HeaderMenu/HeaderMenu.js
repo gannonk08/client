@@ -48,12 +48,7 @@ class HeaderMenu extends Component {
           this.state.changeFormVisible
             ? <ChangePassword />
             : null
-        }
-				<div className={this.state.changeFormVisible}>
-					<div className="row" id="cancelChange">
-						<div className="btn btn-danger" onClick={this.toggleChangeForm}>Cancel</div>
-					</div>
-				</div>
+        }				
       </div>
 		)
 	}
