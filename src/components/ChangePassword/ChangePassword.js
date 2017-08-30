@@ -2,9 +2,6 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import './ChangePassword.css';
 
-import { instanceOf } from 'prop-types';
-import { CookiesProvider, withCookies, Cookies } from 'react-cookie';
-
 const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
 const PATH_SIGNOUT = '/signout';
 const PATH_CHANGEPASSWORD = '/password/change';
@@ -17,7 +14,6 @@ class ChangePassword extends Component {
   }
 
 	getLogout() {
-		let bondladderproAuth = process.env.BONDLADDERPRO_AUTH;
 		fetch(PATH_BASE + PATH_SIGNOUT, {
 			mode: 'cors',
 			credentials: 'include',

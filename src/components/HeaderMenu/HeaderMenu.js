@@ -17,7 +17,6 @@ class HeaderMenu extends Component {
   }
 
 	getLogout() {
-		let bondladderproAuth = process.env.BONDLADDERPRO_AUTH;
 		fetch(PATH_BASE + PATH_SIGNOUT, {
 			mode: 'cors',
 			credentials: 'include',

@@ -1,15 +1,22 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDataGrid from 'react-data-grid';
-import exampleWrapper from './exampleWrapper';
+// import exampleWrapper from './exampleWrapper';
 import './exampleWrapper.css';
 import './Clients.css';
 import Nav from '../Nav/Nav';
 import Header from '../Header/Header';
 
-// eslint-disable-next-line
-const Example = React.createClass({
-  getInitialState() {
-    this._columns = [
+class Clients extends Component {
+  constructor(props) {
+    super(props);
+    this.createRows = this.createRows.bind(this);
+    this.getRandomDate = this.getRandomDate.bind(this);
+    this.getRandomDescription = this.getRandomDescription.bind(this);
+    this.createRows = this.createRows.bind(this);
+    this.handleGridSort = this.handleGridSort.bind(this);
+    this.rowGetter = this.rowGetter.bind(this);
+
+    this.gridColumns = [
       {
         key: 'id',
         name: 'ID',
@@ -71,21 +78,19 @@ const Example = React.createClass({
         sortable: true
       }
     ];
-
     let originalRows = this.createRows(50);
     let rows = originalRows.slice(0);
-    // Store the original rows array, and make a copy that can be used for modifying eg.filtering, sorting
-    return { originalRows, rows };
-  },
+    this.state = { originalRows, rows };
+  }
 
   getRandomDate(start, end) {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toLocaleDateString();
-  },
+  }
 
   getRandomDescription(num) {
     const descrArray = ['TIC', 'IRA', 'IRA RO', 'SEP IRA', 'Gary & Cristie'];
     return descrArray[num];
-  },
+  }
 
   createRows() {
     let rows = [];
@@ -103,9 +108,8 @@ const Example = React.createClass({
         2022: '$ ' + Math.min(100000, Math.round(Math.random() * 110000))
       });
     }
-
     return rows;
-  },
+  }
 
   handleGridSort(sortColumn, sortDirection) {
     const comparer = (a, b) => {
@@ -115,15 +119,13 @@ const Example = React.createClass({
         return (a[sortColumn] < b[sortColumn]) ? 1 : -1;
       }
     };
-
     const rows = sortDirection === 'NONE' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);
-
     this.setState({ rows });
-  },
+  }
 
   rowGetter(i) {
     return this.state.rows[i];
-  },
+  }
 
   render() {
     return  (
@@ -135,18 +137,13 @@ const Example = React.createClass({
         <div id="grid-shell">
           <ReactDataGrid
             onGridSort={this.handleGridSort}
-            columns={this._columns}
+            columns={this.gridColumns}
             rowGetter={this.rowGetter}
             rowsCount={this.state.rows.length} />
         </div>
       </div>
     );
   }
-});
+}
 
-export default exampleWrapper({
-  WrappedComponent: Example,
-  exampleName: 'Sortable Columns Example',
-  examplePath: './scripts/example08-sortable-cols.js',
-  examplePlaygroundLink: 'https://jsfiddle.net/k7tfnw1n/8/'
-});
+export default Clients;
