@@ -37,6 +37,15 @@ class GridStore {
     return this._cache[index];
   }
 
+  filterObjectsPercentage(/*number*/ index, /*number*/ percentage, /*string*/ operator) /*?object*/ {
+    if (percentage < 0 || percentage > 100){
+      return undefined;
+    }
+    if (this._cache[index][percentage] > percentage) {
+      return this._cache[index];
+    }
+  }
+
   /**
   * Populates the entire cache with data.
   * Use with Caution! Behaves slowly for large sizes

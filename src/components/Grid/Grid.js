@@ -85,7 +85,8 @@ class Grid extends Component {
       adjustedDataList: this._dataList,
       colSortDirs: {},
       width: '0',
-      height: '0'
+      height: '0',
+      percentageFilterValue: 0
     }
 
     this._handleCollapseClick = this._handleCollapseClick.bind(this);
@@ -122,11 +123,17 @@ class Grid extends Component {
         if (words.toLowerCase().indexOf(filterBy) !== -1) {
           filteredIndexes.push(index);
         }
+      } else if (filteredColumn === 'percentage') {
+        var {percentage} = this._dataList.getObjectAt(index);
+        if (percentage.toLowerCase().indexOf(filterBy) !== -1) {
+          filteredIndexes.push(index);
+        }
       }
     }
-
+    let updatedPercentageValue = document.getElementById('filter-percentage').value;
     this.setState({
       adjustedDataList: new DataListWrapper(filteredIndexes, this._dataList),
+      percentageFilterValue: updatedPercentageValue
     });
   }
 
@@ -210,7 +217,7 @@ class Grid extends Component {
   }
 
   render() {
-    let {adjustedDataList, colSortDirs, collapsedRows, scrollToRow} = this.state;
+    let {percentageFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow} = this.state;
     let tableWidth = this.state.width - 10;
     let tableHeight = this.state.height * 0.781;
     return (
@@ -227,6 +234,18 @@ class Grid extends Component {
             />
             <input className="filter-grid" id="filter-notes" onChange={(e) => this._onFilterChange(e, 'words')} placeholder="Filter by Notes"
             />
+            <div id="filter-percentage-container">
+              <div>
+                <div id="greater-than">&#62;</div>
+                <div id="equal-to">=</div>
+                <div id="less-than">&#60;</div>
+              </div>
+              <div>
+                <input className="filter-grid" id="filter-percentage" onChange={(e) => this._onFilterChange(e, 'percentage')} type="range"
+                />
+                <div id="percentage-label">{percentageFilterValue}&nbsp;%</div>
+              </div>
+            </div>
           </div>
           <Table
             scrollToRow={scrollToRow}

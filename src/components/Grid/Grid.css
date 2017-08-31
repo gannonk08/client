@@ -36,3 +36,35 @@ input#filter-description {
 input#filter-notes {
   margin-left: 150px;
 }
+
+div#filter-percentage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-left: 150px;
+  font-size: 75%;
+}
+
+div#filter-percentage-container div {
+  display: flex;
+}
+
+div#filter-percentage-container div div {
+  cursor: pointer;
+}
+
+input#filter-percentage {
+  margin: 5px;
+}
+
+#equal-to {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+#percentage-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
