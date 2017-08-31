@@ -1,5 +1,11 @@
 #grid-container {
-  padding: 10px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+#grid-filters {
+  display: flex;
 }
 
 div.public_fixedDataTableCell_cellContent a {
@@ -10,4 +16,23 @@ div.public_fixedDataTableCell_cellContent a:hover {
   color: #375a7f !important;
   text-decoration: none;
   cursor: pointer;
+}
+
+input.filter-grid {
+  font-size: 80%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 150px;
+}
+
+input#filter-name {
+  margin-left: 40px;
+}
+
+input#filter-description {
+  margin-left: 55px;
+}
+
+input#filter-notes {
+  margin-left: 150px;
 }

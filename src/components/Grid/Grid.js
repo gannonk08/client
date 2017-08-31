@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Table, Column, ColumnGroup, Cell } from 'fixed-data-table-2';
 import GridStore from './GridStore';
-import { CollapseCell, TextCell } from './Cells';
+import { CollapseCell, ImageCell, TextCell } from './Cells';
 import {StyleSheet, css} from 'aphrodite';
 import 'fixed-data-table-2/dist/fixed-data-table.min.css';
 import './Grid.css';
@@ -82,7 +82,7 @@ class Grid extends Component {
     this.state = {
       scrollToRow: null,
       collapsedRows: new Set(),
-      sortedDataList: this._dataList,
+      adjustedDataList: this._dataList,
       colSortDirs: {},
       width: '0',
       height: '0'
@@ -92,7 +92,42 @@ class Grid extends Component {
     this._subRowHeightGetter = this._subRowHeightGetter.bind(this);
     this._rowExpandedGetter = this._rowExpandedGetter.bind(this);
     this._onSortChange = this._onSortChange.bind(this);
+    this._onFilterChange = this._onFilterChange.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  }
+
+  _onFilterChange(e, filteredColumn) {
+    if (!e.target.value) {
+      this.setState({
+        adjustedDataList: this._dataList,
+      });
+    }
+
+    var filterBy = e.target.value.toLowerCase();
+    var size = this._dataList.getSize();
+    var filteredIndexes = [];
+    for (var index = 0; index < size; index++) {
+      if (filteredColumn === 'firstName') {
+        var {firstName} = this._dataList.getObjectAt(index);
+        if (firstName.toLowerCase().indexOf(filterBy) !== -1) {
+          filteredIndexes.push(index);
+        }
+      } else if (filteredColumn === 'catchPhrase') {
+        var {catchPhrase} = this._dataList.getObjectAt(index);
+        if (catchPhrase.toLowerCase().indexOf(filterBy) !== -1) {
+          filteredIndexes.push(index);
+        }
+      } else if (filteredColumn === 'words') {
+        var {words} = this._dataList.getObjectAt(index);
+        if (words.toLowerCase().indexOf(filterBy) !== -1) {
+          filteredIndexes.push(index);
+        }
+      }
+    }
+
+    this.setState({
+      adjustedDataList: new DataListWrapper(filteredIndexes, this._dataList),
+    });
   }
 
   _onSortChange(columnKey, sortDir) {
@@ -115,7 +150,7 @@ class Grid extends Component {
     });
 
     this.setState({
-      sortedDataList: new DataListWrapper(sortIndexes, this._dataList),
+      adjustedDataList: new DataListWrapper(sortIndexes, this._dataList),
       colSortDirs: {
         [columnKey]: sortDir,
       },
@@ -175,8 +210,8 @@ class Grid extends Component {
   }
 
   render() {
-    let {sortedDataList, colSortDirs, collapsedRows, scrollToRow} = this.state;
-    let tableWidth = this.state.width - 20;
+    let {adjustedDataList, colSortDirs, collapsedRows, scrollToRow} = this.state;
+    let tableWidth = this.state.width - 10;
     let tableHeight = this.state.height * 0.781;
     return (
       <div>
@@ -185,14 +220,22 @@ class Grid extends Component {
         />
         <Nav />
         <div id="grid-container">
+          <div id="grid-filters">
+            <input className="filter-grid" id="filter-name" onChange={(e) => this._onFilterChange(e, 'firstName')} placeholder="Filter by Name"
+            />
+            <input className="filter-grid" id="filter-description" onChange={(e) => this._onFilterChange(e, 'catchPhrase')} placeholder="Filter by Description"
+            />
+            <input className="filter-grid" id="filter-notes" onChange={(e) => this._onFilterChange(e, 'words')} placeholder="Filter by Notes"
+            />
+          </div>
           <Table
             scrollToRow={scrollToRow}
             rowHeight={40}
-            rowsCount={sortedDataList.getSize()}
+            rowsCount={adjustedDataList.getSize()}
             subRowHeightGetter={this._subRowHeightGetter}
             rowExpanded={this._rowExpandedGetter}
-            groupHeaderHeight={50}
-            headerHeight={50}
+            groupHeaderHeight={30}
+            headerHeight={75}
             width={tableWidth}
             height={tableHeight}
             {...this.props}>
@@ -216,7 +259,7 @@ class Grid extends Component {
                     Name
                   </SortHeaderCell>
                 }
-                cell={<TextCell data={sortedDataList} />}
+                cell={<TextCell data={adjustedDataList} />}
                 fixed={true}
                 width={200}
                 flexGrow={1}
@@ -230,7 +273,7 @@ class Grid extends Component {
                     Description
                   </SortHeaderCell>
                 }
-                cell={<TextCell data={sortedDataList} />}
+                cell={<TextCell data={adjustedDataList} />}
                 width={300}
                 flexGrow={1}
               />
@@ -243,7 +286,7 @@ class Grid extends Component {
                     Notes
                   </SortHeaderCell>
                 }
-                cell={<TextCell data={sortedDataList} />}
+                cell={<TextCell data={adjustedDataList} />}
                 width={300}
                 flexGrow={1}
               />
@@ -259,7 +302,7 @@ class Grid extends Component {
                     % Out-of-Balance
                   </SortHeaderCell>
                 }
-                cell={<TextCell data={sortedDataList} />}
+                cell={<TextCell data={adjustedDataList} />}
                 width={200}
                 flexGrow={1}
               />
@@ -272,7 +315,7 @@ class Grid extends Component {
                     Market Value
                   </SortHeaderCell>
                 }
-                cell={<TextCell data={sortedDataList} />}
+                cell={<TextCell data={adjustedDataList} />}
                 width={200}
                 flexGrow={1}
               />
