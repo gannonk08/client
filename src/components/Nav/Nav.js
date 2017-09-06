@@ -10,13 +10,15 @@ class Nav extends Component {
     super(props);
     this.showRebalanceBanner = this.showRebalanceBanner.bind(this);
     this.showImports = this.showImports.bind(this);
-    this.hideAll = this.hideAll.bind(this);
+    this.handleClients = this.handleClients.bind(this);
+    this.handleHouseholds = this.handleHouseholds.bind(this);
     this.mouseEnter = this.mouseEnter.bind(this);
     this.mouseLeave = this.mouseLeave.bind(this);
     this.state = {
       rebalanceToolsVisible: false,
       importsVisible: false,
-      rebalanceImageSrc: 'rebalance.png'
+      rebalanceImageSrc: 'rebalance.png',
+      groupByHousehold: false
     };
   }
 
@@ -34,12 +36,29 @@ class Nav extends Component {
     this.setState({ importsVisible: !this.state.importsVisible });
   }
 
-  hideAll() {
+  handleClients() {
     if (this.state.rebalanceToolsVisible) {
       this.setState({ rebalanceToolsVisible: false });
     }
     if (this.state.importsVisible) {
       this.setState({ importsVisible: false });
+    }
+    if (this.state.groupByHousehold) {
+      this.setState( { groupByHousehold: !this.state.groupByHousehold })
+      this.props.history.push('/clients');
+    }
+  }
+
+  handleHouseholds() {
+    if (this.state.rebalanceToolsVisible) {
+      this.setState({ rebalanceToolsVisible: false });
+    }
+    if (this.state.importsVisible) {
+      this.setState({ importsVisible: false });
+    }
+    if (!this.state.groupByHousehold) {
+      this.setState( { groupByHousehold: !this.state.groupByHousehold })
+      this.props.history.push('/test');
     }
   }
 
@@ -56,9 +75,14 @@ class Nav extends Component {
       <div>
         <nav>
           <div className="nav-left">
-            <div className="clients-label">
-              <Tooltip title='Clients' position='top'>
-                <img className="nav-image" onClick={this.hideAll} src={require("./images/clients.png")} alt="clients" />
+            <div id="clientsNav" className={!this.state.groupByHousehold}>
+              <Tooltip title='Accounts' position='top'>
+                <img className="nav-image" onClick={this.handleClients} src={require("./images/clients.png")} alt="clients" />
+              </Tooltip>
+            </div>
+            <div id="householdsNav" className={this.state.groupByHousehold}>
+              <Tooltip title='Group by Households' fixed='false' position='top'>
+                <img className="nav-image" onClick={this.handleHouseholds} src={require("./images/household.png")} alt="clients" />
               </Tooltip>
             </div>
             <div id="importsNav" className={this.state.importsVisible}>

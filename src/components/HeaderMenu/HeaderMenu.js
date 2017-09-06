@@ -48,7 +48,7 @@ class HeaderMenu extends Component {
           this.state.changeFormVisible
             ? <ChangePassword />
             : null
-        }				
+        }
       </div>
 		)
 	}

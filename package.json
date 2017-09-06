@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "aphrodite": "^1.2.3",
+    "aws-sdk": "^2.109.0",
     "bootstrap": "^3.3.7",
     "classnames": "^2.2.5",
     "create-react-class": "^15.6.0",
