@@ -17,8 +17,7 @@ class Nav extends Component {
     this.state = {
       rebalanceToolsVisible: false,
       importsVisible: false,
-      rebalanceImageSrc: 'rebalance.png',
-      groupByHousehold: false
+      rebalanceImageSrc: 'rebalance.png'
     };
   }
 
@@ -43,10 +42,7 @@ class Nav extends Component {
     if (this.state.importsVisible) {
       this.setState({ importsVisible: false });
     }
-    if (this.state.groupByHousehold) {
-      this.setState( { groupByHousehold: !this.state.groupByHousehold })
-      this.props.history.push('/clients');
-    }
+    this.props.history.push('/accounts');
   }
 
   handleHouseholds() {
@@ -56,10 +52,7 @@ class Nav extends Component {
     if (this.state.importsVisible) {
       this.setState({ importsVisible: false });
     }
-    if (!this.state.groupByHousehold) {
-      this.setState( { groupByHousehold: !this.state.groupByHousehold })
-      this.props.history.push('/test');
-    }
+    this.props.history.push('/clients');
   }
 
   mouseEnter() {
@@ -71,16 +64,17 @@ class Nav extends Component {
   }
 
 	render() {
+    let { groupByHousehold } = this.props;
 		return (
       <div>
         <nav>
           <div className="nav-left">
-            <div id="clientsNav" className={!this.state.groupByHousehold}>
+            <div id="clientsNav" className={!groupByHousehold}>
               <Tooltip title='Accounts' position='top'>
                 <img className="nav-image" onClick={this.handleClients} src={require("./images/clients.png")} alt="clients" />
               </Tooltip>
             </div>
-            <div id="householdsNav" className={this.state.groupByHousehold}>
+            <div id="householdsNav" className={groupByHousehold}>
               <Tooltip title='Group by Households' fixed='false' position='top'>
                 <img className="nav-image" onClick={this.handleHouseholds} src={require("./images/household.png")} alt="clients" />
               </Tooltip>

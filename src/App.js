@@ -21,7 +21,7 @@ class App extends Component {
             <Route exact path={"/"} component={Authenticate} />
             <Route path={"/about"} component={About} />
             <Route path={"/clients"} component={Grid} />
-            <Route path={"/test"} component={ClientsGrid} />
+            <Route path={"/accounts"} component={ClientsGrid} />
             <Footer />
           </div>
         </Router>
