@@ -6,6 +6,18 @@ import 'dotenv';
 
 // const PATH_S3 = "https://d3iq86bw2i3xr0.cloudfront.net/csv/sampleCSV.csv";
 
+AWS.config.region = 'us-west-2';
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: 'us-west-2:be1111c5-5177-4110-bd1a-53626e8d8533',
+});
+AWS.config.credentials.get(() => {
+    const accessKeyId = AWS.config.credentials.accessKeyId;
+    const secretAccessKey = AWS.config.credentials.secretAccessKey;
+    const sessionToken = AWS.config.credentials.sessionToken;
+});
+const identityId = AWS.config.credentials.identityId;
+const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+
 class Imports extends Component {
 	constructor(props) {
 		super(props);
@@ -14,24 +26,25 @@ class Imports extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-
-		let myConfig = new AWS.Config();
-		myConfig.update({ accessKeyId: 'AKIAIWN5F5MZGYFC5CZA', secretAccessKey: '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', region: 'us-west-2' });
-		const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+		let fileAcl = 'public-read-write';
+		let bucketName = 'bondladderpro';
 
 		let fileInput = document.getElementById('fileInput');
-		let fileBody = fileInput.files[0];
-		console.log('file on submit: ', fileBody);
+		let file = fileInput.files[0];
+		let fileName = file.name;
+
+		let filePath = 'csv/';
+  	let fileKey = filePath + fileName;
+		console.log('file on submit: ', file);
 
 		const params = {
-		  ACL: 'public-read-write',
-		  Body: fileBody,
-		  Bucket: 'bondladderpro',
-		  Key: 'build/csv/sampleCSV.csv'
+		  ACL: fileAcl,
+		  Body: file,
+		  Bucket: bucketName,
+		  Key: fileKey
 		 };
 		return s3.upload(params, (err, data) => {
 			console.log("data: ", data);
-			console.log("err: ", err);
 			if (err) {
 				console.log(err, err.stack)
 			} else {
@@ -43,7 +56,6 @@ class Imports extends Component {
 		      credentials: 'include',
 				  method: 'GET',
 					headers: {
-						'Access-Control-Allow-Origin': '*',
 				    'Accept': '*/*',
 				    'Content-Type': 'application/json'
 				  }
