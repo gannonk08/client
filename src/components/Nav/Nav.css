@@ -26,7 +26,6 @@ nav {
 }
 
 div.nav-left {
-  margin-left: 0.5px;
   margin-top: 1.5px;
   margin-bottom: 2px;
 }
@@ -38,15 +37,15 @@ div.nav-right {
 div.nav-left, div.nav-right {
   display: flex;
   align-items: center;
+  margin-left: 0.75vw;
 }
 
 img.nav-image {
   height: 25px;
   width: 25px;
-
 }
 
-#importsNav, #rebalanceNav, #exportCsv {
+#importsNav, #rebalanceNav, #exportCsv, .inactive-tab {
   height: 35px;
   width: 35px;
   display: flex;
@@ -55,22 +54,23 @@ img.nav-image {
   border-radius: 10px;
 }
 
-#importsNav:hover, #rebalanceNav:hover, #exportCsv:hover, .clients-label {
+.nav-left > div:hover {
   transform: scale(1.12);
 }
 
-div#importsNav.true, div#rebalanceNav.true {
+div#importsNav.true, div#rebalanceNav.true, div.inactive-tab.true {
   height: 35px;
   width: 35px;
   margin-left: 1vw;
-  background-color: rgba(66, 141, 221, 0.61);
+  background-color: gray;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
 }
 
-div#importsNav.false, div#rebalanceNav.false, div#exportCsv.false {
+div#importsNav.false, div#rebalanceNav.false, div#exportCsv.false,
+div#clientsNav.false, div#householdsNav.false {
   margin-left: 1vw;
 }
 
@@ -78,18 +78,17 @@ img.nav-image:hover {
   cursor: pointer;
 }
 
-div.date-today {
-  margin-left: 30px;
-}
-
 a {
   color: #eee;
 }
 
-div.clients-label {
+div#clientsNav {
+  margin-left: 0.25vw;
+}
+
+div#clientsNav.true {
   padding: 10px;
   margin-top: 2px;
-  margin-left: 5px;
   display: flex;
   justify-content: center;
   border: 1px solid #375a7f;
@@ -100,8 +99,19 @@ div.clients-label {
   background-color: #eee;
 }
 
-div.clients-label:hover {
-  cursor: pointer;
+div#householdsNav.true {
+  padding: 10px;
+  margin-top: 2px;
+  margin-left: 10px;
+  margin-right: -7.5px;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #375a7f;
+  border-bottom: none;
+  border-radius: 3px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  background-color: #eee;
 }
 
 a.clients-link {
