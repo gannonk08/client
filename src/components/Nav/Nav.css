@@ -97,6 +97,7 @@ div#clientsNav.true {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   background-color: #eee;
+  transform: scale(1.12);
 }
 
 div#householdsNav.true {
@@ -112,6 +113,7 @@ div#householdsNav.true {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   background-color: #eee;
+  transform: scale(1.12);
 }
 
 a.clients-link {

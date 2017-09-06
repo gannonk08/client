@@ -2,18 +2,15 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import AWS from 'aws-sdk';
 import './Imports.css';
-import 'dotenv';
-
-// const PATH_S3 = "https://d3iq86bw2i3xr0.cloudfront.net/csv/sampleCSV.csv";
 
 AWS.config.region = 'us-west-2';
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: '***REMOVED***',
+  IdentityPoolId: '***REMOVED***',
 });
 AWS.config.credentials.get(() => {
-    const accessKeyId = AWS.config.credentials.accessKeyId;
-    const secretAccessKey = AWS.config.credentials.secretAccessKey;
-    const sessionToken = AWS.config.credentials.sessionToken;
+  const accessKeyId = AWS.config.credentials.accessKeyId;
+  const secretAccessKey = AWS.config.credentials.secretAccessKey;
+  const sessionToken = AWS.config.credentials.sessionToken;
 });
 const identityId = AWS.config.credentials.identityId;
 const s3 = new AWS.S3({apiVersion: '2006-03-01'});
@@ -28,14 +25,11 @@ class Imports extends Component {
     e.preventDefault();
 		let fileAcl = 'public-read-write';
 		let bucketName = 'bondladderpro';
-
 		let fileInput = document.getElementById('fileInput');
 		let file = fileInput.files[0];
 		let fileName = file.name;
-
 		let filePath = 'csv/';
   	let fileKey = filePath + fileName;
-		console.log('file on submit: ', file);
 
 		const params = {
 		  ACL: fileAcl,
@@ -44,7 +38,6 @@ class Imports extends Component {
 		  Key: fileKey
 		 };
 		return s3.upload(params, (err, data) => {
-			console.log("data: ", data);
 			if (err) {
 				console.log(err, err.stack)
 			} else {

@@ -183,7 +183,7 @@ class Grid extends Component {
           showMenu={true}
         />
         <Nav
-          groupByHousehold={true}
+          groupByHousehold={false}
         />
         <div id="grid-container">
           <div id="grid-filters">
