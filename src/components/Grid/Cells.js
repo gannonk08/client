@@ -1,4 +1,3 @@
-const ExampleImage = require('./ExampleImage');
 const { Cell } = require('fixed-data-table-2');
 const React = require('react');
 const ReactTooltip = require('react-tooltip');
@@ -49,19 +48,6 @@ class DateCell extends React.PureComponent {
   }
 };
 module.exports.DateCell = DateCell;
-
-class ImageCell extends React.PureComponent {
-  render() {
-    // eslint-disable-next-line
-    const {data, rowIndex, columnKey, ...props} = this.props;
-    return (
-      <ExampleImage
-        src={data.getObjectAt(rowIndex)[columnKey]}
-      />
-    );
-  }
-};
-module.exports.ImageCell = ImageCell;
 
 class LinkCell extends React.PureComponent {
   render() {
