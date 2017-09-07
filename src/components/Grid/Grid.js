@@ -8,6 +8,7 @@ import './Grid.css';
 
 import Nav from '../Nav/Nav';
 import Header from '../Header/Header';
+import ClientsGrid from '../ClientsGrid/ClientsGrid';
 
 const SortTypes = {
   ASC: 'ASC',
@@ -210,7 +211,9 @@ class Grid extends Component {
     return (
       <div style={style}>
         <div className={css(styles.expandStyles)}>
-            expanded content
+          <ClientsGrid
+            onlyGrid={true}
+          />
         </div>
       </div>
     );
@@ -354,9 +357,8 @@ const styles = StyleSheet.create({
     'box-sizing': 'border-box',
     border: '1px solid #d3d3d3',
     padding: '20px',
-    overflow: 'hidden',
-    width: '100%',
-    height: '100%'
+    overflow: 'scroll',
+    width: '100%'
   }
 });
 
