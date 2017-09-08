@@ -2,6 +2,19 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import AWS from 'aws-sdk';
 import './Imports.css';
+import '.dotenv';
+
+AWS.config.region = 'us-west-2';
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  IdentityPoolId: process.env.POOL_ID,
+});
+AWS.config.credentials.get(() => {
+  const accessKeyId = AWS.config.credentials.accessKeyId;
+  const secretAccessKey = AWS.config.credentials.secretAccessKey;
+  const sessionToken = AWS.config.credentials.sessionToken;
+});
+const identityId = AWS.config.credentials.identityId;
+const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 AWS.config.region = process.env.REACT_APP_REGION;
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -50,14 +63,13 @@ class Imports extends Component {
         process.env.NODE_ENV === 'production'
         ? PATH_BASE = process.env.REACT_APP_API_PROD
         : PATH_BASE = process.env.REACT_APP_API_DEV;
+
 		    const PATH_CLIENTS = '/clients/import?fileName=sampleCSV.csv';
 		    fetch(PATH_BASE + PATH_CLIENTS, {
 					mode: 'cors',
 		      credentials: 'include',
 				  method: 'GET',
-					headers: {
-				    'Accept': 'application/json',
-				  }
+					headers: { 'Accept': 'application/json' }
 				})
 				.then(res => {
 					if (res.ok === true) {
@@ -67,9 +79,7 @@ class Imports extends Component {
     					mode: 'cors',
     		      credentials: 'include',
     				  method: 'GET',
-    					headers: {
-    				    'Accept': 'application/json'
-    				  }
+    					headers: { 'Accept': 'application/json' }
     				})
             .then (res => res.json())
             .then(res => {
