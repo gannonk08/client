@@ -1,30 +1,13 @@
-var faker = require('faker');
+const PATH_GET_IMPORTS = '/clients/dumby';
+let PATH_BASE = '';
+process.env.NODE_ENV === 'production'
+? PATH_BASE = process.env.REACT_APP_API_PROD
+: PATH_BASE = process.env.REACT_APP_API_DEV;
 
 class GridStore {
-  constructor(/*number*/ size){
-    this.size = size || 2000;
+  constructor(listSize) {
+    this.size = listSize || 1000;
     this._cache = [];
-  }
-
-  createFakeRowObjectData(/*number*/ index) /*object*/ {
-    return {
-      id: index,
-      avatar: faker.image.avatar(),
-      city: faker.address.city(),
-      email: faker.internet.email(),
-      firstName: faker.name.firstName() + ' ' + faker.name.lastName(),
-      lastName: faker.name.lastName(),
-      street: faker.address.streetName(),
-      zipCode: faker.address.zipCode(),
-      date: faker.date.past(),
-      bs: faker.company.bs(),
-      catchPhrase: faker.company.catchPhrase(),
-      companyName: faker.company.companyName(),
-      words: faker.lorem.words(),
-      sentence: faker.lorem.sentence(),
-      percentage: Math.floor(Math.random() * 99) + ' %',
-      value: '$' + Math.floor(Math.random() * 100000)
-    };
   }
 
   getObjectAt(/*number*/ index) /*?object*/ {
@@ -32,7 +15,7 @@ class GridStore {
       return undefined;
     }
     if (this._cache[index] === undefined) {
-      this._cache[index] = this.createFakeRowObjectData(index);
+      return undefined;
     }
     return this._cache[index];
   }
@@ -46,18 +29,29 @@ class GridStore {
     }
   }
 
-  /**
-  * Populates the entire cache with data.
-  * Use with Caution! Behaves slowly for large sizes
-  * ex. 100,000 rows
-  */
   getAll() {
     if (this._cache.length < this.size) {
-      for (var i = 0; i < this.size; i++) {
-        this.getObjectAt(i);
-      }
+      fetch(PATH_BASE + PATH_GET_IMPORTS, {
+        mode: 'cors',
+        credentials: 'include',
+        method: 'GET',
+        headers: { 'Accept': 'application/json' }
+      })
+      .then (res => res.json())
+      .then(res => {
+        if (res.status === "OK") {
+          console.log("dumby data: ", res.records);
+          let dataArray = res.records;
+          this.size = dataArray.length;
+          this._cache = dataArray;
+          for (var i = 0; i < this.size; i++) {
+            this.getObjectAt(i);
+          }
+          return this._cache.slice();
+        }
+      })
+      .catch(e => console.log(e));
     }
-    return this._cache.slice();
   }
 
   getSize() {

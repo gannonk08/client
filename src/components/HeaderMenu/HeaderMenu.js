@@ -3,7 +3,11 @@ import {withRouter} from 'react-router-dom';
 import './HeaderMenu.css';
 import ChangePassword from '../ChangePassword/ChangePassword';
 
-const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
+let PATH_BASE = '';
+process.env.NODE_ENV === 'production'
+? PATH_BASE = process.env.REACT_APP_API_PROD
+: PATH_BASE = process.env.REACT_APP_API_DEV;
+
 const PATH_SIGNOUT = '/signout';
 
 class HeaderMenu extends Component {

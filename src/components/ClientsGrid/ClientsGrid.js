@@ -69,8 +69,7 @@ class DataListWrapper {
 class Grid extends Component {
   constructor(props) {
     super(props);
-
-    this._dataList = new ClientsGridStore(2000);
+    this._dataList = new ClientsGridStore(1000);
 
     this._defaultSortIndexes = [];
     let size = this._dataList.getSize();
@@ -160,6 +159,30 @@ class Grid extends Component {
     });
   }
 
+  componentWillMount() {
+    const PATH_GET_IMPORTS = '/clients/dumby';
+    let PATH_BASE = '';
+    process.env.NODE_ENV === 'production'
+    ? PATH_BASE = process.env.REACT_APP_API_PROD
+    : PATH_BASE = process.env.REACT_APP_API_DEV;
+
+    fetch(PATH_BASE + PATH_GET_IMPORTS, {
+      mode: 'cors',
+      credentials: 'include',
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    })
+    .then (res => res.json())
+    .then(res => {
+      if (res.status === "OK") {
+        console.log("dumby data: ", res.records);
+        let dataArray = res.records;
+        this._rowCount = dataArray.length;
+      }
+    })
+    .catch(e => console.log(e));
+  }
+
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
@@ -220,7 +243,7 @@ class Grid extends Component {
               flexGrow={0}
             />
             <Column
-              columnKey="firstName"
+              columnKey="portfolioDescription"
               header={
                 <SortHeaderCell
                   onSortChange={this._onSortChange}
@@ -234,7 +257,7 @@ class Grid extends Component {
               flexGrow={1}
             />
             <Column
-              columnKey="catchPhrase"
+              columnKey="underlyingPortfolioAccountNumber"
               header={
                 <SortHeaderCell
                   onSortChange={this._onSortChange}
@@ -247,7 +270,7 @@ class Grid extends Component {
               flexGrow={1}
             />
             <Column
-              columnKey="words"
+              columnKey="symbolCUSIP"
               header={
                 <SortHeaderCell
                   onSortChange={this._onSortChange}
@@ -260,7 +283,7 @@ class Grid extends Component {
               flexGrow={1}
             />
             <Column
-              columnKey="value"
+              columnKey="currentPrice"
               header={
                 <SortHeaderCell
                   onSortChange={this._onSortChange}
@@ -273,7 +296,7 @@ class Grid extends Component {
               flexGrow={1}
             />
             <Column
-              columnKey="percentage"
+              columnKey="maturityDate"
               header={
                 <SortHeaderCell
                   onSortChange={this._onSortChange}
@@ -286,7 +309,7 @@ class Grid extends Component {
               flexGrow={1}
             />
             <Column
-              columnKey="percentage"
+              columnKey="quantity"
               header={
                 <SortHeaderCell
                   onSortChange={this._onSortChange}

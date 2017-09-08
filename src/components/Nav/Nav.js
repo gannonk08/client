@@ -75,7 +75,7 @@ class Nav extends Component {
               </Tooltip>
             </div>
             <div id="householdsNav" className={groupByHousehold}>
-              <Tooltip title='Group by Households' fixed='false' position='top'>
+              <Tooltip title='Group by Households' position='top'>
                 <img className="nav-image" onClick={this.handleHouseholds} src={require("./images/household.png")} alt="clients" />
               </Tooltip>
             </div>

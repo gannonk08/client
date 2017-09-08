@@ -2,7 +2,11 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {connector} from '../../redux/userStore';
 
-const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
+let PATH_BASE = '';
+process.env.NODE_ENV === 'production'
+? PATH_BASE = process.env.REACT_APP_API_PROD
+: PATH_BASE = process.env.REACT_APP_API_DEV;
+
 const PATH_SIGNIN = '/signin';
 
 class Signin extends Component {

@@ -2,17 +2,20 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import AWS from 'aws-sdk';
 import './Imports.css';
-import '.dotenv';
 
-AWS.config.region = 'us-west-2';
+AWS.config.region = process.env.REACT_APP_REGION;
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  IdentityPoolId: process.env.POOL_ID,
+  IdentityPoolId: process.env.REACT_APP_POOL_ID,
 });
 AWS.config.credentials.get(() => {
+  // eslint-disable-next-line
   const accessKeyId = AWS.config.credentials.accessKeyId;
+  // eslint-disable-next-line
   const secretAccessKey = AWS.config.credentials.secretAccessKey;
+  // eslint-disable-next-line
   const sessionToken = AWS.config.credentials.sessionToken;
 });
+// eslint-disable-next-line
 const identityId = AWS.config.credentials.identityId;
 const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
@@ -24,8 +27,8 @@ class Imports extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-		let fileAcl = 'public-read-write';
-		let bucketName = 'bondladderpro';
+		let fileAcl = process.env.REACT_APP_ACL;
+		let bucketName = process.env.REACT_APP_BUCKET_NAME;
 		let fileInput = document.getElementById('fileInput');
 		let file = fileInput.files[0];
 		let fileName = file.name;
@@ -43,22 +46,39 @@ class Imports extends Component {
 				console.log(err, err.stack)
 			} else {
 				console.log("DATA: ", data);
-				const PATH_BASE = "https://bondladderpro-v1.herokuapp.com";
+        let PATH_BASE = '';
+        process.env.NODE_ENV === 'production'
+        ? PATH_BASE = process.env.REACT_APP_API_PROD
+        : PATH_BASE = process.env.REACT_APP_API_DEV;
 		    const PATH_CLIENTS = '/clients/import?fileName=sampleCSV.csv';
 		    fetch(PATH_BASE + PATH_CLIENTS, {
 					mode: 'cors',
 		      credentials: 'include',
 				  method: 'GET',
 					headers: {
-				    'Accept': '*/*',
-				    'Content-Type': 'application/json'
+				    'Accept': 'application/json',
 				  }
 				})
 				.then(res => {
-					console.log("un-parsed response: ", res);
 					if (res.ok === true) {
 						console.log("res.ok === true");
-						this.props.history.push('/clients');
+            const PATH_GET_IMPORTS = '/clients/dumby';
+            fetch(PATH_BASE + PATH_GET_IMPORTS, {
+    					mode: 'cors',
+    		      credentials: 'include',
+    				  method: 'GET',
+    					headers: {
+    				    'Accept': 'application/json'
+    				  }
+    				})
+            .then (res => res.json())
+            .then(res => {
+              if (res.status === "OK") {
+                console.log("dumby data: ", res.records);
+                this.props.history.push('/clients');
+              }
+            })
+            .catch(e => console.log(e));
 					}
 				})
 				.catch(e => console.log(e));
