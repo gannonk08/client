@@ -4,20 +4,47 @@ process.env.NODE_ENV === 'production'
 ? PATH_BASE = process.env.REACT_APP_API_PROD
 : PATH_BASE = process.env.REACT_APP_API_DEV;
 
-class GridStore {
-  constructor(listSize) {
-    this.size = listSize || 1000;
-    this._cache = [];
+class ClientsGridStore {
+  constructor() {
+    this.size = 8;
+    fetch(PATH_BASE + PATH_GET_IMPORTS, {
+      mode: 'cors',
+      credentials: 'include',
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    })
+    .then (res => res.json())
+    .then(res => {
+      if (res.status === "OK") {
+        console.log("dumby data in store constructor: ", res.records);
+        this.size = res.records.length;
+        this._cache = res.records;
+        var shifted = this._cache.shift();
+      }
+    })
+    .catch(e => console.log(e));
+  }
+
+  getRowData(/*number*/ index) /*object*/ {
+    console.log("getRowData was hit");
+    console.log("getRowData index", index);
+    let rowData = this._cache[index];
+    return rowData;
   }
 
   getObjectAt(/*number*/ index) /*?object*/ {
-    if (index < 0 || index > this.size){
-      return undefined;
+    console.log('getObjectAt index: ', index);
+    if (index >= 0) {
+      if (index < 0 || index > this.size){
+        return undefined;
+      }
+      if (this._cache[index] === undefined) {
+        this._cache[index] = this.getRowData(index);
+      }
+      return this._cache[index];
+    } else {
+      console.log("index undefined in clientsGridStore");
     }
-    if (this._cache[index] === undefined) {
-      return undefined;
-    }
-    return this._cache[index];
   }
 
   filterObjectsPercentage(/*number*/ index, /*number*/ percentage, /*string*/ operator) /*?object*/ {
@@ -30,33 +57,19 @@ class GridStore {
   }
 
   getAll() {
+    console.log("getAll was hit");
     if (this._cache.length < this.size) {
-      fetch(PATH_BASE + PATH_GET_IMPORTS, {
-        mode: 'cors',
-        credentials: 'include',
-        method: 'GET',
-        headers: { 'Accept': 'application/json' }
-      })
-      .then (res => res.json())
-      .then(res => {
-        if (res.status === "OK") {
-          console.log("dumby data: ", res.records);
-          let dataArray = res.records;
-          this.size = dataArray.length;
-          this._cache = dataArray;
-          for (var i = 0; i < this.size; i++) {
-            this.getObjectAt(i);
-          }
-          return this._cache.slice();
-        }
-      })
-      .catch(e => console.log(e));
+      for (var i = 0; i < this.size; i++) {
+        this.getObjectAt(i);
+      }
     }
+    return this._cache.slice();
   }
 
   getSize() {
+    console.log('getSize was hit');
     return this.size;
   }
 }
 
-module.exports = GridStore;
+module.exports = ClientsGridStore;

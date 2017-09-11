@@ -2,19 +2,6 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import AWS from 'aws-sdk';
 import './Imports.css';
-import '.dotenv';
-
-AWS.config.region = 'us-west-2';
-AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  IdentityPoolId: process.env.POOL_ID,
-});
-AWS.config.credentials.get(() => {
-  const accessKeyId = AWS.config.credentials.accessKeyId;
-  const secretAccessKey = AWS.config.credentials.secretAccessKey;
-  const sessionToken = AWS.config.credentials.sessionToken;
-});
-const identityId = AWS.config.credentials.identityId;
-const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 AWS.config.region = process.env.REACT_APP_REGION;
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({

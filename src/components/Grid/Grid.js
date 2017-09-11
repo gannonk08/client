@@ -80,6 +80,8 @@ class Grid extends Component {
       this._defaultSortIndexes.push(index);
     }
 
+    console.log("data list in main grid constructor: ", this._dataList);
+
     this.state = {
       scrollToRow: null,
       collapsedRows: new Set(),

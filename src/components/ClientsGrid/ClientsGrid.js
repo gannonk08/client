@@ -69,13 +69,16 @@ class DataListWrapper {
 class Grid extends Component {
   constructor(props) {
     super(props);
-    this._dataList = new ClientsGridStore(1000);
 
     this._defaultSortIndexes = [];
-    let size = this._dataList.getSize();
+    this._dataList = new ClientsGridStore();
+    let size = this._dataList.size;
     for (var index = 0; index < size; index++) {
       this._defaultSortIndexes.push(index);
     }
+
+    console.log("data list in CLIENTS grid constructor: ", this._dataList);
+    console.log("datalist.getSize(): ", size);
 
     this.state = {
       scrollToRow: null,
@@ -83,53 +86,11 @@ class Grid extends Component {
       adjustedDataList: this._dataList,
       colSortDirs: {},
       width: '0',
-      height: '0',
-      percentageFilterValue: 0
+      height: '0'
     }
 
     this._onSortChange = this._onSortChange.bind(this);
-    this._onFilterChange = this._onFilterChange.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-  }
-
-  _onFilterChange(e, filteredColumn) {
-    if (!e.target.value) {
-      this.setState({
-        adjustedDataList: this._dataList,
-      });
-    }
-
-    var filterBy = e.target.value.toLowerCase();
-    var size = this._dataList.getSize();
-    var filteredIndexes = [];
-    for (var index = 0; index < size; index++) {
-      if (filteredColumn === 'firstName') {
-        var {firstName} = this._dataList.getObjectAt(index);
-        if (firstName.toLowerCase().indexOf(filterBy) !== -1) {
-          filteredIndexes.push(index);
-        }
-      } else if (filteredColumn === 'catchPhrase') {
-        var {catchPhrase} = this._dataList.getObjectAt(index);
-        if (catchPhrase.toLowerCase().indexOf(filterBy) !== -1) {
-          filteredIndexes.push(index);
-        }
-      } else if (filteredColumn === 'words') {
-        var {words} = this._dataList.getObjectAt(index);
-        if (words.toLowerCase().indexOf(filterBy) !== -1) {
-          filteredIndexes.push(index);
-        }
-      } else if (filteredColumn === 'percentage') {
-        var {percentage} = this._dataList.getObjectAt(index);
-        if (percentage.toLowerCase().indexOf(filterBy) !== -1) {
-          filteredIndexes.push(index);
-        }
-      }
-    }
-    let updatedPercentageValue = document.getElementById('percentage-filter').value;
-    this.setState({
-      adjustedDataList: new DataListWrapper(filteredIndexes, this._dataList),
-      percentageFilterValue: updatedPercentageValue
-    });
   }
 
   _onSortChange(columnKey, sortDir) {
@@ -159,30 +120,6 @@ class Grid extends Component {
     });
   }
 
-  componentWillMount() {
-    const PATH_GET_IMPORTS = '/clients/dumby';
-    let PATH_BASE = '';
-    process.env.NODE_ENV === 'production'
-    ? PATH_BASE = process.env.REACT_APP_API_PROD
-    : PATH_BASE = process.env.REACT_APP_API_DEV;
-
-    fetch(PATH_BASE + PATH_GET_IMPORTS, {
-      mode: 'cors',
-      credentials: 'include',
-      method: 'GET',
-      headers: { 'Accept': 'application/json' }
-    })
-    .then (res => res.json())
-    .then(res => {
-      if (res.status === "OK") {
-        console.log("dumby data: ", res.records);
-        let dataArray = res.records;
-        this._rowCount = dataArray.length;
-      }
-    })
-    .catch(e => console.log(e));
-  }
-
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
@@ -197,9 +134,10 @@ class Grid extends Component {
   }
 
   render() {
-    let {percentageFilterValue, adjustedDataList, colSortDirs} = this.state;
+    let { adjustedDataList, colSortDirs } = this.state;
     let { onlyGrid } = this.props;
     let tableWidth = this.state.width - 10;
+    let rowWidth = (tableWidth / 6) - 40;
     let tableHeight = this.state.height * 0.781;
     return (
       <div>
@@ -209,31 +147,11 @@ class Grid extends Component {
             : null
         }
         <div id="grid-container">
-          <div id="grid-filters">
-            <input className="grid-filter" id="name-filter" onChange={(e) => this._onFilterChange(e, 'firstName')} placeholder="Filter by Name"
-            />
-            <input className="grid-filter" id="description-filter" onChange={(e) => this._onFilterChange(e, 'catchPhrase')} placeholder="Filter by Description"
-            />
-            <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'words')} placeholder="Filter by Notes"
-            />
-            <div id="percentage-filter-container">
-              <div>
-                <div id="greater-than">&#62;</div>
-                <div id="equal-to">=</div>
-                <div id="less-than">&#60;</div>
-              </div>
-              <div>
-                <input className="grid-filter" id="percentage-filter" onChange={(e) => this._onFilterChange(e, 'percentage')} type="range"
-                />
-                <div id="percentage-label">{percentageFilterValue}&nbsp;%</div>
-              </div>
-            </div>
-          </div>
           <Table
             rowHeight={40}
-            rowsCount={adjustedDataList.getSize()}
+            rowsCount={adjustedDataList.size}
             groupHeaderHeight={30}
-            headerHeight={75}
+            headerHeight={60}
             width={tableWidth}
             height={tableHeight}
             {...this.props}>
@@ -247,13 +165,13 @@ class Grid extends Component {
               header={
                 <SortHeaderCell
                   onSortChange={this._onSortChange}
-                  sortDir={colSortDirs.firstName}>
+                  sortDir={colSortDirs.portfolioDescription}>
                   Portfolio Description
                 </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               fixed={true}
-              width={200}
+              width={rowWidth}
               flexGrow={1}
             />
             <Column
@@ -261,12 +179,12 @@ class Grid extends Component {
               header={
                 <SortHeaderCell
                   onSortChange={this._onSortChange}
-                  sortDir={colSortDirs.catchPhrase}>
+                  sortDir={colSortDirs.underlyingPortfolioAccountNumber}>
                   Underlying Portfolio Account Number
                 </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={300}
+              width={rowWidth}
               flexGrow={1}
             />
             <Column
@@ -274,12 +192,12 @@ class Grid extends Component {
               header={
                 <SortHeaderCell
                   onSortChange={this._onSortChange}
-                  sortDir={colSortDirs.words}>
+                  sortDir={colSortDirs.symbolCUSIP}>
                   Symbol/CUSIP
                 </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={300}
+              width={rowWidth}
               flexGrow={1}
             />
             <Column
@@ -287,12 +205,12 @@ class Grid extends Component {
               header={
                 <SortHeaderCell
                   onSortChange={this._onSortChange}
-                  sortDir={colSortDirs.value}>
+                  sortDir={colSortDirs.currentPrice}>
                   Current Price
                 </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={200}
+              width={rowWidth}
               flexGrow={1}
             />
             <Column
@@ -300,12 +218,12 @@ class Grid extends Component {
               header={
                 <SortHeaderCell
                   onSortChange={this._onSortChange}
-                  sortDir={colSortDirs.percentage}>
+                  sortDir={colSortDirs.maturityDate}>
                   Maturity Date
                 </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={200}
+              width={rowWidth}
               flexGrow={1}
             />
             <Column
@@ -313,12 +231,12 @@ class Grid extends Component {
               header={
                 <SortHeaderCell
                   onSortChange={this._onSortChange}
-                  sortDir={colSortDirs.percentage}>
+                  sortDir={colSortDirs.quantity}>
                   Quantity
                 </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={200}
+              width={rowWidth}
               flexGrow={1}
             />
           </Table>
