@@ -64,19 +64,13 @@ class Nav extends Component {
   }
 
 	render() {
-    let { groupByHousehold } = this.props;
 		return (
       <div>
         <nav>
           <div className="nav-left">
-            <div id="clientsNav" className={!groupByHousehold}>
+            <div id="clientsNav" className={true}>
               <Tooltip title='Accounts' position='top'>
                 <img className="nav-image" onClick={this.handleClients} src={require("./images/clients.png")} alt="clients" />
-              </Tooltip>
-            </div>
-            <div id="householdsNav" className={groupByHousehold}>
-              <Tooltip title='Group by Households' position='top'>
-                <img className="nav-image" onClick={this.handleHouseholds} src={require("./images/household.png")} alt="clients" />
               </Tooltip>
             </div>
             <div id="importsNav" className={this.state.importsVisible}>

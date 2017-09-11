@@ -17,9 +17,9 @@ class ClientsGridStore {
     .then(res => {
       if (res.status === "OK") {
         console.log("dumby data in store constructor: ", res.records);
-        this.size = res.records.length;
         this._cache = res.records;
-        var shifted = this._cache.shift();
+        this._cache.shift();
+        this.size = this._cache.length;
       }
     })
     .catch(e => console.log(e));

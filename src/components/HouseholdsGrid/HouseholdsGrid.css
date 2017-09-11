@@ -8,6 +8,14 @@
   display: flex;
 }
 
+#about-filters {
+  display: flex;
+}
+
+span:hover {
+  cursor: pointer;
+}
+
 div.public_fixedDataTableCell_cellContent a {
   color: #333 !important;
 }
@@ -22,7 +30,6 @@ input.grid-filter {
   font-size: 80%;
   margin-top: 10px;
   margin-bottom: 10px;
-  width: 150px;
 }
 
 div#percentage-filter-container {

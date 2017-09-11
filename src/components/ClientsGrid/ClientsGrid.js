@@ -5,9 +5,6 @@ import { TextCell } from './ClientsCells';
 import 'fixed-data-table-2/dist/fixed-data-table.min.css';
 import './ClientsGrid.css';
 
-import Nav from '../Nav/Nav';
-import Header from '../Header/Header';
-
 const SortTypes = {
   ASC: 'ASC',
   DESC: 'DESC',
@@ -135,17 +132,11 @@ class Grid extends Component {
 
   render() {
     let { adjustedDataList, colSortDirs } = this.state;
-    let { onlyGrid } = this.props;
     let tableWidth = this.state.width - 10;
-    let rowWidth = (tableWidth / 6) - 40;
+    let rowWidth = tableWidth / 6;
     let tableHeight = this.state.height * 0.781;
     return (
       <div>
-        {
-          !onlyGrid
-            ? <div><Header showMenu={true}/> <Nav groupByHousehold={false}/></div>
-            : null
-        }
         <div id="grid-container">
           <Table
             rowHeight={40}
@@ -155,11 +146,6 @@ class Grid extends Component {
             width={tableWidth}
             height={tableHeight}
             {...this.props}>
-            <Column
-              fixed={true}
-              width={40}
-              flexGrow={0}
-            />
             <Column
               columnKey="portfolioDescription"
               header={
