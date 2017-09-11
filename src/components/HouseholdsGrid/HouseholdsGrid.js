@@ -263,34 +263,6 @@ class HouseholdsGrid extends Component {
     return (
       <div>
         <div id="grid-container">
-          <div id="grid-filters">
-            <div style={columnOneStyle}></div>
-            <div style={columnMainStyle}>
-              <input className="grid-filter" id="name-filter" onChange={(e) => this._onFilterChange(e, 'firstName')} placeholder="Filter by Name"
-              />
-            </div>
-            {
-              !aboutColumnsHidden
-                ? <div style={columnAboutStyle}><div>
-                  <input className="grid-filter" id="description-filter" onChange={(e) => this._onFilterChange(e, 'catchPhrase')} placeholder="Filter by Description"
-                  /></div><div style={columnMainStyle}>
-                  <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'words')} placeholder="Filter by Notes"
-                  /></div></div>
-                : <div style={columnMainStyle}></div>
-            }
-            <div style={columnMainStyle} id="percentage-filter-container">
-              <div>
-                <div id="greater-than">&#62;</div>
-                <div id="equal-to">=</div>
-                <div id="less-than">&#60;</div>
-              </div>
-              <div>
-                <input className="grid-filter" id="percentage-filter" onChange={(e) => this._onFilterChange(e, 'percentage')} type="range"
-                />
-                <div id="percentage-label">{percentageFilterValue}&nbsp;%</div>
-              </div>
-            </div>
-          </div>
           <Table
             scrollToRow={scrollToRow}
             rowHeight={40}
@@ -323,11 +295,17 @@ class HouseholdsGrid extends Component {
               <Column
                 columnKey="firstName"
                 header={
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.firstName}>
-                    Name
-                  </SortHeaderCell>
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.firstName}>
+                      Name
+                    </SortHeaderCell>
+                    <div className="filter-buffer">
+                      <input className="grid-filter" id="name-filter" onChange={(e) => this._onFilterChange(e, 'firstName')} placeholder="Filter by Name"
+                      />
+                    </div>
+                  </div>
                 }
                 cell={<TextCell data={adjustedDataList} />}
                 fixed={true}
@@ -337,11 +315,17 @@ class HouseholdsGrid extends Component {
               <Column
                 columnKey="catchPhrase"
                 header={
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.catchPhrase}>
-                    Description
-                  </SortHeaderCell>
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.catchPhrase}>
+                      Description
+                    </SortHeaderCell>
+                    <div className="filter-buffer">
+                      <input className="grid-filter" id="description-filter" onChange={(e) => this._onFilterChange(e, 'catchPhrase')} placeholder="Filter by Description"
+                      />
+                    </div>
+                  </div>
                 }
                 cell={<TextCell data={adjustedDataList} />}
                 width={rowWidthAbout}
@@ -350,11 +334,17 @@ class HouseholdsGrid extends Component {
               <Column
                 columnKey="words"
                 header={
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.words}>
-                    Notes
-                  </SortHeaderCell>
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.words}>
+                      Notes
+                    </SortHeaderCell>
+                    <div className="filter-buffer">
+                      <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'words')} placeholder="Filter by Notes"
+                      />
+                    </div>
+                  </div>
                 }
                 cell={<TextCell data={adjustedDataList} />}
                 width={rowWidthAbout}
@@ -373,11 +363,25 @@ class HouseholdsGrid extends Component {
               <Column
                 columnKey="percentage"
                 header={
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.percentage}>
-                    % Out-of-Balance
-                  </SortHeaderCell>
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.percentage}>
+                      % Out-of-Balance
+                    </SortHeaderCell>
+                    <div id="percentage-filter-container">
+                      <select id="percentage-dropdown">
+                        <option value="value1" selected>&#62;</option>
+                        <option value="value2">=</option>
+                        <option value="value3">&#60;</option>
+                      </select>
+                      <div>
+                        <input className="grid-filter" onChange={(e) => this._onFilterChange(e, 'percentage')} type="range" value='0'
+                        />
+                        <div id="percentage-label">&nbsp;{percentageFilterValue}&nbsp;%</div>
+                      </div>
+                    </div>
+                  </div>
                 }
                 cell={<TextCell data={adjustedDataList} />}
                 width={rowWidth}

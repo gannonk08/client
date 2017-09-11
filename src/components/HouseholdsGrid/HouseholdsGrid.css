@@ -12,6 +12,10 @@
   display: flex;
 }
 
+div.filter-buffer {
+  margin-left: 0.5vw;
+}
+
 span:hover {
   cursor: pointer;
 }
@@ -26,15 +30,19 @@ div.public_fixedDataTableCell_cellContent a:hover {
   cursor: pointer;
 }
 
-input.grid-filter {
+input.grid-filter, select#percentage-dropdown {
   font-size: 80%;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
+select#percentage-dropdown {
+  margin-right: 0.5vw;
+}
+
 div#percentage-filter-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
   justify-content: center;
   font-size: 75%;
@@ -46,19 +54,4 @@ div#percentage-filter-container div {
 
 div#percentage-filter-container div div {
   cursor: pointer;
-}
-
-input#percentage-filter {
-  margin: 5px;
-}
-
-#equal-to {
-  margin-left: 15px;
-  margin-right: 15px;
-}
-
-#percentage-label {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
