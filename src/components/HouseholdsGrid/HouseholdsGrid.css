@@ -1,15 +1,39 @@
-#grid-container {
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-}
-
 #grid-filters {
   display: flex;
 }
 
 #about-filters {
   display: flex;
+}
+
+#group-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: -8px;
+  margin-bottom: 0.5vh;
+}
+
+#group-image {
+  height: 17.5px;
+  width: 17.5px;
+}
+
+#group-image:hover {
+  cursor: pointer;
+  transform: scale(1.08);
+}
+
+div.downloadCSV {
+  display: flex;
+  position: absolute;
+  right: 2.5vw;
+  top: 12vh;
+}
+
+div.downloadCSV a {
+  background-color: #333;
+  border: none;
 }
 
 div.filter-buffer {

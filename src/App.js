@@ -20,8 +20,8 @@ class App extends Component {
           <div>
             <Route exact path={"/"} component={Authenticate} />
             <Route path={"/about"} component={About} />
-            <Route path={"/clients"} component={Grid} />
             <Route path={"/accounts"} component={ClientsGrid} />
+            <Route path={"/clients"} component={Grid} />
             <Footer />
           </div>
         </Router>

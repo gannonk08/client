@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import { Table, Column, Cell } from 'fixed-data-table-2';
 import ClientsGridStore from './ClientsGridStore';
 import { TextCell } from './ClientsCells';
+import Tooltip from 'react-tooltip-component';
 import 'fixed-data-table-2/dist/fixed-data-table.min.css';
 import './ClientsGrid.css';
+import Nav from '../Nav/Nav';
+import Header from '../Header/Header';
 
 const SortTypes = {
   ASC: 'ASC',
@@ -133,10 +137,16 @@ class Grid extends Component {
   render() {
     let { adjustedDataList, colSortDirs } = this.state;
     let tableWidth = this.state.width - 10;
-    let rowWidth = tableWidth / 6;
-    let tableHeight = this.state.height * 0.781;
+    let rowWidth = (tableWidth - 40) / 6;
+    let tableHeight = this.state.height * 0.8;
     return (
       <div>
+        <Header
+          showMenu={true}
+        />
+        <Nav
+          groupByHousehold={true}
+        />
         <div id="grid-container">
           <Table
             rowHeight={40}
@@ -146,6 +156,24 @@ class Grid extends Component {
             width={tableWidth}
             height={tableHeight}
             {...this.props}>
+            <Column
+              columnKey="id"
+              header={
+                <Cell>
+                  <Tooltip title='Group' position='top'>
+                    <div id="group-image-container">
+                      <Link to={"/clients"}>
+                        <img id="ungroup-image" src={require("./group.png")} alt="ungroup" />
+                      </Link>
+                    </div>
+                  </Tooltip>
+                </Cell>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              fixed={true}
+              width={40}
+              flexGrow={0}
+            />
             <Column
               columnKey="portfolioDescription"
               header={

@@ -69,7 +69,7 @@ class Nav extends Component {
         <nav>
           <div className="nav-left">
             <div id="clientsNav" className={true}>
-              <Tooltip title='Accounts' position='top'>
+              <Tooltip title='Clients' position='top'>
                 <img className="nav-image" onClick={this.handleClients} src={require("./images/clients.png")} alt="clients" />
               </Tooltip>
             </div>

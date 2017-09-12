@@ -1,9 +1,3 @@
-#grid-container {
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-}
-
 #grid-filters {
   display: flex;
 }
@@ -23,6 +17,24 @@ input.grid-filter {
   margin-top: 10px;
   margin-bottom: 10px;
   width: 150px;
+}
+
+#group-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: -8px;
+  margin-bottom: 0.5vh;
+}
+
+#ungroup-image {
+  height: 17.5px;
+  width: 17.5px;
+}
+
+#ungroup-image:hover {
+  cursor: pointer;
+  transform: scale(1.08);
 }
 
 div#percentage-filter-container {

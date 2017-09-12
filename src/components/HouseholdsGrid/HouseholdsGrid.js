@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import { Table, Column, ColumnGroup, Cell } from 'fixed-data-table-2';
 import HouseholdsGridStore from './HouseholdsGridStore';
 import ClientsGridStore from '../ClientsGrid/ClientsGridStore';
 import { CollapseCell, TextCell } from './HouseholdsCells';
 import 'fixed-data-table-2/dist/fixed-data-table.min.css';
 import './HouseholdsGrid.css';
+import {CSVLink, CSVDownload} from 'react-csv';
+import Tooltip from 'react-tooltip-component';
 
 const SortTypes = {
   ASC: 'ASC',
@@ -242,7 +245,7 @@ class HouseholdsGrid extends Component {
 
   render() {
     let {percentageFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden} = this.state;
-    let tableWidth = this.state.width - 10;
+    let tableWidth = this.state.width - 5;
     let rowWidth = (tableWidth - 40) / 5;
     let rowWidthAbout = aboutColumnsHidden ? 0 : ((tableWidth - 40) / 5);
     let rowWidthDetails = detailsColumnsHidden ? 0 : ((tableWidth - 40) / 5);
@@ -275,7 +278,16 @@ class HouseholdsGrid extends Component {
             height={tableHeight}
             {...this.props}>
             <ColumnGroup
-              header={<Cell></Cell>}>
+              header={
+                <Cell>
+                  <Tooltip title='Ungroup' position='top'>
+                    <div id="group-image-container">
+                      <Link to={"/accounts"}>
+                        <img id="group-image" src={require("./images/ungroup.png")} onClick={this.ungroupData} alt="ungroup" />
+                      </Link>
+                    </div>
+                  </Tooltip>
+                </Cell>}>
               <Column
                 cell={<CollapseCell callback={this._handleCollapseClick} collapsedRows={collapsedRows} />}
                 fixed={true}
@@ -310,7 +322,7 @@ class HouseholdsGrid extends Component {
                 cell={<TextCell data={adjustedDataList} />}
                 fixed={true}
                 width={rowWidth}
-                flexGrow={1}
+                flexGrow={0}
               />
               <Column
                 columnKey="catchPhrase"
@@ -371,21 +383,21 @@ class HouseholdsGrid extends Component {
                     </SortHeaderCell>
                     <div id="percentage-filter-container">
                       <select id="percentage-dropdown">
-                        <option value="value1" selected>&#62;</option>
-                        <option value="value2">=</option>
-                        <option value="value3">&#60;</option>
+                        <option value=">" selected>&#62;</option>
+                        <option value="=">=</option>
+                        <option value="<">&#60;</option>
                       </select>
                       <div>
-                        <input className="grid-filter" onChange={(e) => this._onFilterChange(e, 'percentage')} type="range" value='0'
+                        <input className="grid-filter" id="percentage-label" onChange={(e) => this._onFilterChange(e, 'percentage')} type="range" value='0'
                         />
-                        <div id="percentage-label">&nbsp;{percentageFilterValue}&nbsp;%</div>
+                        <div>&nbsp;{percentageFilterValue}&nbsp;%</div>
                       </div>
                     </div>
                   </div>
                 }
                 cell={<TextCell data={adjustedDataList} />}
                 width={rowWidth}
-                flexGrow={1}
+                flexGrow={0}
               />
               <Column
                 columnKey="value"
