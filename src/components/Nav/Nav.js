@@ -4,6 +4,7 @@ import SMO from '../SMO/SMO';
 import Imports from '../Imports/Imports';
 import './Nav.css';
 import Tooltip from 'react-tooltip-component';
+import {CSVLink, CSVDownload} from 'react-csv';
 
 class Nav extends Component {
   constructor(props) {
@@ -64,6 +65,8 @@ class Nav extends Component {
   }
 
 	render() {
+    const { csvData } = this.props;
+    console.log("csvData prop in nav: ", csvData);
 		return (
       <div>
         <nav>
@@ -84,9 +87,13 @@ class Nav extends Component {
               </Tooltip>
             </div>
             <div id="exportCsv" className="false">
-              <Tooltip title='Export to CSV' position='top'>
-                <img className="nav-image" src={require("./images/download-csv.png")} alt="csv" />
-              </Tooltip>
+              <CSVLink data={"testing-123"} id="csv-link"
+                filename={"sampleCSV.csv"}
+                target="_blank">
+                <Tooltip title='Export to CSV' position='top'>
+                  <img className="nav-image" src={require("./images/download-csv.png")} alt="csv" />
+                </Tooltip>
+              </CSVLink>
             </div>
           </div>
           <div className="nav-right"></div>

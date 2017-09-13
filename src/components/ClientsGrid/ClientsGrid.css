@@ -36,34 +36,3 @@ input.grid-filter {
   cursor: pointer;
   transform: scale(1.08);
 }
-
-div#percentage-filter-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  font-size: 75%;
-}
-
-div#percentage-filter-container div {
-  display: flex;
-}
-
-div#percentage-filter-container div div {
-  cursor: pointer;
-}
-
-input#percentage-filter {
-  margin: 5px;
-}
-
-#equal-to {
-  margin-left: 15px;
-  margin-right: 15px;
-}
-
-#percentage-label {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}

@@ -10,6 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: row;
   padding: -8px;
   margin-bottom: 0.5vh;
 }
@@ -22,18 +23,6 @@
 #group-image:hover {
   cursor: pointer;
   transform: scale(1.08);
-}
-
-div.downloadCSV {
-  display: flex;
-  position: absolute;
-  right: 2.5vw;
-  top: 12vh;
-}
-
-div.downloadCSV a {
-  background-color: #333;
-  border: none;
 }
 
 div.filter-buffer {
@@ -61,21 +50,26 @@ input.grid-filter, select#percentage-dropdown {
 }
 
 select#percentage-dropdown {
+  margin-left: 0.5vw;
+}
+
+input#percentage-filter {
+}
+
+select#percentage-dropdown {
   margin-right: 0.5vw;
 }
 
 div#percentage-filter-container {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
   font-size: 75%;
 }
 
-div#percentage-filter-container div {
+div#percentage-slider-container {
   display: flex;
-}
-
-div#percentage-filter-container div div {
-  cursor: pointer;
+  flex-direction: row;
+  align-items: center;
 }

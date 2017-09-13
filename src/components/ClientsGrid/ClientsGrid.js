@@ -137,7 +137,7 @@ class Grid extends Component {
   render() {
     let { adjustedDataList, colSortDirs } = this.state;
     let tableWidth = this.state.width - 10;
-    let rowWidth = (tableWidth - 40) / 6;
+    let rowWidth = (tableWidth - 60) / 6;
     let tableHeight = this.state.height * 0.8;
     return (
       <div>
@@ -146,6 +146,7 @@ class Grid extends Component {
         />
         <Nav
           groupByHousehold={true}
+          csvData={adjustedDataList._cache}
         />
         <div id="grid-container">
           <Table
@@ -170,7 +171,7 @@ class Grid extends Component {
                 </Cell>
               }
               cell={<TextCell data={adjustedDataList} />}
-              fixed={true}
+              fixed={false}
               width={40}
               flexGrow={0}
             />
@@ -184,9 +185,9 @@ class Grid extends Component {
                 </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
-              fixed={true}
+              fixed={false}
               width={rowWidth}
-              flexGrow={1}
+              flexGrow={0}
             />
             <Column
               columnKey="underlyingPortfolioAccountNumber"
