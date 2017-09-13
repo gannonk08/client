@@ -93,7 +93,8 @@ class HouseholdsGrid extends Component {
       height: '0',
       percentageFilterValue: 0,
       aboutColumnsHidden: false,
-      detailsColumnsHidden: false,
+      detailsColumnsHidden: true,
+      ladderColumnsHidden: false,
       loaded: false
     }
 
@@ -106,6 +107,7 @@ class HouseholdsGrid extends Component {
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this.toggleAboutColumnGroup = this.toggleAboutColumnGroup.bind(this);
     this.toggleDetailsColumnGroup = this.toggleDetailsColumnGroup.bind(this);
+    this.toggleLadderColumnGroup = this.toggleLadderColumnGroup.bind(this);
   }
 
   _onFilterChange(e, filteredColumn) {
@@ -204,8 +206,22 @@ class HouseholdsGrid extends Component {
 
     this.setState({
       scrollToRow: scrollToRow,
-      collapsedRows: shallowCopyOfCollapsedRows
+      collapsedRows: shallowCopyOfCollapsedRows,
     });
+
+    if (!collapsedRows.size) {
+      this.setState({
+        aboutColumnsHidden: true,
+        detailsColumnsHidden: false,
+        ladderColumnsHidden: true
+      });
+    } else if (collapsedRows.size > 0) {
+      this.setState({
+        aboutColumnsHidden: false,
+        detailsColumnsHidden: true,
+        ladderColumnsHidden: false
+      });
+    }
   }
 
   _handleCollapseAllClick() {
@@ -223,6 +239,20 @@ class HouseholdsGrid extends Component {
       scrollToRow: null,
       collapsedRows: shallowCopyOfCollapsedRows
     });
+
+    if (!collapsedRows.size) {
+      this.setState({
+        aboutColumnsHidden: true,
+        detailsColumnsHidden: false,
+        ladderColumnsHidden: true
+      });
+    } else if (collapsedRows.size > 0) {
+      this.setState({
+        aboutColumnsHidden: false,
+        detailsColumnsHidden: true,
+        ladderColumnsHidden: false
+      });
+    }
   }
 
   _subRowHeightGetter(index) {
@@ -264,16 +294,22 @@ class HouseholdsGrid extends Component {
     this.setState({ detailsColumnsHidden: !this.state.detailsColumnsHidden })
   }
 
+  toggleLadderColumnGroup() {
+    this.setState({ ladderColumnsHidden: !this.state.ladderColumnsHidden })
+  }
+
   setFlexGrow
 
   render() {
-    let {percentageFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, loaded} = this.state;
+    let {percentageFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden, loaded} = this.state;
     let tableWidth = this.state.width - 10;
     let rowWidth = (tableWidth - 85) / 5;
-    let rowWidthAbout = aboutColumnsHidden ? 0 : ((tableWidth - 40) / 5);
-    let rowWidthDetails = detailsColumnsHidden ? 0 : ((tableWidth - 40) / 5);
+    let rowWidthAbout = aboutColumnsHidden ? 0 : ((tableWidth - 40) / 7);
+    let rowWidthDetails = detailsColumnsHidden ? 0 : ((tableWidth - 40) / 7);
+    let rowWidthLadder = ladderColumnsHidden ? 0 : ((tableWidth - 40) / 7);
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
     let columnFlexDetails = detailsColumnsHidden ? 0 : 1;
+    let columnFlexLadder = ladderColumnsHidden ? 0 : 1;
     let tableHeight = this.state.height * 0.781;
     return (
       <div>
@@ -379,11 +415,11 @@ class HouseholdsGrid extends Component {
               </ColumnGroup>
               <ColumnGroup
                 header={
-                  <Cell>Details &nbsp;
+                  <Cell>Ladder &nbsp;
                   {
-                    !detailsColumnsHidden
-                      ? <span onClick={this.toggleDetailsColumnGroup}>[-]</span>
-                      : <span onClick={this.toggleDetailsColumnGroup}>[+]</span>
+                    !ladderColumnsHidden
+                      ? <span onClick={this.toggleLadderColumnGroup}>[-]</span>
+                      : <span onClick={this.toggleLadderColumnGroup}>[+]</span>
                   }
                   </Cell>}>
                 <Column
@@ -420,6 +456,66 @@ class HouseholdsGrid extends Component {
                       onSortChange={this._onSortChange}
                       sortDir={colSortDirs.value}>
                       Market Value
+                    </SortHeaderCell>
+                  }
+                  cell={<TextCell data={adjustedDataList} />}
+                  width={rowWidthLadder}
+                  flexGrow={columnFlexLadder}
+                />
+              </ColumnGroup>
+              <ColumnGroup
+                header={
+                  <Cell>Details &nbsp;
+                  {
+                    !detailsColumnsHidden
+                      ? <span onClick={this.toggleDetailsColumnGroup}>[-]</span>
+                      : <span onClick={this.toggleDetailsColumnGroup}>[+]</span>
+                  }
+                  </Cell>}>
+                <Column
+                  header={
+                    <div>
+                      <SortHeaderCell
+                        onSortChange={this._onSortChange}
+                        sortDir={colSortDirs.percentage}>
+                        Symbol/CUSIP
+                      </SortHeaderCell>
+                    </div>
+                  }
+                  cell={<TextCell data={adjustedDataList} />}
+                  width={rowWidthDetails}
+                  flexGrow={columnFlexDetails}
+                />
+                <Column
+                  header={
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.value}>
+                      Current Price
+                    </SortHeaderCell>
+                  }
+                  cell={<TextCell data={adjustedDataList} />}
+                  width={rowWidthDetails}
+                  flexGrow={columnFlexDetails}
+                />
+                <Column
+                  header={
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.value}>
+                      Maturity Date
+                    </SortHeaderCell>
+                  }
+                  cell={<TextCell data={adjustedDataList} />}
+                  width={rowWidthDetails}
+                  flexGrow={columnFlexDetails}
+                />
+                <Column
+                  header={
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.value}>
+                      Quantity
                     </SortHeaderCell>
                   }
                   cell={<TextCell data={adjustedDataList} />}
