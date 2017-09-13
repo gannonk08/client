@@ -8,11 +8,28 @@
 
 #group-image-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: row;
   padding: -8px;
   margin-bottom: 0.5vh;
+}
+
+#header-tools-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.header-tools {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: -8px;
+  margin-left: 0.5vw;
 }
 
 #group-image {
@@ -25,8 +42,12 @@
   transform: scale(1.08);
 }
 
-div.filter-buffer {
+div#filter-buffer {
   margin-left: 0.5vw;
+}
+
+div#filter-buffer.false, div#percentage-filter-container.false {
+  display: none;
 }
 
 span:hover {
@@ -43,20 +64,21 @@ div.public_fixedDataTableCell_cellContent a:hover {
   cursor: pointer;
 }
 
-input.grid-filter, select#percentage-dropdown {
+input.grid-filter, select.percentage-dropdown {
   font-size: 80%;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-select#percentage-dropdown {
+select.percentage-dropdown {
   margin-left: 0.5vw;
 }
 
-input#percentage-filter {
+input#current-price-filter, input#percentage-filter, input#quantity-filter, input#market-value-filter {
+  width: 70%;
 }
 
-select#percentage-dropdown {
+select.percentage-dropdown {
   margin-right: 0.5vw;
 }
 
@@ -68,7 +90,7 @@ div#percentage-filter-container {
   font-size: 75%;
 }
 
-div#percentage-slider-container {
+div.percentage-slider-container {
   display: flex;
   flex-direction: row;
   align-items: center;

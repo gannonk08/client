@@ -21,7 +21,7 @@ input.grid-filter {
 
 #group-image-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: -8px;
   margin-bottom: 0.5vh;
