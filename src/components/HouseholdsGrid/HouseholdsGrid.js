@@ -336,7 +336,7 @@ class HouseholdsGrid extends Component {
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
     let columnFlexDetails = detailsColumnsHidden ? 0 : 1;
     let columnFlexLadder = ladderColumnsHidden ? 0 : 1;
-    let tableHeight = this.state.height * 0.781;
+    let tableHeight = this.state.height * 0.783;
     return (
       <div>
         <Loader loaded={loaded}>
@@ -402,11 +402,11 @@ class HouseholdsGrid extends Component {
               </ColumnGroup>
               <ColumnGroup
                 header={
-                  <Cell>About &nbsp;
+                  <Cell onClick={this.toggleAboutColumnGroup}>About &nbsp;
                     {
                       !aboutColumnsHidden
-                        ? <span onClick={this.toggleAboutColumnGroup}>[-]</span>
-                        : <span onClick={this.toggleAboutColumnGroup}>[+]</span>
+                        ? <span>[-]</span>
+                        : <span>[+]</span>
                     }
                   </Cell>}>
                 <Column
@@ -470,11 +470,11 @@ class HouseholdsGrid extends Component {
               </ColumnGroup>
               <ColumnGroup
                 header={
-                  <Cell>Details &nbsp;
+                  <Cell onClick={this.toggleDetailsColumnGroup}>Details &nbsp;
                   {
                     !detailsColumnsHidden
-                      ? <span onClick={this.toggleDetailsColumnGroup}>[-]</span>
-                      : <span onClick={this.toggleDetailsColumnGroup}>[+]</span>
+                      ? <span>[-]</span>
+                      : <span>[+]</span>
                   }
                   </Cell>}>
                 <Column
@@ -568,11 +568,11 @@ class HouseholdsGrid extends Component {
               </ColumnGroup>
               <ColumnGroup
                 header={
-                  <Cell>Ladder &nbsp;
+                  <Cell onClick={this.toggleLadderColumnGroup}>Ladder &nbsp;
                   {
                     !ladderColumnsHidden
-                      ? <span onClick={this.toggleLadderColumnGroup}>[-]</span>
-                      : <span onClick={this.toggleLadderColumnGroup}>[+]</span>
+                      ? <span>[-]</span>
+                      : <span>[+]</span>
                   }
                   </Cell>}>
                 <Column
