@@ -13,3 +13,11 @@
   height: 25px;
   width: 25px;
 }
+
+a#redirect-login {
+  color: #333;
+}
+
+p#redirect-login-paragraph {
+  margin: 5vh 1vw;
+}

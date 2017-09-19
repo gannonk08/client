@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import {connector} from '../../redux/userStore';
 import './Grid.css';
 
 import Nav from '../Nav/Nav';
@@ -12,9 +14,18 @@ class Grid extends Component {
 
     this.dataStore = new HouseholdsGridStore();
     this.csvData = this.dataStore._cache;
+    // let sessionIndicator = localStorage.getItem("activeSession");
 	}
 
   render() {
+    let cachedEmail = this.props.emails[this.props.emails.length-1];
+    let sessionIndicator;
+    cachedEmail === "useremail@domain.com"
+    ? sessionIndicator = false
+    : sessionIndicator = true;
+    console.log('cached email: ', cachedEmail);
+    console.log('activeSession? : ', sessionIndicator);
+
     return (
       <div>
         <Header
@@ -25,11 +36,20 @@ class Grid extends Component {
           csvData={this.csvData}
         />
         <div id="grid-container">
-          <HouseholdsGrid />
+          {
+            sessionIndicator
+              ? <HouseholdsGrid />
+              :
+              <div>
+                <p id="redirect-login-paragraph"><Link to={"/"} id="redirect-login">You must be logged in to view this page. Click here to log in.</Link></p>
+
+              </div>
+
+          }
         </div>
       </div>
     );
   }
 }
 
-export default Grid;
+export default connector(Grid);

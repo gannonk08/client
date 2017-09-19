@@ -35,6 +35,7 @@ class Signin extends Component {
 		.then(response => response.json())
 		.then(res => {
 			if (res.status === "OK") {
+				localStorage.setItem('activeSession', true);
 				this.props.history.push('/clients');
 				this.props.addUserEmail(res.record.email);
 			}

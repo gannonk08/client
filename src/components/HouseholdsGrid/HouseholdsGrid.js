@@ -488,7 +488,8 @@ class HouseholdsGrid extends Component {
               onColumnResizeEndCallback={this._onColumnResizeEndCallback}
               isColumnResizing={false}
               width={tableWidth}
-              height={tableHeight}>
+              height={tableHeight}
+              {...this.props}>
               <ColumnGroup
                 header={
                   <Cell>
