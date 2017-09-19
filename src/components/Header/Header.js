@@ -11,8 +11,10 @@ class Header extends Component {
     this.toggleHeaderMenu = this.toggleHeaderMenu.bind(this);
     this.mouseEnter = this.mouseEnter.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
+		let storedEmail = localStorage.getItem("user");
     this.state = {
       flipped: false,
+			userEmail: storedEmail
     };
   }
 
@@ -31,10 +33,7 @@ class Header extends Component {
 	}
 
 	render() {
-		let lastEmail = this.props.emails[this.props.emails.length-1];
-		let recoveryEmail = localStorage.getItem("user");
-		if (lastEmail === "useremail@domain.com") { lastEmail = recoveryEmail };
-		// eslint-disable-next-line
+		const { flipped, userEmail } = this.state;
 		const { showMenu } = this.props;
 		return (
       <div>
@@ -42,14 +41,14 @@ class Header extends Component {
           <Link to={"/clients"}>
             <h1>BondLadderPro</h1>
           </Link>
-					<div id="nav-dropdown" className={this.props.showMenu} onClick={this.toggleHeaderMenu} onMouseEnter={this.mouseEnter}>
-						<div id="user-name">{lastEmail}</div>
-						<img className={this.state.flipped} id="down-arrow" src={require("./images/down.png")} alt="down" />
-						<img className={this.state.flipped} id="up-arrow" src={require("./images/up.png")} alt="up" />
+					<div id="nav-dropdown" className={showMenu} onClick={this.toggleHeaderMenu} onMouseEnter={this.mouseEnter}>
+						<div id="user-name">{userEmail}</div>
+						<img className={flipped} id="down-arrow" src={require("./images/down.png")} alt="down" />
+						<img className={flipped} id="up-arrow" src={require("./images/up.png")} alt="up" />
 					</div>
         </header>
 				{
-          this.state.flipped
+          flipped
           	? <HeaderMenu />
             : null
         }

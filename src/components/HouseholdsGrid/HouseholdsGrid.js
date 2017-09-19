@@ -71,28 +71,8 @@ class HouseholdsGrid extends Component {
   constructor(props) {
     super(props);
 
-    const PATH_GET_CLIENTS = '/clients/088B5FAE-E78C-4817-9724-C93DF2AEB14D';
-    let PATH_BASE = '';
-    process.env.NODE_ENV === 'production'
-    ? PATH_BASE = process.env.REACT_APP_API_PROD
-    : PATH_BASE = process.env.REACT_APP_API_DEV;
-
-    fetch(PATH_BASE + PATH_GET_CLIENTS, {
-      mode: 'cors',
-      credentials: 'include',
-      method: 'GET',
-      headers: { 'Accept': 'application/json' }
-    })
-    .then (res => res.json())
-    .then(res => {
-      if (res.status === "OK") {
-        console.log("new CLIENTS data in households grid constructor: ", res.records);
-      }
-    })
-    .catch(e => console.log(e));
-
-    this._dataList = new HouseholdsGridStore(2000);
-    this._clientsDataList = new ClientsGridStore(2000);
+    this._dataList = new HouseholdsGridStore();
+    this._clientsDataList = new ClientsGridStore();
 
     this._defaultSortIndexes = [];
     let size = this._dataList.size;
@@ -148,6 +128,8 @@ class HouseholdsGrid extends Component {
     this.handleExpandAllRows = this.handleExpandAllRows.bind(this);
     this.toggleFilters = this.toggleFilters.bind(this);
     this._onColumnResizeEndCallback = this._onColumnResizeEndCallback.bind(this);
+    this.simulateLoad = this.simulateLoad.bind(this);
+    this.onSuccess = this.onSuccess.bind(this);
   }
 
   _onColumnResizeEndCallback(newColumnWidth, columnKey) {
@@ -247,10 +229,38 @@ class HouseholdsGrid extends Component {
     });
   }
 
+  simulateLoad() {
+    this.setState({ loaded: false })
+    this.onSuccess();
+  }
+
+  onSuccess() {
+    const PATH_GET_CLIENTS = '/clients/088B5FAE-E78C-4817-9724-C93DF2AEB14D';
+    let PATH_BASE = '';
+    process.env.NODE_ENV === 'production'
+    ? PATH_BASE = process.env.REACT_APP_API_PROD
+    : PATH_BASE = process.env.REACT_APP_API_DEV;
+
+    fetch(PATH_BASE + PATH_GET_CLIENTS, {
+      mode: 'cors',
+      credentials: 'include',
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    })
+    .then (res => res.json())
+    .then(res => {
+      if (res.status === "OK") {
+        console.log("new CLIENTS data in households grid constructor: ", res.records);
+        this.setState({ loaded: true });
+      }
+    })
+    .catch(e => console.log(e));
+  }
+
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
-    this.setState({ loaded: true })
+    this.simulateLoad();
   }
 
   componentWillUnmount() {
