@@ -51,8 +51,8 @@ class Imports extends Component {
         ? PATH_BASE = process.env.REACT_APP_API_PROD
         : PATH_BASE = process.env.REACT_APP_API_DEV;
 
-		    const PATH_CLIENTS = '/clients/import?fileName=sampleCSV.csv';
-		    fetch(PATH_BASE + PATH_CLIENTS, {
+		    const PATH_CLIENTS = '/clients/import?fileName=';
+		    fetch(PATH_BASE + PATH_CLIENTS + fileName, {
 					mode: 'cors',
 		      credentials: 'include',
 				  method: 'GET',
@@ -61,8 +61,8 @@ class Imports extends Component {
 				.then(res => {
 					if (res.ok === true) {
 						console.log("res.ok === true");
-            const PATH_GET_IMPORTS = '/clients/dumby';
-            fetch(PATH_BASE + PATH_GET_IMPORTS, {
+            const PATH_GET_CLIENTS = '/clients/088B5FAE-E78C-4817-9724-C93DF2AEB14D';
+            fetch(PATH_BASE + PATH_GET_CLIENTS, {
     					mode: 'cors',
     		      credentials: 'include',
     				  method: 'GET',

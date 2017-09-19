@@ -37,7 +37,7 @@ div.nav-right {
 div.nav-left, div.nav-right {
   display: flex;
   align-items: center;
-  margin-left: 0.75vw;
+  margin-left: 0.5vw;
 }
 
 img.nav-image {

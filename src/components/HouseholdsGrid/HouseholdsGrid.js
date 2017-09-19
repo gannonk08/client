@@ -71,6 +71,26 @@ class HouseholdsGrid extends Component {
   constructor(props) {
     super(props);
 
+    const PATH_GET_CLIENTS = '/clients/088B5FAE-E78C-4817-9724-C93DF2AEB14D';
+    let PATH_BASE = '';
+    process.env.NODE_ENV === 'production'
+    ? PATH_BASE = process.env.REACT_APP_API_PROD
+    : PATH_BASE = process.env.REACT_APP_API_DEV;
+
+    fetch(PATH_BASE + PATH_GET_CLIENTS, {
+      mode: 'cors',
+      credentials: 'include',
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    })
+    .then (res => res.json())
+    .then(res => {
+      if (res.status === "OK") {
+        console.log("new CLIENTS data in households grid constructor: ", res.records);
+      }
+    })
+    .catch(e => console.log(e));
+
     this._dataList = new HouseholdsGridStore(2000);
     this._clientsDataList = new ClientsGridStore(2000);
 
@@ -91,6 +111,8 @@ class HouseholdsGrid extends Component {
       colSortDirs: {},
       width: '0',
       height: '0',
+      colWidth: 0,
+      tableWidth: 0,
       percentageFilterValue: 0,
       marketValueFilterValue: 0,
       aboutColumnsHidden: false,
@@ -98,7 +120,19 @@ class HouseholdsGrid extends Component {
       ladderColumnsHidden: false,
       loaded: false,
       allRowsExpanded: false,
-      filtersVisible: true
+      filtersVisible: true,
+      columnWidths: {
+        name: 150,
+        description: 150,
+        model: 150,
+        balance: 150,
+        marketValue: 150,
+        accountNumber: 150,
+        cusip: 150,
+        currentPrice: 150,
+        maturityDate: 150,
+        quantity: 150
+      },
     }
 
     this._handleCollapseClick = this._handleCollapseClick.bind(this);
@@ -113,6 +147,35 @@ class HouseholdsGrid extends Component {
     this.toggleLadderColumnGroup = this.toggleLadderColumnGroup.bind(this);
     this.handleExpandAllRows = this.handleExpandAllRows.bind(this);
     this.toggleFilters = this.toggleFilters.bind(this);
+    this._onColumnResizeEndCallback = this._onColumnResizeEndCallback.bind(this);
+    this.getCookie = this.getCookie.bind(this);
+  }
+
+  getCookie(name) {
+    var dc = document.cookie;
+    console.log("dc", document.cookie);
+    var prefix = name + "=";
+    var begin = dc.indexOf("; " + prefix);
+    if (begin == -1) {
+      begin = dc.indexOf(prefix);
+      if (begin != 0) return null;
+    } else {
+      begin += 2;
+      var end = document.cookie.indexOf(";", begin);
+      if (end == -1) {
+        end = dc.length;
+      }
+    }
+    return decodeURIComponent(dc.substring(begin + prefix.length, end));
+  }
+
+  _onColumnResizeEndCallback(newColumnWidth, columnKey) {
+    this.setState(({columnWidths}) => ({
+      columnWidths: {
+        ...columnWidths,
+        [columnKey]: newColumnWidth,
+      }
+    }));
   }
 
   handleExpandAllRows() {
@@ -137,22 +200,22 @@ class HouseholdsGrid extends Component {
     }
 
     var filterBy = e.target.value.toLowerCase();
-    var size = this._dataList.getSize();
+    var size = this._dataList.size;
     var filteredIndexes = [];
     for (var index = 0; index < size; index++) {
-      if (filteredColumn === 'firstName') {
-        var {firstName} = this._dataList.getObjectAt(index);
-        if (firstName.toLowerCase().indexOf(filterBy) !== -1) {
+      if (filteredColumn === 'name') {
+        var {name} = this._dataList.getObjectAt(index);
+        if (name.toLowerCase().indexOf(filterBy) !== -1) {
           filteredIndexes.push(index);
         }
-      } else if (filteredColumn === 'catchPhrase') {
-        var {catchPhrase} = this._dataList.getObjectAt(index);
-        if (catchPhrase.toLowerCase().indexOf(filterBy) !== -1) {
+      } else if (filteredColumn === 'description') {
+        var {description} = this._dataList.getObjectAt(index);
+        if (description.toLowerCase().indexOf(filterBy) !== -1) {
           filteredIndexes.push(index);
         }
-      } else if (filteredColumn === 'words') {
-        var {words} = this._dataList.getObjectAt(index);
-        if (words.toLowerCase().indexOf(filterBy) !== -1) {
+      } else if (filteredColumn === 'model') {
+        var {model} = this._dataList.getObjectAt(index);
+        if (model.toLowerCase().indexOf(filterBy) !== -1) {
           filteredIndexes.push(index);
         }
       } else if (filteredColumn === 'percentage') {
@@ -207,6 +270,19 @@ class HouseholdsGrid extends Component {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
     this.setState({ loaded: true })
+
+    let myCookie = (document.cookie.match(/^(?:.*;)?\s*bondladderpro_auth\s*=\s*([^;]+)(?:.*)?$/)||[,null])[1]
+    let devCookie = (document.cookie.match(/^(?:.*;)?\s*boilerplay_auth\s*=\s*([^;]+)(?:.*)?$/)||[,null])[1]
+
+    console.log('devCookie: ', devCookie);
+    console.log('prodCookie: ', myCookie);
+
+    if (myCookie == null) {
+      console.log("cookie not found");
+    }
+    else {
+      console.log("cookie FOUND!: ", myCookie);
+    }
   }
 
   componentWillUnmount() {
@@ -214,7 +290,22 @@ class HouseholdsGrid extends Component {
   }
 
   updateWindowDimensions() {
+    let { aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden } = this.state;
     this.setState({ width: window.innerWidth, height: window.innerHeight });
+    this.setState({ tableWidth: window.innerWidth - 10 });
+    this.setState({ colWidth: (window.innerWidth - 95) / 5 });
+    this.setState({ columnWidths: {
+      name: aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
+      description: aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
+      model: aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
+      balance: ladderColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
+      marketValue: ladderColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
+      accountNumber: detailsColumnsHidden ? 0 : (window.innerWidth - 95) / 7,
+      cusip: detailsColumnsHidden ? 0 : (window.innerWidth - 95) / 7,
+      currentPrice: detailsColumnsHidden ? 0 : (window.innerWidth - 95) / 7,
+      maturityDate: detailsColumnsHidden ? 0 : (window.innerWidth - 95) / 7,
+      quantity: detailsColumnsHidden ? 0 : (window.innerWidth - 95) / 7,
+    }})
   }
 
   _handleCollapseClick(rowIndex) {
@@ -240,12 +331,36 @@ class HouseholdsGrid extends Component {
         detailsColumnsHidden: false,
         ladderColumnsHidden: true
       });
+      this.setState({ columnWidths: {
+        name: (window.innerWidth - 95) / 5,
+        description: 0,
+        model: 0,
+        balance: (window.innerWidth - 95) / 5,
+        marketValue: 0,
+        accountNumber: (window.innerWidth - 95) / 7,
+        cusip: (window.innerWidth - 95) / 7,
+        currentPrice: (window.innerWidth - 95) / 7,
+        maturityDate: (window.innerWidth - 95) / 7,
+        quantity: (window.innerWidth - 95) / 7,
+      }});
     } else if (collapsedRows.size > 0) {
       this.setState({
         aboutColumnsHidden: false,
         detailsColumnsHidden: true,
         ladderColumnsHidden: false
       });
+      this.setState({ columnWidths: {
+        name: (window.innerWidth - 95) / 5,
+        description: (window.innerWidth - 95) / 5,
+        model: (window.innerWidth - 95) / 5,
+        balance: (window.innerWidth - 95) / 5,
+        marketValue: (window.innerWidth - 95) / 5,
+        accountNumber: 0,
+        cusip: 0,
+        currentPrice: 0,
+        maturityDate: 0,
+        quantity: 0,
+      }});
     }
   }
 
@@ -272,12 +387,36 @@ class HouseholdsGrid extends Component {
         detailsColumnsHidden: false,
         ladderColumnsHidden: true
       });
+      this.setState({ columnWidths: {
+        name: (window.innerWidth - 95) / 5,
+        description: 0,
+        model: 0,
+        balance: (window.innerWidth - 95) / 5,
+        marketValue: 0,
+        accountNumber: (window.innerWidth - 95) / 7,
+        cusip: (window.innerWidth - 95) / 7,
+        currentPrice: (window.innerWidth - 95) / 7,
+        maturityDate: (window.innerWidth - 95) / 7,
+        quantity: (window.innerWidth - 95) / 7,
+      }});
     } else if (collapsedRows.size > 0) {
       this.setState({
         aboutColumnsHidden: false,
         detailsColumnsHidden: true,
         ladderColumnsHidden: false
       });
+      this.setState({ columnWidths: {
+        name: (window.innerWidth - 95) / 5,
+        description: (window.innerWidth - 95) / 5,
+        model: (window.innerWidth - 95) / 5,
+        balance: (window.innerWidth - 95) / 5,
+        marketValue: (window.innerWidth - 95) / 5,
+        accountNumber: 0,
+        cusip: 0,
+        currentPrice: 0,
+        maturityDate: 0,
+        quantity: 0,
+      }})
     }
   }
 
@@ -324,15 +463,12 @@ class HouseholdsGrid extends Component {
     this.setState({ ladderColumnsHidden: !this.state.ladderColumnsHidden })
   }
 
-  setFlexGrow
-
   render() {
-    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden, loaded, allRowsExpanded, filtersVisible} = this.state;
-    let tableWidth = this.state.width - 10;
-    let rowWidth = (tableWidth - 85) / 5;
-    let rowWidthAbout = aboutColumnsHidden ? 0 : ((tableWidth - 40) / 7);
-    let rowWidthDetails = detailsColumnsHidden ? 0 : ((tableWidth - 40) / 7);
-    let rowWidthLadder = ladderColumnsHidden ? 0 : ((tableWidth - 40) / 7);
+    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden, loaded, allRowsExpanded, filtersVisible, columnWidths, tableWidth, colWidth} = this.state;
+
+    let colWidthAbout = aboutColumnsHidden ? 0 : ((tableWidth - 40) / 7);
+    let colWidthDetails = detailsColumnsHidden ? 0 : ((tableWidth - 40) / 7);
+    let colWidthLadder = ladderColumnsHidden ? 0 : ((tableWidth - 40) / 7);
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
     let columnFlexDetails = detailsColumnsHidden ? 0 : 1;
     let columnFlexLadder = ladderColumnsHidden ? 0 : 1;
@@ -344,14 +480,15 @@ class HouseholdsGrid extends Component {
             <Table
               scrollToRow={scrollToRow}
               rowHeight={40}
-              rowsCount={adjustedDataList.getSize()}
+              rowsCount={adjustedDataList.size}
               subRowHeightGetter={this._subRowHeightGetter}
               rowExpanded={this._rowExpandedGetter}
               groupHeaderHeight={30}
               headerHeight={75}
+              onColumnResizeEndCallback={this._onColumnResizeEndCallback}
+              isColumnResizing={false}
               width={tableWidth}
-              height={tableHeight}
-              {...this.props}>
+              height={tableHeight}>
               <ColumnGroup
                 header={
                   <Cell>
@@ -410,62 +547,65 @@ class HouseholdsGrid extends Component {
                     }
                   </Cell>}>
                 <Column
-                  columnKey="firstName"
+                  columnKey="name"
                   header={
                     <div>
                       <SortHeaderCell
                         onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.firstName}>
+                        sortDir={colSortDirs.name}>
                         Name
                       </SortHeaderCell>
                       <div id="filter-buffer" className={filtersVisible}>
-                        <input className="grid-filter" id="name-filter" onChange={(e) => this._onFilterChange(e, 'firstName')} placeholder="Filter by Name"
+                        <input className="grid-filter" id="name-filter" onChange={(e) => this._onFilterChange(e, 'name')} placeholder="Filter by Name"
                         />
                       </div>
                     </div>
                   }
                   cell={<TextCell data={adjustedDataList} />}
                   fixed={true}
-                  width={rowWidth}
                   flexGrow={0}
+                  width={columnWidths.name}
+                  isResizable={true}
                 />
                 <Column
-                  columnKey="catchPhrase"
+                  columnKey="description"
                   header={
                     <div>
                       <SortHeaderCell
                         onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.catchPhrase}>
+                        sortDir={colSortDirs.description}>
                         Description
                       </SortHeaderCell>
                       <div id="filter-buffer" className={filtersVisible}>
-                        <input className="grid-filter" id="description-filter" onChange={(e) => this._onFilterChange(e, 'catchPhrase')} placeholder="Filter by Description"
+                        <input className="grid-filter" id="description-filter" onChange={(e) => this._onFilterChange(e, 'description')} placeholder="Filter by Description"
                         />
                       </div>
                     </div>
                   }
                   cell={<TextCell data={adjustedDataList} />}
-                  width={rowWidthAbout}
                   flexGrow={columnFlexAbout}
+                  width={columnWidths.description}
+                  isResizable={true}
                 />
                 <Column
-                  columnKey="words"
+                  columnKey="model"
                   header={
                     <div>
                       <SortHeaderCell
                         onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.words}>
+                        sortDir={colSortDirs.model}>
                         Notes
                       </SortHeaderCell>
                       <div id="filter-buffer" className={filtersVisible}>
-                        <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'words')} placeholder="Filter by Notes"
+                        <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'model')} placeholder="Filter by Notes"
                         />
                       </div>
                     </div>
                   }
                   cell={<TextCell data={adjustedDataList} />}
-                  width={rowWidthAbout}
                   flexGrow={columnFlexAbout}
+                  width={columnWidths.model}
+                  isResizable={true}
                 />
               </ColumnGroup>
               <ColumnGroup
@@ -482,25 +622,45 @@ class HouseholdsGrid extends Component {
                     <div>
                       <SortHeaderCell
                         onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.value}>
-                        Symbol/CUSIP
+                        sortDir={colSortDirs.accountNumber}>
+                        Account Number
                       </SortHeaderCell>
                       <div id="filter-buffer" className={filtersVisible}>
-                        <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'words')} placeholder="Filter by Symbol"
+                        <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'accountNumber')} placeholder="Filter by Symbol"
                         />
                       </div>
                     </div>
                   }
                   cell={<TextCell data={adjustedDataList} />}
-                  width={rowWidthDetails}
                   flexGrow={columnFlexDetails}
+                  width={columnWidths.accountNumber}
+                  isResizable={true}
                 />
                 <Column
                   header={
                     <div>
                       <SortHeaderCell
                         onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.value}>
+                        sortDir={colSortDirs.cusip}>
+                        Symbol/CUSIP
+                      </SortHeaderCell>
+                      <div id="filter-buffer" className={filtersVisible}>
+                        <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'cusip')} placeholder="Filter by Symbol"
+                        />
+                      </div>
+                    </div>
+                  }
+                  cell={<TextCell data={adjustedDataList} />}
+                  flexGrow={columnFlexDetails}
+                  width={columnWidths.cusip}
+                  isResizable={true}
+                />
+                <Column
+                  header={
+                    <div>
+                      <SortHeaderCell
+                        onSortChange={this._onSortChange}
+                        sortDir={colSortDirs.currentPrice}>
                         Current Price
                       </SortHeaderCell>
                       <div id="percentage-filter-container" className={filtersVisible}>
@@ -510,7 +670,7 @@ class HouseholdsGrid extends Component {
                           <option value="<">&#60;</option>
                         </select>
                         <div className="percentage-slider-container">
-                          <input className="grid-filter" id="current-price-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="range"
+                          <input className="grid-filter" id="current-price-filter" onChange={(e) => this._onFilterChange(e, 'currentPrice')} type="range"
                           />
                           <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
                         </div>
@@ -518,33 +678,35 @@ class HouseholdsGrid extends Component {
                     </div>
                   }
                   cell={<TextCell data={adjustedDataList} />}
-                  width={rowWidthDetails}
                   flexGrow={columnFlexDetails}
+                  width={columnWidths.currentPrice}
+                  isResizable={true}
                 />
                 <Column
                   header={
                     <div>
                       <SortHeaderCell
                         onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.value}>
+                        sortDir={colSortDirs.maturityDate}>
                         Maturity Date
                       </SortHeaderCell>
                       <div id="filter-buffer" className={filtersVisible}>
-                        <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'words')} placeholder="Filter by Symbol" type="date"
+                        <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'maturityDate')} placeholder="Filter by Symbol" type="date"
                         />
                       </div>
                     </div>
                   }
                   cell={<TextCell data={adjustedDataList} />}
-                  width={rowWidthDetails}
                   flexGrow={columnFlexDetails}
+                  width={columnWidths.maturityDate}
+                  isResizable={true}
                 />
                 <Column
                   header={
                     <div>
                       <SortHeaderCell
                         onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.value}>
+                        sortDir={colSortDirs.quantity}>
                         Quantity
                       </SortHeaderCell>
                       <div id="percentage-filter-container" className={filtersVisible}>
@@ -554,7 +716,7 @@ class HouseholdsGrid extends Component {
                           <option value="<">&#60;</option>
                         </select>
                         <div className="percentage-slider-container">
-                          <input className="grid-filter" id="quantity-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="range"
+                          <input className="grid-filter" id="quantity-filter" onChange={(e) => this._onFilterChange(e, 'quantity')} type="range"
                           />
                           <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
                         </div>
@@ -562,8 +724,9 @@ class HouseholdsGrid extends Component {
                     </div>
                   }
                   cell={<TextCell data={adjustedDataList} />}
-                  width={rowWidthDetails}
                   flexGrow={columnFlexDetails}
+                  width={columnWidths.quantity}
+                  isResizable={true}
                 />
               </ColumnGroup>
               <ColumnGroup
@@ -576,7 +739,7 @@ class HouseholdsGrid extends Component {
                   }
                   </Cell>}>
                 <Column
-                  columnKey="percentage"
+                  columnKey="balance"
                   header={
                     <div>
                       <SortHeaderCell
@@ -599,11 +762,12 @@ class HouseholdsGrid extends Component {
                     </div>
                   }
                   cell={<TextCell data={adjustedDataList} />}
-                  width={rowWidth}
                   flexGrow={0}
+                  width={columnWidths.balance}
+                  isResizable={true}
                 />
                 <Column
-                  columnKey="value"
+                  columnKey="marketValue"
                   header={
                     <div>
                       <SortHeaderCell
@@ -626,8 +790,9 @@ class HouseholdsGrid extends Component {
                     </div>
                   }
                   cell={<TextCell data={adjustedDataList} />}
-                  width={rowWidthLadder}
                   flexGrow={columnFlexLadder}
+                  width={columnWidths.marketValue}
+                  isResizable={true}
                 />
               </ColumnGroup>
             </Table>
