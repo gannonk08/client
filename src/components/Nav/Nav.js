@@ -4,7 +4,7 @@ import SMO from '../SMO/SMO';
 import Imports from '../Imports/Imports';
 import './Nav.css';
 import Tooltip from 'react-tooltip-component';
-import {CSVLink, CSVDownload} from 'react-csv';
+import {CSVLink} from 'react-csv';
 
 class Nav extends Component {
   constructor(props) {

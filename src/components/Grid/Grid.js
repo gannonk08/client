@@ -14,17 +14,18 @@ class Grid extends Component {
 
     this.dataStore = new HouseholdsGridStore();
     this.csvData = this.dataStore._cache;
-    // let sessionIndicator = localStorage.getItem("activeSession");
 	}
 
   render() {
-    let cachedEmail = this.props.emails[this.props.emails.length-1];
     let sessionIndicator;
-    cachedEmail === "useremail@domain.com"
-    ? sessionIndicator = false
-    : sessionIndicator = true;
-    console.log('cached email: ', cachedEmail);
+    let storageSessionIndicator = localStorage.getItem("activeSession");
+    if (storageSessionIndicator === 'true') {
+      sessionIndicator = true;
+    } else {
+      sessionIndicator = false;
+    }
     console.log('activeSession? : ', sessionIndicator);
+    console.log('storageSessionIndicator? : ', storageSessionIndicator);
 
     return (
       <div>
@@ -42,7 +43,6 @@ class Grid extends Component {
               :
               <div>
                 <p id="redirect-login-paragraph"><Link to={"/"} id="redirect-login">You must be logged in to view this page. Click here to log in.</Link></p>
-
               </div>
 
           }

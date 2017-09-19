@@ -32,6 +32,8 @@ class Header extends Component {
 
 	render() {
 		let lastEmail = this.props.emails[this.props.emails.length-1];
+		let recoveryEmail = localStorage.getItem("user");
+		if (lastEmail === "useremail@domain.com") { lastEmail = recoveryEmail };
 		// eslint-disable-next-line
 		const { showMenu } = this.props;
 		return (

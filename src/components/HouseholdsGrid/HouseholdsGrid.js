@@ -148,25 +148,6 @@ class HouseholdsGrid extends Component {
     this.handleExpandAllRows = this.handleExpandAllRows.bind(this);
     this.toggleFilters = this.toggleFilters.bind(this);
     this._onColumnResizeEndCallback = this._onColumnResizeEndCallback.bind(this);
-    this.getCookie = this.getCookie.bind(this);
-  }
-
-  getCookie(name) {
-    var dc = document.cookie;
-    console.log("dc", document.cookie);
-    var prefix = name + "=";
-    var begin = dc.indexOf("; " + prefix);
-    if (begin == -1) {
-      begin = dc.indexOf(prefix);
-      if (begin != 0) return null;
-    } else {
-      begin += 2;
-      var end = document.cookie.indexOf(";", begin);
-      if (end == -1) {
-        end = dc.length;
-      }
-    }
-    return decodeURIComponent(dc.substring(begin + prefix.length, end));
   }
 
   _onColumnResizeEndCallback(newColumnWidth, columnKey) {
@@ -181,7 +162,7 @@ class HouseholdsGrid extends Component {
   handleExpandAllRows() {
     const { allRowsExpanded } = this.state;
     this.setState({
-      allRowsExpanded: !this.state.allRowsExpanded
+      allRowsExpanded: !allRowsExpanded
     })
   }
 
@@ -270,19 +251,6 @@ class HouseholdsGrid extends Component {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
     this.setState({ loaded: true })
-
-    let myCookie = (document.cookie.match(/^(?:.*;)?\s*bondladderpro_auth\s*=\s*([^;]+)(?:.*)?$/)||[,null])[1]
-    let devCookie = (document.cookie.match(/^(?:.*;)?\s*boilerplay_auth\s*=\s*([^;]+)(?:.*)?$/)||[,null])[1]
-
-    console.log('devCookie: ', devCookie);
-    console.log('prodCookie: ', myCookie);
-
-    if (myCookie == null) {
-      console.log("cookie not found");
-    }
-    else {
-      console.log("cookie FOUND!: ", myCookie);
-    }
   }
 
   componentWillUnmount() {
@@ -464,11 +432,8 @@ class HouseholdsGrid extends Component {
   }
 
   render() {
-    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden, loaded, allRowsExpanded, filtersVisible, columnWidths, tableWidth, colWidth} = this.state;
+    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden, loaded, allRowsExpanded, filtersVisible, columnWidths, tableWidth} = this.state;
 
-    let colWidthAbout = aboutColumnsHidden ? 0 : ((tableWidth - 40) / 7);
-    let colWidthDetails = detailsColumnsHidden ? 0 : ((tableWidth - 40) / 7);
-    let colWidthLadder = ladderColumnsHidden ? 0 : ((tableWidth - 40) / 7);
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
     let columnFlexDetails = detailsColumnsHidden ? 0 : 1;
     let columnFlexLadder = ladderColumnsHidden ? 0 : 1;
