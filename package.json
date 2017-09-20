@@ -3,14 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "aphrodite": "^1.2.3",
     "aws-sdk": "^2.109.0",
     "bootstrap": "^3.3.7",
-    "classnames": "^2.2.5",
-    "create-react-class": "^15.6.0",
-    "faker": "^4.1.0",
     "fixed-data-table-2": "^0.8.0",
-    "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-csv": "^1.0.8",
     "react-dom": "^15.6.1",
@@ -19,7 +14,6 @@
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.2",
     "react-scripts": "1.0.10",
-    "react-tooltip": "^3.3.0",
     "react-tooltip-component": "^0.3.0",
     "react-upload-file": "^2.0.0-beta.6",
     "redux": "^3.7.2"

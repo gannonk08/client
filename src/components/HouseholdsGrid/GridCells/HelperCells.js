@@ -1,8 +1,47 @@
-const { Cell } = require('fixed-data-table-2');
-const React = require('react');
-const ReactTooltip = require('react-tooltip');
+import { Cell } from 'fixed-data-table-2';
+import React from 'react';
 
-class CollapseCell extends React.PureComponent {
+const SortTypes = {
+  ASC: 'ASC',
+  DESC: 'DESC',
+};
+
+function reverseSortDirection(sortDir) {
+  return sortDir === SortTypes.DESC ? SortTypes.ASC : SortTypes.DESC;
+}
+
+export class SortHeaderCell extends React.Component {
+  constructor(props) {
+    super(props);
+    this._onSortChange = this._onSortChange.bind(this);
+  }
+
+  render() {
+    var {onSortChange, sortDir, children, ...props} = this.props;
+    return (
+      <Cell {...props}>
+        <a onClick={this._onSortChange}>
+          {children} {sortDir ? (sortDir === SortTypes.DESC ? '↓' : '↑') : ''}
+        </a>
+      </Cell>
+    );
+  }
+
+  _onSortChange(e) {
+    e.preventDefault();
+
+    if (this.props.onSortChange) {
+      this.props.onSortChange(
+        this.props.columnKey,
+        this.props.sortDir ?
+          reverseSortDirection(this.props.sortDir) :
+          SortTypes.DESC
+      );
+    }
+  }
+};
+
+export class CollapseCell extends React.PureComponent {
   render() {
     const {data, rowIndex, columnKey, collapsedRows, callback, ...props} = this.props;
     return (
@@ -14,9 +53,8 @@ class CollapseCell extends React.PureComponent {
     );
   }
 };
-module.exports.CollapseCell = CollapseCell;
 
-class ColoredTextCell extends React.PureComponent {
+export class ColoredTextCell extends React.PureComponent {
   render() {
     const {data, rowIndex, columnKey, ...props} = this.props;
     return (
@@ -35,9 +73,8 @@ class ColoredTextCell extends React.PureComponent {
     });
   }
 };
-module.exports.ColoredTextCell = ColoredTextCell;
 
-class DateCell extends React.PureComponent {
+export class DateCell extends React.PureComponent {
   render() {
     const {data, rowIndex, columnKey, ...props} = this.props;
     return (
@@ -47,9 +84,8 @@ class DateCell extends React.PureComponent {
     );
   }
 };
-module.exports.DateCell = DateCell;
 
-class LinkCell extends React.PureComponent {
+export class LinkCell extends React.PureComponent {
   render() {
     const {data, rowIndex, columnKey, ...props} = this.props;
     return (
@@ -59,9 +95,8 @@ class LinkCell extends React.PureComponent {
     );
   }
 };
-module.exports.LinkCell = LinkCell;
 
-class PendingCell extends React.PureComponent {
+export class PendingCell extends React.PureComponent {
   render() {
     const {data, rowIndex, columnKey, dataVersion, ...props} = this.props;
     const rowObject = data.getObjectAt(rowIndex);
@@ -72,19 +107,8 @@ class PendingCell extends React.PureComponent {
     );
   }
 };
-const PagedCell = ({data, ...props}) => {
-  const dataVersion = data.getDataVersion();
-  return (
-    <PendingCell
-      data={data}
-      dataVersion={dataVersion}
-      {...props}>
-    </PendingCell>
-  );
-};
-module.exports.PagedCell = PagedCell;
 
-class RemovableHeaderCell extends React.PureComponent {
+export class RemovableHeaderCell extends React.PureComponent {
   render() {
     const {data, rowIndex, columnKey, callback, children, ...props} = this.props;
     return (
@@ -97,9 +121,8 @@ class RemovableHeaderCell extends React.PureComponent {
     );
   }
 };
-module.exports.RemovableHeaderCell = RemovableHeaderCell;
 
-class TextCell extends React.PureComponent {
+export class TextCell extends React.PureComponent {
   render() {
     const {data, rowIndex, columnKey, ...props} = this.props;
     return (
@@ -109,22 +132,3 @@ class TextCell extends React.PureComponent {
     );
   }
 };
-module.exports.TextCell = TextCell;
-
-class TooltipCell extends React.PureComponent {
-  render() {
-    const {data, rowIndex, columnKey, ...props} = this.props;
-    const value = data.getObjectAt(rowIndex)[columnKey];
-    return (
-      <Cell
-        {...props}
-        onMouseEnter={() => { ReactTooltip.show(); }}
-        onMouseLeave={() => { ReactTooltip.hide(); }}>
-        <div ref='valueDiv' data-tip={value}>
-          {value}
-        </div>
-      </Cell>
-    );
-  }
-};
-module.exports.TooltipCell = TooltipCell;

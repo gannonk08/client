@@ -1,71 +1,22 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import { Table, Column, ColumnGroup, Cell } from 'fixed-data-table-2';
 import Loader from 'react-loader';
+
+import UngroupHouseholds from './GridCells/UngroupHouseholds';
+import {ExpandAllRows, CollapseAllRows} from './GridCells/ExpandCollapseAllRows';
+import {HideFilters, ShowFilters} from './GridCells/ToggleFilters';
 import HouseholdsGridStore from './HouseholdsGridStore';
 import ClientsGridStore from '../ClientsGrid/ClientsGridStore';
-import { CollapseCell, TextCell } from './HouseholdsCells';
+import {DataListWrapper} from './GridCells/DataListWrapper';
+import { CollapseCell, TextCell, SortHeaderCell } from './GridCells/HelperCells';
+
 import 'fixed-data-table-2/dist/fixed-data-table.min.css';
 import './HouseholdsGrid.css';
-import Tooltip from 'react-tooltip-component';
 
 const SortTypes = {
   ASC: 'ASC',
   DESC: 'DESC',
 };
-
-function reverseSortDirection(sortDir) {
-  return sortDir === SortTypes.DESC ? SortTypes.ASC : SortTypes.DESC;
-}
-
-class SortHeaderCell extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this._onSortChange = this._onSortChange.bind(this);
-  }
-
-  render() {
-    var {onSortChange, sortDir, children, ...props} = this.props;
-    return (
-      <Cell {...props}>
-        <a onClick={this._onSortChange}>
-          {children} {sortDir ? (sortDir === SortTypes.DESC ? '↓' : '↑') : ''}
-        </a>
-      </Cell>
-    );
-  }
-
-  _onSortChange(e) {
-    e.preventDefault();
-
-    if (this.props.onSortChange) {
-      this.props.onSortChange(
-        this.props.columnKey,
-        this.props.sortDir ?
-          reverseSortDirection(this.props.sortDir) :
-          SortTypes.DESC
-      );
-    }
-  }
-}
-
-class DataListWrapper {
-  constructor(indexMap, data) {
-    this._indexMap = indexMap;
-    this._data = data;
-  }
-
-  getSize() {
-    return this._indexMap.length;
-  }
-
-  getObjectAt(index) {
-    return this._data.getObjectAt(
-      this._indexMap[index],
-    );
-  }
-}
 
 class HouseholdsGrid extends Component {
   constructor(props) {
@@ -128,7 +79,7 @@ class HouseholdsGrid extends Component {
     this.handleExpandAllRows = this.handleExpandAllRows.bind(this);
     this.toggleFilters = this.toggleFilters.bind(this);
     this._onColumnResizeEndCallback = this._onColumnResizeEndCallback.bind(this);
-    this.simulateLoad = this.simulateLoad.bind(this);
+    this.loadClientData = this.loadClientData.bind(this);
     this.onSuccess = this.onSuccess.bind(this);
   }
 
@@ -229,7 +180,7 @@ class HouseholdsGrid extends Component {
     });
   }
 
-  simulateLoad() {
+  loadClientData() {
     this.setState({ loaded: false })
     this.onSuccess();
   }
@@ -260,7 +211,7 @@ class HouseholdsGrid extends Component {
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
-    this.simulateLoad();
+    this.loadClientData();
   }
 
   componentWillUnmount() {
@@ -407,19 +358,9 @@ class HouseholdsGrid extends Component {
       return null;
     }
 
-    const containerStyle = {
-      height: height,
-      width: width - 2,
-    };
+    const containerStyle = { height: height, width: width - 2 };
+    const expandedStyle = { backgroundColor: 'white', boxSizing: 'border-box', border: '1px solid #d3d3d3', padding: '20px', overflow: 'scroll', width: '100%'};
 
-    const expandedStyle = {
-      backgroundColor: 'white',
-      boxSizing: 'border-box',
-      border: '1px solid #d3d3d3',
-      padding: '20px',
-      overflow: 'scroll',
-      width: '100%'
-    }
     return (
       <div style={containerStyle}>
         <div style={expandedStyle}>
@@ -468,45 +409,27 @@ class HouseholdsGrid extends Component {
               <ColumnGroup
                 header={
                   <Cell>
-                    <Tooltip title='Ungroup Households' position='right'>
-                      <div id="group-image-container">
-                        <Link to={"/accounts"}>
-                          <img id="group-image" src={require("./images/ungroup.png")} alt="ungroup" />
-                        </Link>
-                      </div>
-                    </Tooltip>
+                    <UngroupHouseholds />
                   </Cell>}>
                 <Column
                   header={
                     <div id="header-tools-container">
-                      {
-                        !allRowsExpanded
-                          ? <Tooltip title='Expand All Rows' position='right'>
-                            <div className="header-tools">
-                              <img id="group-image" src={require("./images/expandAll.png")} onClick={this._handleCollapseAllClick} alt="expand all" />
+                      { !allRowsExpanded
+                          ? <div onClick={this._handleCollapseAllClick}>
+                              <ExpandAllRows />
                             </div>
-                          </Tooltip>
-                          : <Tooltip title='Collapse All Rows' position='right'>
-                            <div className="header-tools">
-                              <img id="group-image" src={require("./images/collapseAll.png")} onClick={this._handleCollapseAllClick} alt="expand all" />
+                          : <div onClick={this._handleCollapseAllClick}>
+                              <CollapseAllRows />
+                            </div> }
+                      { filtersVisible
+                          ? <div onClick={this.toggleFilters}>
+                              <HideFilters />
                             </div>
-                          </Tooltip>
-                      }
-                      {
-                        filtersVisible
-                          ? <Tooltip title='Hide Filters' position='right'>
-                            <div className="header-tools">
-                              <img id="group-image" src={require("./images/hideFilters.png")} onClick={this.toggleFilters} alt="hide filters" />
-                            </div>
-                          </Tooltip>
-                          : <Tooltip title='Show Filters' position='right'>
-                            <div className="header-tools">
-                              <img id="group-image" src={require("./images/showFilters.png")} onClick={this.toggleFilters} alt="hide filters" />
-                            </div>
-                          </Tooltip>
-                      }
+                          : <div onClick={this.toggleFilters}>
+                              <ShowFilters />
+                            </div> }
                     </div>
-                    }
+                  }
                   cell={<CollapseCell callback={this._handleCollapseClick} collapsedRows={collapsedRows} />}
                   fixed={true}
                   width={40}
