@@ -33,13 +33,13 @@ class HouseholdsGridStore {
       name: "Test Home",
       description: "fake description",
       model: "test model",
-      accountNumber: 123,
+      accountNumber: Math.floor(Math.random() * 100),
       cusip: "123ABC",
       currentPrice: 107,
       maturityDate: "Sep 10, 2017",
       quantity: 100,
       balance: 80,
-      marketValue: 10700
+      marketValue: Math.floor(Math.random() * 10000)
     }
   }
 

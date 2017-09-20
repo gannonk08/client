@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import AWS from 'aws-sdk';
+import Loader from 'react-loader';
 import './Imports.css';
 
 AWS.config.region = process.env.REACT_APP_REGION;
@@ -23,10 +24,22 @@ class Imports extends Component {
 	constructor(props) {
 		super(props);
 		this.onSubmit = this.onSubmit.bind(this);
+
+    this.state = {
+      loaded: true,
+      uuid: ''
+    };
 	}
 
+  componentDidMount() {
+    let storedUuid = localStorage.getItem("uuid");
+    this.setState({ uuid: storedUuid });
+  }
+
   onSubmit = (e) => {
+    let { uuid } = this.state;
     e.preventDefault();
+    this.setState({ loaded: false });
 		let fileAcl = process.env.REACT_APP_ACL;
 		let bucketName = process.env.REACT_APP_BUCKET_NAME;
 		let fileInput = document.getElementById('fileInput');
@@ -61,8 +74,8 @@ class Imports extends Component {
 				.then(res => {
 					if (res.ok === true) {
 						console.log("res.ok === true");
-            const PATH_GET_CLIENTS = '/clients/088B5FAE-E78C-4817-9724-C93DF2AEB14D';
-            fetch(PATH_BASE + PATH_GET_CLIENTS, {
+            const PATH_GET_CLIENTS = '/clients/';
+            fetch(PATH_BASE + PATH_GET_CLIENTS + uuid, {
     					mode: 'cors',
     		      credentials: 'include',
     				  method: 'GET',
@@ -73,6 +86,7 @@ class Imports extends Component {
               if (res.status === "OK") {
                 console.log("dumby data: ", res.records);
                 this.props.history.push('/clients');
+                this.setState({ loaded: true });
               }
             })
             .catch(e => console.log(e));
@@ -84,19 +98,22 @@ class Imports extends Component {
   }
 
 	render() {
+    let { loaded } = this.state;
 		return (
       <div>
-				<div className="imports">
-	        <div className="imports-form-container">
-	          <form onSubmit={this.onSubmit}>
-	            <div className="import-loader">
-	              <label htmlFor="file">Upload a CSV file</label>
-	              <input name="file" type="file" id="fileInput"/>
-	              <button type="submit">Import File</button>
-	            </div>
-	          </form>
-	        </div>
-	      </div>
+        <Loader loaded={loaded}>
+  				<div className="imports">
+  	        <div className="imports-form-container">
+  	          <form onSubmit={this.onSubmit}>
+  	            <div className="import-loader">
+  	              <label htmlFor="file">Upload a CSV file</label>
+  	              <input name="file" type="file" id="fileInput"/>
+  	              <button type="submit">Import File</button>
+  	            </div>
+  	          </form>
+  	        </div>
+  	      </div>
+        </Loader>
 			</div>
 		)
 	}

@@ -216,6 +216,7 @@ class HouseholdsGrid extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions);
+    localStorage.clear();
   }
 
   updateWindowDimensions() {
