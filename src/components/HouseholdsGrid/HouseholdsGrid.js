@@ -58,11 +58,11 @@ class HouseholdsGrid extends Component {
         model: 150,
         balance: 150,
         marketValue: 150,
-        accountNumber: 150,
-        cusip: 150,
-        currentPrice: 150,
-        maturityDate: 150,
-        quantity: 150
+        accountNumber: 0,
+        cusip: 0,
+        currentPrice: 0,
+        maturityDate: 0,
+        quantity: 0
       },
     }
 
@@ -224,17 +224,18 @@ class HouseholdsGrid extends Component {
     this.setState({ tableWidth: window.innerWidth - 10 });
     this.setState({ colWidth: (window.innerWidth - 95) / 5 });
     this.setState({ columnWidths: {
-      name: aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
-      description: aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
-      model: aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
-      balance: ladderColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
-      marketValue: ladderColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
-      accountNumber: detailsColumnsHidden ? 0 : (window.innerWidth - 95) / 7,
-      cusip: detailsColumnsHidden ? 0 : (window.innerWidth - 95) / 7,
-      currentPrice: detailsColumnsHidden ? 0 : (window.innerWidth - 95) / 7,
-      maturityDate: detailsColumnsHidden ? 0 : (window.innerWidth - 95) / 7,
-      quantity: detailsColumnsHidden ? 0 : (window.innerWidth - 95) / 7,
+      name: (window.innerWidth - 95) / 5,
+      description: !aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
+      model: !aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
+      balance: (window.innerWidth - 95) / 5,
+      marketValue: !ladderColumnsHidden ? 0 : (window.innerWidth - 95) / 5,
+      accountNumber: !detailsColumnsHidden ? (window.innerWidth - 95) / 7 : 0,
+      cusip: !detailsColumnsHidden ? (window.innerWidth - 95) / 7 : 0,
+      currentPrice: !detailsColumnsHidden ? (window.innerWidth - 95) / 7 : 0,
+      maturityDate: !detailsColumnsHidden ? (window.innerWidth - 95) / 7 : 0,
+      quantity: !detailsColumnsHidden ? (window.innerWidth - 95) / 7 : 0
     }})
+    console.log("columnWidths: ", this.state.columnWidths);
   }
 
   _handleCollapseClick(rowIndex) {
@@ -371,15 +372,19 @@ class HouseholdsGrid extends Component {
   }
 
   toggleAboutColumnGroup() {
-    this.setState({ aboutColumnsHidden: !this.state.aboutColumnsHidden })
+    this.updateWindowDimensions();
+    this.setState({ aboutColumnsHidden: !this.state.aboutColumnsHidden });
+    console.log("aboutColumnsHidden", this.state.aboutColumnsHidden);
   }
 
   toggleDetailsColumnGroup() {
-    this.setState({ detailsColumnsHidden: !this.state.detailsColumnsHidden })
+    this.updateWindowDimensions();
+    this.setState({ detailsColumnsHidden: !this.state.detailsColumnsHidden });
   }
 
   toggleLadderColumnGroup() {
-    this.setState({ ladderColumnsHidden: !this.state.ladderColumnsHidden })
+    this.updateWindowDimensions();
+    this.setState({ ladderColumnsHidden: !this.state.ladderColumnsHidden });
   }
 
   render() {
@@ -461,7 +466,7 @@ class HouseholdsGrid extends Component {
                     </div>
                   }
                   cell={<TextCell data={adjustedDataList} />}
-                  fixed={true}
+                  fixed={false}
                   flexGrow={0}
                   width={columnWidths.name}
                   isResizable={true}

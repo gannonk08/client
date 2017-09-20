@@ -1,6 +1,5 @@
 const { Cell } = require('fixed-data-table-2');
 const React = require('react');
-const ReactTooltip = require('react-tooltip');
 
 class CollapseCell extends React.PureComponent {
   render() {
@@ -110,21 +109,3 @@ class TextCell extends React.PureComponent {
   }
 };
 module.exports.TextCell = TextCell;
-
-class TooltipCell extends React.PureComponent {
-  render() {
-    const {data, rowIndex, columnKey, ...props} = this.props;
-    const value = data.getObjectAt(rowIndex)[columnKey];
-    return (
-      <Cell
-        {...props}
-        onMouseEnter={() => { ReactTooltip.show(); }}
-        onMouseLeave={() => { ReactTooltip.hide(); }}>
-        <div ref='valueDiv' data-tip={value}>
-          {value}
-        </div>
-      </Cell>
-    );
-  }
-};
-module.exports.TooltipCell = TooltipCell;
