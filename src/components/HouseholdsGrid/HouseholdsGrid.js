@@ -8,6 +8,8 @@ import {CollapseCell, TextCell, SortHeaderCell} from './GridCells/HelperCells';
 import 'fixed-data-table-2/dist/fixed-data-table.min.css';
 import './HouseholdsGrid.css';
 
+import Tooltip from 'react-tooltip-component';
+
 const SortTypes = {
   ASC: 'ASC',
   DESC: 'DESC',
@@ -43,6 +45,7 @@ class HouseholdsGrid extends Component {
       ladderColumnsHidden: false,
       allRowsExpanded: false,
       filtersVisible: true,
+      groupByHousehold: true,
       columnWidths: {
         name: 150,
         description: 150,
@@ -70,6 +73,11 @@ class HouseholdsGrid extends Component {
     this.handleExpandAllRows = this.handleExpandAllRows.bind(this);
     this.toggleFilters = this.toggleFilters.bind(this);
     this._onColumnResizeEndCallback = this._onColumnResizeEndCallback.bind(this);
+    this.toggleTableGrouping = this.toggleTableGrouping.bind(this);
+  }
+
+  toggleTableGrouping() {
+    this.setState({ groupByHousehold: !this.state.groupByHousehold });
   }
 
   _onColumnResizeEndCallback(newColumnWidth, columnKey) {
@@ -318,10 +326,7 @@ class HouseholdsGrid extends Component {
       return null;
     }
 
-    const containerStyle = { height: height, width: width - 2 };
-    const expandedStyle = { backgroundColor: 'white', boxSizing: 'border-box', border: '1px solid #d3d3d3', padding: '20px', overflow: 'scroll', width: '100%'};
-
-    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth} = this.state;
+    let { adjustedDataList } = this.state;
 
     return (
           <Table
@@ -394,67 +399,119 @@ class HouseholdsGrid extends Component {
   }
 
   render() {
-    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth} = this.state;
+    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold} = this.state;
 
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
     let columnFlexDetails = detailsColumnsHidden ? 0 : 1;
     let columnFlexLadder = ladderColumnsHidden ? 0 : 1;
-    let tableHeight = this.state.height * 0.783;
+
+    let rowWidth = (tableWidth - 60) / 6;
+    let tableHeight = (this.state.height * 0.783) - 45;
+
+    let aboutToolsWidth = columnWidths.name + columnWidths.description + columnWidths.model;
+    let detailsToolsWidth = columnWidths.accountNumber + columnWidths.cusip + columnWidths.currentPrice + columnWidths.maturityDate + columnWidths.quantity;
+    let ladderToolsWidth = columnWidths.balance + columnWidths.marketValue;
     return (
       <div>
         <div id="grid-container">
+      {
+        groupByHousehold
+          ?
+            <div id="grid-header-tools">
+              <Table
+                rowHeight={40}
+                rowsCount={0}
+                headerHeight={40}
+                width={tableWidth}
+                height={40}
+                {...this.props}>
+                <Column
+                  header={
+                    <Cell onClick={this.toggleTableGrouping}>
+                      <UngroupHouseholds />
+                    </Cell>}
+                  width={40}
+                  fixed={true}
+                />
+                <Column
+                  header={
+                    <Cell onClick={this.toggleAboutColumnGroup}>About &nbsp;
+                      {
+                        !aboutColumnsHidden
+                          ? <span>[-]</span>
+                          : <span>[+]</span>
+                      }
+                    </Cell>}
+                  width={100}
+                />
+                <Column
+                header={
+                  <Cell onClick={this.toggleDetailsColumnGroup}>Details &nbsp;
+                  {
+                    !detailsColumnsHidden
+                      ? <span>[-]</span>
+                      : <span>[+]</span>
+                  }
+                  </Cell>}
+                width={100}
+                />
+                <Column
+                  columnKey="accountNumber"
+                  header={
+                    <Cell onClick={this.toggleLadderColumnGroup}>Ladder &nbsp;
+                    {
+                      !ladderColumnsHidden
+                        ? <span>[-]</span>
+                        : <span>[+]</span>
+                    }
+                    </Cell>}
+                  width={100}
+                />
+              </Table>
+            </div>
+          : null
+      }
+      {
+        groupByHousehold
+          ?
           <Table
             scrollToRow={scrollToRow}
             rowHeight={40}
             rowsCount={adjustedDataList.size}
             subRowHeightGetter={this._subRowHeightGetter}
             rowExpanded={this._rowExpandedGetter}
-            groupHeaderHeight={30}
             headerHeight={75}
             onColumnResizeEndCallback={this._onColumnResizeEndCallback}
             isColumnResizing={false}
             width={tableWidth}
             height={tableHeight}
             {...this.props}>
-            <ColumnGroup
+            <Column
               header={
-                <Cell>
-                  <UngroupHouseholds />
-                </Cell>}>
-              <Column
-                header={
-                  <div id="header-tools-container">
-                    { !allRowsExpanded
-                        ? <div onClick={this._handleCollapseAllClick}>
-                            <ExpandAllRows />
-                          </div>
-                        : <div onClick={this._handleCollapseAllClick}>
-                            <CollapseAllRows />
-                          </div> }
-                    { filtersVisible
-                        ? <div onClick={this.toggleFilters}>
-                            <HideFilters />
-                          </div>
-                        : <div onClick={this.toggleFilters}>
-                            <ShowFilters />
-                          </div> }
-                  </div>
-                }
-                cell={<CollapseCell callback={this._handleCollapseClick} collapsedRows={collapsedRows} />}
-                fixed={true}
-                width={40}
-                flexGrow={0}
-              />
-            </ColumnGroup>
-            <ColumnGroup
-              header={
-                <Cell onClick={this.toggleAboutColumnGroup}>About &nbsp;
-                  {
-                    !aboutColumnsHidden
-                      ? <span>[-]</span>
-                      : <span>[+]</span>
-                  }
-                </Cell>}>
+                <div id="header-tools-container">
+                  { !allRowsExpanded
+                      ? <div onClick={this._handleCollapseAllClick}>
+                          <ExpandAllRows />
+                        </div>
+                      : <div onClick={this._handleCollapseAllClick}>
+                          <CollapseAllRows />
+                        </div> }
+                  { filtersVisible
+                      ? <div onClick={this.toggleFilters}>
+                          <HideFilters />
+                        </div>
+                      : <div onClick={this.toggleFilters}>
+                          <ShowFilters />
+                        </div> }
+                </div>
+              }
+              cell={<CollapseCell
+                callback={this._handleCollapseClick} collapsedRows={collapsedRows}
+              />}
+              fixed={true}
+              width={40}
+              flexGrow={0}
+            />
               <Column
                 columnKey="name"
                 header={
@@ -471,7 +528,7 @@ class HouseholdsGrid extends Component {
                   </div>
                 }
                 cell={<TextCell data={adjustedDataList} />}
-                fixed={false}
+                fixed={true}
                 flexGrow={0}
                 width={columnWidths.name}
                 isResizable={true}
@@ -516,16 +573,7 @@ class HouseholdsGrid extends Component {
                 width={columnWidths.model}
                 isResizable={true}
               />
-            </ColumnGroup>
-            <ColumnGroup
-              header={
-                <Cell onClick={this.toggleDetailsColumnGroup}>Details &nbsp;
-                {
-                  !detailsColumnsHidden
-                    ? <span>[-]</span>
-                    : <span>[+]</span>
-                }
-                </Cell>}>
+
               <Column
                 header={
                   <div>
@@ -637,16 +685,7 @@ class HouseholdsGrid extends Component {
                 width={columnWidths.quantity}
                 isResizable={true}
               />
-            </ColumnGroup>
-            <ColumnGroup
-              header={
-                <Cell onClick={this.toggleLadderColumnGroup}>Ladder &nbsp;
-                {
-                  !ladderColumnsHidden
-                    ? <span>[-]</span>
-                    : <span>[+]</span>
-                }
-                </Cell>}>
+
               <Column
                 columnKey="balance"
                 header={
@@ -703,8 +742,113 @@ class HouseholdsGrid extends Component {
                 width={columnWidths.marketValue}
                 isResizable={true}
               />
-            </ColumnGroup>
           </Table>
+          :
+          <Table
+            rowHeight={40}
+            rowsCount={adjustedDataList.size}
+            groupHeaderHeight={30}
+            headerHeight={60}
+            width={tableWidth}
+            height={tableHeight}
+            {...this.props}>
+            <Column
+              columnKey="id"
+              header={
+                <Cell onClick={this.toggleTableGrouping}>
+                  <Tooltip title='Group by Household' position='right'>
+                    <div id="group-image-container">
+                      <img id="ungroup-image" src={require("../ClientsGrid/group.png")} alt="ungroup" />
+                    </div>
+                  </Tooltip>
+                </Cell>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              fixed={false}
+              width={40}
+              flexGrow={0}
+            />
+            <Column
+              columnKey="name"
+              header={
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs.portfolioDescription}>
+                  Portfolio Description
+                </SortHeaderCell>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              fixed={false}
+              width={rowWidth}
+              flexGrow={0}
+            />
+            <Column
+              columnKey="accountNumber"
+              header={
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs.underlyingPortfolioAccountNumber}>
+                  Underlying Portfolio Account Number
+                </SortHeaderCell>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={rowWidth}
+              flexGrow={1}
+            />
+            <Column
+              columnKey="cusip"
+              header={
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs.symbolCUSIP}>
+                  Symbol/CUSIP
+                </SortHeaderCell>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={rowWidth}
+              flexGrow={1}
+            />
+            <Column
+              columnKey="currentPrice"
+              header={
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs.currentPrice}>
+                  Current Price
+                </SortHeaderCell>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={rowWidth}
+              flexGrow={1}
+            />
+            <Column
+              columnKey="maturityDate"
+              header={
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs.maturityDate}>
+                  Maturity Date
+                </SortHeaderCell>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={rowWidth}
+              flexGrow={1}
+            />
+            <Column
+              columnKey="quantity"
+              header={
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs.quantity}>
+                  Quantity
+                </SortHeaderCell>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={rowWidth}
+              flexGrow={1}
+            />
+          </Table>
+      }
         </div>
       </div>
     );

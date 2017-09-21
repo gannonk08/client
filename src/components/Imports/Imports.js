@@ -25,19 +25,10 @@ class Imports extends Component {
 		super(props);
 		this.onSubmit = this.onSubmit.bind(this);
 
-    this.state = {
-      loaded: true,
-      uuid: ''
-    };
+    this.state = { loaded: true };
 	}
 
-  componentDidMount() {
-    let storedUuid = localStorage.getItem("uuid");
-    this.setState({ uuid: storedUuid });
-  }
-
   onSubmit = (e) => {
-    let { uuid } = this.state;
     e.preventDefault();
     this.setState({ loaded: false });
 		let fileAcl = process.env.REACT_APP_ACL;
@@ -71,9 +62,10 @@ class Imports extends Component {
 					headers: { 'Accept': 'application/json' }
 				})
 				.then(res => {
-					if (res.ok === true) {
-            const PATH_GET_CLIENTS = '/clients/';
-            fetch(PATH_BASE + PATH_GET_CLIENTS + uuid, {
+					if (res.status === 'OK') {
+            let uploadId = res.uploadId
+            const PATH_GET_CLIENTS = '/clients/?uploadId=';
+            fetch(PATH_BASE + PATH_GET_CLIENTS + uploadId, {
     					mode: 'cors',
     		      credentials: 'include',
     				  method: 'GET',

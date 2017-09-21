@@ -71,7 +71,6 @@ class Nav extends Component {
   }
 
 	render() {
-    const { csvData } = this.props;
 		return (
       <div>
         <nav>

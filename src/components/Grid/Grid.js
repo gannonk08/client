@@ -10,7 +10,7 @@ import HouseholdsGrid from '../HouseholdsGrid/HouseholdsGrid';
 import HouseholdsGridStore from '../HouseholdsGrid/HouseholdsGridStore';
 
 let PATH_BASE = '';
-const PATH_GET_CLIENTS = '/clients/088B5FAE-E78C-4817-9724-C93DF2AEB14D';
+const PATH_GET_CLIENTS = '/clients';
 
 process.env.NODE_ENV === 'production'
 ? PATH_BASE = process.env.REACT_APP_API_PROD

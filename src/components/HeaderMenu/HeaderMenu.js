@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
+import Loader from 'react-loader';
 import './HeaderMenu.css';
 import ChangePassword from '../ChangePassword/ChangePassword';
 
@@ -16,11 +17,13 @@ class HeaderMenu extends Component {
     this.getLogout = this.getLogout.bind(this);
     this.toggleChangeForm = this.toggleChangeForm.bind(this);
 		this.state = {
-      changeFormVisible: false
+      changeFormVisible: false,
+			loaded: true
     };
   }
 
 	getLogout() {
+		this.setState({ loaded: false });
 		fetch(PATH_BASE + PATH_SIGNOUT, {
 			mode: 'cors',
 			credentials: 'include',
@@ -33,6 +36,7 @@ class HeaderMenu extends Component {
 		})
 		.then(res => {
 			if (res.ok) {
+				this.setState({ loaded: true });
 				localStorage.clear();
 				this.props.history.push('/');
 			}
@@ -45,16 +49,19 @@ class HeaderMenu extends Component {
 	}
 
 	render() {
+		let { loaded } = this.state;
 		return (
-      <div id="header-menu">
-				<div id="log-out" onClick={this.getLogout}>Log Out</div>
-				<div id="change-password" onClick={this.toggleChangeForm}>Change Password</div>
-				{
-          this.state.changeFormVisible
-            ? <ChangePassword />
-            : null
-        }
-      </div>
+			<Loader loaded={loaded}>
+	      <div id="header-menu">
+					<div id="log-out" onClick={this.getLogout}>Log Out</div>
+					<div id="change-password" onClick={this.toggleChangeForm}>Change Password</div>
+					{
+	          this.state.changeFormVisible
+	            ? <ChangePassword />
+	            : null
+	        }
+	      </div>
+			</Loader>
 		)
 	}
 }

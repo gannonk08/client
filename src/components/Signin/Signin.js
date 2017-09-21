@@ -56,21 +56,21 @@ class Signin extends Component {
 	render() {
 		let { loaded } = this.state;
 		return (
-			<Loader loaded={loaded}>
-				<div>
-					<div className="email">
-						<label htmlFor="email">Email</label>
-						<input id="email" className="form-control" name="email" type="text"/>
-					</div>
-					<div className="pass">
-						<label htmlFor="pass">Password</label>
-						<input id="password" className="form-control" name="pass" type="password"/>
-					</div>
-					<div className="buttons">
-						<div className="log-in-button btn btn-primary" onClick={this.postSignin}>Log In</div>
-					</div>
+			<div>
+				<div className="email">
+					<label htmlFor="email">Email</label>
+					<input id="email" className="form-control" name="email" type="text"/>
 				</div>
-			</Loader>
+				<div className="pass">
+					<label htmlFor="pass">Password</label>
+					<input id="password" className="form-control" name="pass" type="password"/>
+				</div>
+				<div className="buttons">
+					<div className="log-in-button btn btn-primary" onClick={this.postSignin}>Log In</div>
+				</div>
+				<Loader loaded={loaded}>
+				</Loader>
+			</div>
 		)
 	}
 }

@@ -12,15 +12,17 @@ class HouseholdsGridStore {
         let accountsObject = r.accounts;
         let securitiesObject = r.securities;
         let modelsObject = r.models;
+        let rawDate = securitiesObject.maturity_date;
+        let trimmedDate = rawDate.substring(0, 10);
         let refinedData = {
-          id: count,
+          id: count + 1,
           name: householdsObject.name,
           description: accountsObject.account_description,
           model: modelsObject.name,
           accountNumber: accountsObject.account_number,
           cusip: securitiesObject.cusip,
           currentPrice: securitiesObject.price,
-          maturityDate: securitiesObject.maturity_date,
+          maturityDate: trimmedDate,
           quantity: 100,
           balance: householdsObject.ladder_to_total_percentage,
           marketValue: securitiesObject.price * 100
