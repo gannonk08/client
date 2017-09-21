@@ -22,6 +22,12 @@ class Nav extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.importsVisible === undefined || this.props.importsVisible === false
+      ? this.setState({ importsVisible: false })
+      : this.setState({ importsVisible: true });
+  }
+
   showRebalanceBanner() {
     if (this.state.importsVisible) {
       this.setState({ importsVisible: false });
@@ -66,7 +72,6 @@ class Nav extends Component {
 
 	render() {
     const { csvData } = this.props;
-    console.log("csvData prop in nav: ", csvData);
 		return (
       <div>
         <nav>

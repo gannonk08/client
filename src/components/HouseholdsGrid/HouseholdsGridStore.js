@@ -1,46 +1,68 @@
-// const PATH_GET_CLIENTS = '/clients/088B5FAE-E78C-4817-9724-C93DF2AEB14D';
-// let PATH_BASE = '';
-// process.env.NODE_ENV === 'production'
-// ? PATH_BASE = process.env.REACT_APP_API_PROD
-// : PATH_BASE = process.env.REACT_APP_API_DEV;
-
 class HouseholdsGridStore {
-  constructor() {
-    this.size = 200;
-    this._cache = [];
+  constructor(records) {
+    if (!records) {
+      this.size = 200;
+      this._cache = [];
+    } else {
+      this.size = records.length;
+      let refinedDataArray = [];
+      let count = 0;
+      records.forEach(r => {
+        let householdsObject = r.households;
+        let accountsObject = r.accounts;
+        let securitiesObject = r.securities;
+        let modelsObject = r.models;
+        let refinedData = {
+          id: count,
+          name: householdsObject.name,
+          description: accountsObject.account_description,
+          model: modelsObject.name,
+          accountNumber: accountsObject.account_number,
+          cusip: securitiesObject.cusip,
+          currentPrice: securitiesObject.price,
+          maturityDate: securitiesObject.maturity_date,
+          quantity: 100,
+          balance: householdsObject.ladder_to_total_percentage,
+          marketValue: securitiesObject.price * 100
+        }
+        count++;
+        refinedDataArray.push(refinedData);
+      })
+      this._cache = refinedDataArray;
+    }
   }
 
   getRowData(/*number*/ index) /*object*/ {
-    // let householdsObject = this._cache[index]["households"];
-    // let accountsObject = this._cache[index]["accounts"];
-    // let securitiesObject = this._cache[index]["securities"];
-    // let modelsObject = this._cache[index]["models"];
-    // return {
-    //   id: index,
-    //   name: householdsObject.name,
-    //   description: accountsObject.account_description,
-    //   model: modelsObject.name,
-    //   accountNumber: accountsObject.account_number,
-    //   cusip: securitiesObject.cusip,
-    //   currentPrice: securitiesObject.price,
-    //   maturityDate: securitiesObject.maturity_date,
-    //   quantity: 100,
-    //   balance: householdsObject.ladder_to_total_percentage,
-    //   marketValue: securitiesObject.price * 100
-    // }
+    let householdsObject = this._cache[index]["households"];
+    let accountsObject = this._cache[index]["accounts"];
+    let securitiesObject = this._cache[index]["securities"];
+    let modelsObject = this._cache[index]["models"];
     return {
       id: index,
-      name: "Test Home",
-      description: "fake description",
-      model: "test model",
-      accountNumber: Math.floor(Math.random() * 100),
-      cusip: "123ABC",
-      currentPrice: 107,
-      maturityDate: "Sep 10, 2017",
+      name: householdsObject.name,
+      description: accountsObject.account_description,
+      model: modelsObject.name,
+      accountNumber: accountsObject.account_number,
+      cusip: securitiesObject.cusip,
+      currentPrice: securitiesObject.price,
+      maturityDate: securitiesObject.maturity_date,
       quantity: 100,
-      balance: 80,
-      marketValue: Math.floor(Math.random() * 10000)
+      balance: householdsObject.ladder_to_total_percentage,
+      marketValue: securitiesObject.price * 100
     }
+    // return {
+    //   id: index,
+    //   name: "Test Home",
+    //   description: "fake description",
+    //   model: "test model",
+    //   accountNumber: Math.floor(Math.random() * 100),
+    //   cusip: "123ABC",
+    //   currentPrice: 107,
+    //   maturityDate: "Sep 10, 2017",
+    //   quantity: 100,
+    //   balance: 80,
+    //   marketValue: Math.floor(Math.random() * 10000)
+    // }
   }
 
   getObjectAt(/*number*/ index) /*?object*/ {

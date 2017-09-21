@@ -58,7 +58,6 @@ class Imports extends Component {
 			if (err) {
 				console.log(err, err.stack)
 			} else {
-				console.log("DATA: ", data);
         let PATH_BASE = '';
         process.env.NODE_ENV === 'production'
         ? PATH_BASE = process.env.REACT_APP_API_PROD
@@ -73,7 +72,6 @@ class Imports extends Component {
 				})
 				.then(res => {
 					if (res.ok === true) {
-						console.log("res.ok === true");
             const PATH_GET_CLIENTS = '/clients/';
             fetch(PATH_BASE + PATH_GET_CLIENTS + uuid, {
     					mode: 'cors',
@@ -84,9 +82,9 @@ class Imports extends Component {
             .then (res => res.json())
             .then(res => {
               if (res.status === "OK") {
-                console.log("dumby data: ", res.records);
-                this.props.history.push('/clients');
+                console.log("imported data: ", res.records);
                 this.setState({ loaded: true });
+                this.props.history.push('/clients');
               }
             })
             .catch(e => console.log(e));

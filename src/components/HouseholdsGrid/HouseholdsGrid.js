@@ -1,15 +1,10 @@
 import React, {Component} from 'react';
-import { Table, Column, ColumnGroup, Cell } from 'fixed-data-table-2';
-import Loader from 'react-loader';
-
+import {Table, Column, ColumnGroup, Cell} from 'fixed-data-table-2';
 import UngroupHouseholds from './GridCells/UngroupHouseholds';
 import {ExpandAllRows, CollapseAllRows} from './GridCells/ExpandCollapseAllRows';
 import {HideFilters, ShowFilters} from './GridCells/ToggleFilters';
-import HouseholdsGridStore from './HouseholdsGridStore';
-import ClientsGridStore from '../ClientsGrid/ClientsGridStore';
 import {DataListWrapper} from './GridCells/DataListWrapper';
-import { CollapseCell, TextCell, SortHeaderCell } from './GridCells/HelperCells';
-
+import {CollapseCell, TextCell, SortHeaderCell} from './GridCells/HelperCells';
 import 'fixed-data-table-2/dist/fixed-data-table.min.css';
 import './HouseholdsGrid.css';
 
@@ -21,18 +16,15 @@ const SortTypes = {
 class HouseholdsGrid extends Component {
   constructor(props) {
     super(props);
+    console.log("HouseholdsGrid props in constructor", this.props.freshData);
 
-    this._dataList = new HouseholdsGridStore();
-    this._clientsDataList = new ClientsGridStore();
+    this._dataList = this.props.freshData;
 
     this._defaultSortIndexes = [];
     let size = this._dataList.size;
-    for (var index = 0; index < size; index++) {
+    for (let index = 0; index < size; index++) {
       this._defaultSortIndexes.push(index);
-    }
-
-    console.log("houeholds data list in constructor: ", this._dataList);
-    console.log("clients data list in constructor: ", this._clientsDataList);
+    };
 
     this.state = {
       scrollToRow: null,
@@ -49,7 +41,6 @@ class HouseholdsGrid extends Component {
       aboutColumnsHidden: false,
       detailsColumnsHidden: true,
       ladderColumnsHidden: false,
-      loaded: false,
       allRowsExpanded: false,
       filtersVisible: true,
       columnWidths: {
@@ -79,8 +70,6 @@ class HouseholdsGrid extends Component {
     this.handleExpandAllRows = this.handleExpandAllRows.bind(this);
     this.toggleFilters = this.toggleFilters.bind(this);
     this._onColumnResizeEndCallback = this._onColumnResizeEndCallback.bind(this);
-    this.loadClientData = this.loadClientData.bind(this);
-    this.onSuccess = this.onSuccess.bind(this);
   }
 
   _onColumnResizeEndCallback(newColumnWidth, columnKey) {
@@ -113,32 +102,32 @@ class HouseholdsGrid extends Component {
       });
     }
 
-    var filterBy = e.target.value.toLowerCase();
-    var size = this._dataList.size;
-    var filteredIndexes = [];
-    for (var index = 0; index < size; index++) {
+    let filterBy = e.target.value.toLowerCase();
+    let size = this._dataList.size;
+    let filteredIndexes = [];
+    for (let index = 0; index < size; index++) {
       if (filteredColumn === 'name') {
-        var {name} = this._dataList.getObjectAt(index);
+        let {name} = this._dataList.getObjectAt(index);
         if (name.toLowerCase().indexOf(filterBy) !== -1) {
           filteredIndexes.push(index);
         }
       } else if (filteredColumn === 'description') {
-        var {description} = this._dataList.getObjectAt(index);
+        let {description} = this._dataList.getObjectAt(index);
         if (description.toLowerCase().indexOf(filterBy) !== -1) {
           filteredIndexes.push(index);
         }
       } else if (filteredColumn === 'model') {
-        var {model} = this._dataList.getObjectAt(index);
+        let {model} = this._dataList.getObjectAt(index);
         if (model.toLowerCase().indexOf(filterBy) !== -1) {
           filteredIndexes.push(index);
         }
       } else if (filteredColumn === 'percentage') {
-        var {percentage} = this._dataList.getObjectAt(index);
+        let {percentage} = this._dataList.getObjectAt(index);
         if (percentage.toLowerCase().indexOf(filterBy) !== -1) {
           filteredIndexes.push(index);
         }
       } else if (filteredColumn === 'marketValue') {
-        var {value} = this._dataList.getObjectAt(index);
+        let {value} = this._dataList.getObjectAt(index);
         if (value.toLowerCase().indexOf(filterBy) !== -1) {
           filteredIndexes.push(index);
         }
@@ -154,11 +143,11 @@ class HouseholdsGrid extends Component {
   }
 
   _onSortChange(columnKey, sortDir) {
-    var sortIndexes = this._defaultSortIndexes.slice();
+    let sortIndexes = this._defaultSortIndexes.slice();
     sortIndexes.sort((indexA, indexB) => {
-      var valueA = this._dataList.getObjectAt(indexA)[columnKey];
-      var valueB = this._dataList.getObjectAt(indexB)[columnKey];
-      var sortVal = 0;
+      let valueA = this._dataList.getObjectAt(indexA)[columnKey];
+      let valueB = this._dataList.getObjectAt(indexB)[columnKey];
+      let sortVal = 0;
       if (valueA > valueB) {
         sortVal = 1;
       }
@@ -180,43 +169,13 @@ class HouseholdsGrid extends Component {
     });
   }
 
-  loadClientData() {
-    this.setState({ loaded: false })
-    this.onSuccess();
-  }
-
-  onSuccess() {
-    const PATH_GET_CLIENTS = '/clients/088B5FAE-E78C-4817-9724-C93DF2AEB14D';
-    let PATH_BASE = '';
-    process.env.NODE_ENV === 'production'
-    ? PATH_BASE = process.env.REACT_APP_API_PROD
-    : PATH_BASE = process.env.REACT_APP_API_DEV;
-
-    fetch(PATH_BASE + PATH_GET_CLIENTS, {
-      mode: 'cors',
-      credentials: 'include',
-      method: 'GET',
-      headers: { 'Accept': 'application/json' }
-    })
-    .then (res => res.json())
-    .then(res => {
-      if (res.status === "OK") {
-        console.log("new CLIENTS data in households grid constructor: ", res.records);
-        this.setState({ loaded: true });
-      }
-    })
-    .catch(e => console.log(e));
-  }
-
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
-    this.loadClientData();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions);
-    localStorage.clear();
   }
 
   updateWindowDimensions() {
@@ -236,7 +195,6 @@ class HouseholdsGrid extends Component {
       maturityDate: !detailsColumnsHidden ? (window.innerWidth - 95) / 7 : 0,
       quantity: !detailsColumnsHidden ? (window.innerWidth - 95) / 7 : 0
     }})
-    console.log("columnWidths: ", this.state.columnWidths);
   }
 
   _handleCollapseClick(rowIndex) {
@@ -389,7 +347,7 @@ class HouseholdsGrid extends Component {
   }
 
   render() {
-    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden, loaded, allRowsExpanded, filtersVisible, columnWidths, tableWidth} = this.state;
+    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth} = this.state;
 
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
     let columnFlexDetails = detailsColumnsHidden ? 0 : 1;
@@ -397,312 +355,310 @@ class HouseholdsGrid extends Component {
     let tableHeight = this.state.height * 0.783;
     return (
       <div>
-        <Loader loaded={loaded}>
-          <div id="grid-container">
-            <Table
-              scrollToRow={scrollToRow}
-              rowHeight={40}
-              rowsCount={adjustedDataList.size}
-              subRowHeightGetter={this._subRowHeightGetter}
-              rowExpanded={this._rowExpandedGetter}
-              groupHeaderHeight={30}
-              headerHeight={75}
-              onColumnResizeEndCallback={this._onColumnResizeEndCallback}
-              isColumnResizing={false}
-              width={tableWidth}
-              height={tableHeight}
-              {...this.props}>
-              <ColumnGroup
+        <div id="grid-container">
+          <Table
+            scrollToRow={scrollToRow}
+            rowHeight={40}
+            rowsCount={adjustedDataList.size}
+            subRowHeightGetter={this._subRowHeightGetter}
+            rowExpanded={this._rowExpandedGetter}
+            groupHeaderHeight={30}
+            headerHeight={75}
+            onColumnResizeEndCallback={this._onColumnResizeEndCallback}
+            isColumnResizing={false}
+            width={tableWidth}
+            height={tableHeight}
+            {...this.props}>
+            <ColumnGroup
+              header={
+                <Cell>
+                  <UngroupHouseholds />
+                </Cell>}>
+              <Column
                 header={
-                  <Cell>
-                    <UngroupHouseholds />
-                  </Cell>}>
-                <Column
-                  header={
-                    <div id="header-tools-container">
-                      { !allRowsExpanded
-                          ? <div onClick={this._handleCollapseAllClick}>
-                              <ExpandAllRows />
-                            </div>
-                          : <div onClick={this._handleCollapseAllClick}>
-                              <CollapseAllRows />
-                            </div> }
-                      { filtersVisible
-                          ? <div onClick={this.toggleFilters}>
-                              <HideFilters />
-                            </div>
-                          : <div onClick={this.toggleFilters}>
-                              <ShowFilters />
-                            </div> }
-                    </div>
-                  }
-                  cell={<CollapseCell callback={this._handleCollapseClick} collapsedRows={collapsedRows} />}
-                  fixed={true}
-                  width={40}
-                  flexGrow={0}
-                />
-              </ColumnGroup>
-              <ColumnGroup
-                header={
-                  <Cell onClick={this.toggleAboutColumnGroup}>About &nbsp;
-                    {
-                      !aboutColumnsHidden
-                        ? <span>[-]</span>
-                        : <span>[+]</span>
-                    }
-                  </Cell>}>
-                <Column
-                  columnKey="name"
-                  header={
-                    <div>
-                      <SortHeaderCell
-                        onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.name}>
-                        Name
-                      </SortHeaderCell>
-                      <div id="filter-buffer" className={filtersVisible}>
-                        <input className="grid-filter" id="name-filter" onChange={(e) => this._onFilterChange(e, 'name')} placeholder="Filter by Name"
-                        />
-                      </div>
-                    </div>
-                  }
-                  cell={<TextCell data={adjustedDataList} />}
-                  fixed={false}
-                  flexGrow={0}
-                  width={columnWidths.name}
-                  isResizable={true}
-                />
-                <Column
-                  columnKey="description"
-                  header={
-                    <div>
-                      <SortHeaderCell
-                        onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.description}>
-                        Description
-                      </SortHeaderCell>
-                      <div id="filter-buffer" className={filtersVisible}>
-                        <input className="grid-filter" id="description-filter" onChange={(e) => this._onFilterChange(e, 'description')} placeholder="Filter by Description"
-                        />
-                      </div>
-                    </div>
-                  }
-                  cell={<TextCell data={adjustedDataList} />}
-                  flexGrow={columnFlexAbout}
-                  width={columnWidths.description}
-                  isResizable={true}
-                />
-                <Column
-                  columnKey="model"
-                  header={
-                    <div>
-                      <SortHeaderCell
-                        onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.model}>
-                        Notes
-                      </SortHeaderCell>
-                      <div id="filter-buffer" className={filtersVisible}>
-                        <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'model')} placeholder="Filter by Notes"
-                        />
-                      </div>
-                    </div>
-                  }
-                  cell={<TextCell data={adjustedDataList} />}
-                  flexGrow={columnFlexAbout}
-                  width={columnWidths.model}
-                  isResizable={true}
-                />
-              </ColumnGroup>
-              <ColumnGroup
-                header={
-                  <Cell onClick={this.toggleDetailsColumnGroup}>Details &nbsp;
+                  <div id="header-tools-container">
+                    { !allRowsExpanded
+                        ? <div onClick={this._handleCollapseAllClick}>
+                            <ExpandAllRows />
+                          </div>
+                        : <div onClick={this._handleCollapseAllClick}>
+                            <CollapseAllRows />
+                          </div> }
+                    { filtersVisible
+                        ? <div onClick={this.toggleFilters}>
+                            <HideFilters />
+                          </div>
+                        : <div onClick={this.toggleFilters}>
+                            <ShowFilters />
+                          </div> }
+                  </div>
+                }
+                cell={<CollapseCell callback={this._handleCollapseClick} collapsedRows={collapsedRows} />}
+                fixed={true}
+                width={40}
+                flexGrow={0}
+              />
+            </ColumnGroup>
+            <ColumnGroup
+              header={
+                <Cell onClick={this.toggleAboutColumnGroup}>About &nbsp;
                   {
-                    !detailsColumnsHidden
+                    !aboutColumnsHidden
                       ? <span>[-]</span>
                       : <span>[+]</span>
                   }
-                  </Cell>}>
-                <Column
-                  header={
-                    <div>
-                      <SortHeaderCell
-                        onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.accountNumber}>
-                        Account Number
-                      </SortHeaderCell>
-                      <div id="filter-buffer" className={filtersVisible}>
-                        <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'accountNumber')} placeholder="Filter by Symbol"
-                        />
-                      </div>
-                    </div>
-                  }
-                  cell={<TextCell data={adjustedDataList} />}
-                  flexGrow={columnFlexDetails}
-                  width={columnWidths.accountNumber}
-                  isResizable={true}
-                />
-                <Column
-                  header={
-                    <div>
-                      <SortHeaderCell
-                        onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.cusip}>
-                        Symbol/CUSIP
-                      </SortHeaderCell>
-                      <div id="filter-buffer" className={filtersVisible}>
-                        <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'cusip')} placeholder="Filter by Symbol"
-                        />
-                      </div>
-                    </div>
-                  }
-                  cell={<TextCell data={adjustedDataList} />}
-                  flexGrow={columnFlexDetails}
-                  width={columnWidths.cusip}
-                  isResizable={true}
-                />
-                <Column
-                  header={
-                    <div>
-                      <SortHeaderCell
-                        onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.currentPrice}>
-                        Current Price
-                      </SortHeaderCell>
-                      <div id="percentage-filter-container" className={filtersVisible}>
-                        <select className="percentage-dropdown">
-                          <option value=">" selected>&#62;</option>
-                          <option value="=">=</option>
-                          <option value="<">&#60;</option>
-                        </select>
-                        <div className="percentage-slider-container">
-                          <input className="grid-filter" id="current-price-filter" onChange={(e) => this._onFilterChange(e, 'currentPrice')} type="range"
-                          />
-                          <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
-                        </div>
-                      </div>
-                    </div>
-                  }
-                  cell={<TextCell data={adjustedDataList} />}
-                  flexGrow={columnFlexDetails}
-                  width={columnWidths.currentPrice}
-                  isResizable={true}
-                />
-                <Column
-                  header={
-                    <div>
-                      <SortHeaderCell
-                        onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.maturityDate}>
-                        Maturity Date
-                      </SortHeaderCell>
-                      <div id="filter-buffer" className={filtersVisible}>
-                        <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'maturityDate')} placeholder="Filter by Symbol" type="date"
-                        />
-                      </div>
-                    </div>
-                  }
-                  cell={<TextCell data={adjustedDataList} />}
-                  flexGrow={columnFlexDetails}
-                  width={columnWidths.maturityDate}
-                  isResizable={true}
-                />
-                <Column
-                  header={
-                    <div>
-                      <SortHeaderCell
-                        onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.quantity}>
-                        Quantity
-                      </SortHeaderCell>
-                      <div id="percentage-filter-container" className={filtersVisible}>
-                        <select className="percentage-dropdown">
-                          <option value=">" selected>&#62;</option>
-                          <option value="=">=</option>
-                          <option value="<">&#60;</option>
-                        </select>
-                        <div className="percentage-slider-container">
-                          <input className="grid-filter" id="quantity-filter" onChange={(e) => this._onFilterChange(e, 'quantity')} type="range"
-                          />
-                          <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
-                        </div>
-                      </div>
-                    </div>
-                  }
-                  cell={<TextCell data={adjustedDataList} />}
-                  flexGrow={columnFlexDetails}
-                  width={columnWidths.quantity}
-                  isResizable={true}
-                />
-              </ColumnGroup>
-              <ColumnGroup
+                </Cell>}>
+              <Column
+                columnKey="name"
                 header={
-                  <Cell onClick={this.toggleLadderColumnGroup}>Ladder &nbsp;
-                  {
-                    !ladderColumnsHidden
-                      ? <span>[-]</span>
-                      : <span>[+]</span>
-                  }
-                  </Cell>}>
-                <Column
-                  columnKey="balance"
-                  header={
-                    <div>
-                      <SortHeaderCell
-                        onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.percentage}>
-                        % Out-of-Balance
-                      </SortHeaderCell>
-                      <div id="percentage-filter-container" className={filtersVisible}>
-                        <select className="percentage-dropdown">
-                          <option value=">" selected>&#62;</option>
-                          <option value="=">=</option>
-                          <option value="<">&#60;</option>
-                        </select>
-                        <div className="percentage-slider-container">
-                          <input className="grid-filter" id="percentage-filter" onChange={(e) => this._onFilterChange(e, 'percentage')} type="range"
-                          />
-                          <div>&nbsp;{percentageFilterValue}&nbsp;%</div>
-                        </div>
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.name}>
+                      Name
+                    </SortHeaderCell>
+                    <div id="filter-buffer" className={filtersVisible}>
+                      <input className="grid-filter" id="name-filter" onChange={(e) => this._onFilterChange(e, 'name')} placeholder="Filter by Name"
+                      />
+                    </div>
+                  </div>
+                }
+                cell={<TextCell data={adjustedDataList} />}
+                fixed={false}
+                flexGrow={0}
+                width={columnWidths.name}
+                isResizable={true}
+              />
+              <Column
+                columnKey="description"
+                header={
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.description}>
+                      Description
+                    </SortHeaderCell>
+                    <div id="filter-buffer" className={filtersVisible}>
+                      <input className="grid-filter" id="description-filter" onChange={(e) => this._onFilterChange(e, 'description')} placeholder="Filter by Description"
+                      />
+                    </div>
+                  </div>
+                }
+                cell={<TextCell data={adjustedDataList} />}
+                flexGrow={columnFlexAbout}
+                width={columnWidths.description}
+                isResizable={true}
+              />
+              <Column
+                columnKey="model"
+                header={
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.model}>
+                      Notes
+                    </SortHeaderCell>
+                    <div id="filter-buffer" className={filtersVisible}>
+                      <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'model')} placeholder="Filter by Notes"
+                      />
+                    </div>
+                  </div>
+                }
+                cell={<TextCell data={adjustedDataList} />}
+                flexGrow={columnFlexAbout}
+                width={columnWidths.model}
+                isResizable={true}
+              />
+            </ColumnGroup>
+            <ColumnGroup
+              header={
+                <Cell onClick={this.toggleDetailsColumnGroup}>Details &nbsp;
+                {
+                  !detailsColumnsHidden
+                    ? <span>[-]</span>
+                    : <span>[+]</span>
+                }
+                </Cell>}>
+              <Column
+                header={
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.accountNumber}>
+                      Account Number
+                    </SortHeaderCell>
+                    <div id="filter-buffer" className={filtersVisible}>
+                      <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'accountNumber')} placeholder="Filter by Symbol"
+                      />
+                    </div>
+                  </div>
+                }
+                cell={<TextCell data={adjustedDataList} />}
+                flexGrow={columnFlexDetails}
+                width={columnWidths.accountNumber}
+                isResizable={true}
+              />
+              <Column
+                header={
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.cusip}>
+                      Symbol/CUSIP
+                    </SortHeaderCell>
+                    <div id="filter-buffer" className={filtersVisible}>
+                      <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'cusip')} placeholder="Filter by Symbol"
+                      />
+                    </div>
+                  </div>
+                }
+                cell={<TextCell data={adjustedDataList} />}
+                flexGrow={columnFlexDetails}
+                width={columnWidths.cusip}
+                isResizable={true}
+              />
+              <Column
+                header={
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.currentPrice}>
+                      Current Price
+                    </SortHeaderCell>
+                    <div id="percentage-filter-container" className={filtersVisible}>
+                      <select className="percentage-dropdown">
+                        <option value=">" selected>&#62;</option>
+                        <option value="=">=</option>
+                        <option value="<">&#60;</option>
+                      </select>
+                      <div className="percentage-slider-container">
+                        <input className="grid-filter" id="current-price-filter" onChange={(e) => this._onFilterChange(e, 'currentPrice')} type="range"
+                        />
+                        <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
                       </div>
                     </div>
-                  }
-                  cell={<TextCell data={adjustedDataList} />}
-                  flexGrow={0}
-                  width={columnWidths.balance}
-                  isResizable={true}
-                />
-                <Column
-                  columnKey="marketValue"
-                  header={
-                    <div>
-                      <SortHeaderCell
-                        onSortChange={this._onSortChange}
-                        sortDir={colSortDirs.value}>
-                        Market Value
-                      </SortHeaderCell>
-                      <div id="percentage-filter-container" className={filtersVisible}>
-                        <select className="percentage-dropdown">
-                          <option value=">" selected>&#62;</option>
-                          <option value="=">=</option>
-                          <option value="<">&#60;</option>
-                        </select>
-                        <div className="percentage-slider-container">
-                          <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="range"
-                          />
-                          <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
-                        </div>
+                  </div>
+                }
+                cell={<TextCell data={adjustedDataList} />}
+                flexGrow={columnFlexDetails}
+                width={columnWidths.currentPrice}
+                isResizable={true}
+              />
+              <Column
+                header={
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.maturityDate}>
+                      Maturity Date
+                    </SortHeaderCell>
+                    <div id="filter-buffer" className={filtersVisible}>
+                      <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'maturityDate')} placeholder="Filter by Symbol" type="date"
+                      />
+                    </div>
+                  </div>
+                }
+                cell={<TextCell data={adjustedDataList} />}
+                flexGrow={columnFlexDetails}
+                width={columnWidths.maturityDate}
+                isResizable={true}
+              />
+              <Column
+                header={
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.quantity}>
+                      Quantity
+                    </SortHeaderCell>
+                    <div id="percentage-filter-container" className={filtersVisible}>
+                      <select className="percentage-dropdown">
+                        <option value=">" selected>&#62;</option>
+                        <option value="=">=</option>
+                        <option value="<">&#60;</option>
+                      </select>
+                      <div className="percentage-slider-container">
+                        <input className="grid-filter" id="quantity-filter" onChange={(e) => this._onFilterChange(e, 'quantity')} type="range"
+                        />
+                        <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
                       </div>
                     </div>
-                  }
-                  cell={<TextCell data={adjustedDataList} />}
-                  flexGrow={columnFlexLadder}
-                  width={columnWidths.marketValue}
-                  isResizable={true}
-                />
-              </ColumnGroup>
-            </Table>
-          </div>
-        </Loader>
+                  </div>
+                }
+                cell={<TextCell data={adjustedDataList} />}
+                flexGrow={columnFlexDetails}
+                width={columnWidths.quantity}
+                isResizable={true}
+              />
+            </ColumnGroup>
+            <ColumnGroup
+              header={
+                <Cell onClick={this.toggleLadderColumnGroup}>Ladder &nbsp;
+                {
+                  !ladderColumnsHidden
+                    ? <span>[-]</span>
+                    : <span>[+]</span>
+                }
+                </Cell>}>
+              <Column
+                columnKey="balance"
+                header={
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.percentage}>
+                      % Out-of-Balance
+                    </SortHeaderCell>
+                    <div id="percentage-filter-container" className={filtersVisible}>
+                      <select className="percentage-dropdown">
+                        <option value=">" selected>&#62;</option>
+                        <option value="=">=</option>
+                        <option value="<">&#60;</option>
+                      </select>
+                      <div className="percentage-slider-container">
+                        <input className="grid-filter" id="percentage-filter" onChange={(e) => this._onFilterChange(e, 'percentage')} type="range"
+                        />
+                        <div>&nbsp;{percentageFilterValue}&nbsp;%</div>
+                      </div>
+                    </div>
+                  </div>
+                }
+                cell={<TextCell data={adjustedDataList} />}
+                flexGrow={0}
+                width={columnWidths.balance}
+                isResizable={true}
+              />
+              <Column
+                columnKey="marketValue"
+                header={
+                  <div>
+                    <SortHeaderCell
+                      onSortChange={this._onSortChange}
+                      sortDir={colSortDirs.value}>
+                      Market Value
+                    </SortHeaderCell>
+                    <div id="percentage-filter-container" className={filtersVisible}>
+                      <select className="percentage-dropdown">
+                        <option value=">" selected>&#62;</option>
+                        <option value="=">=</option>
+                        <option value="<">&#60;</option>
+                      </select>
+                      <div className="percentage-slider-container">
+                        <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="range"
+                        />
+                        <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
+                      </div>
+                    </div>
+                  </div>
+                }
+                cell={<TextCell data={adjustedDataList} />}
+                flexGrow={columnFlexLadder}
+                width={columnWidths.marketValue}
+                isResizable={true}
+              />
+            </ColumnGroup>
+          </Table>
+        </div>
       </div>
     );
   }
