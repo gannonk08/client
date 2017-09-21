@@ -310,7 +310,7 @@ class HouseholdsGrid extends Component {
   }
 
   _subRowHeightGetter(index) {
-    return this.state.collapsedRows.has(index) ? 80 : 0;
+    return this.state.collapsedRows.has(index) ? 42 : 0;
   }
 
   _rowExpandedGetter({rowIndex, width, height}) {
@@ -321,12 +321,59 @@ class HouseholdsGrid extends Component {
     const containerStyle = { height: height, width: width - 2 };
     const expandedStyle = { backgroundColor: 'white', boxSizing: 'border-box', border: '1px solid #d3d3d3', padding: '20px', overflow: 'scroll', width: '100%'};
 
+    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth} = this.state;
+
     return (
-      <div style={containerStyle}>
-        <div style={expandedStyle}>
-          ...
-        </div>
-      </div>
+          <Table
+            rowHeight={40}
+            rowsCount={adjustedDataList.size}
+            headerHeight={0}
+            onColumnResizeEndCallback={this._onColumnResizeEndCallback}
+            isColumnResizing={false}
+            width={1000}
+            height={42}
+            {...this.props}>
+            <Column
+              header={<Cell>ID</Cell>}
+              cell={<TextCell data={adjustedDataList} />}
+              width={39}
+            />
+            <Column
+            header={<Cell>ID</Cell>}
+            cell={<TextCell data={adjustedDataList} />}
+            width={164}
+            />
+            <Column
+              columnKey="accountNumber"
+              header={<Cell>First Name</Cell>}
+              cell={<TextCell data={adjustedDataList} />}
+              width={117}
+            />
+            <Column
+              columnKey="cusip"
+              header={<Cell>Last Name</Cell>}
+              cell={<TextCell data={adjustedDataList} />}
+              width={117}
+            />
+            <Column
+              columnKey="currentPrice"
+              header={<Cell>City</Cell>}
+              cell={<TextCell data={adjustedDataList} />}
+              width={117}
+            />
+            <Column
+              columnKey="maturityDate"
+              header={<Cell>Street</Cell>}
+              cell={<TextCell data={adjustedDataList} />}
+              width={117}
+            />
+            <Column
+              columnKey="quantity"
+              header={<Cell>Zip Code</Cell>}
+              cell={<TextCell data={adjustedDataList} />}
+              width={117}
+            />
+          </Table>
     );
   }
 
