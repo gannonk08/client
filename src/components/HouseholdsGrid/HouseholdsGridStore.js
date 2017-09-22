@@ -4,74 +4,66 @@ class HouseholdsGridStore {
       this.size = 200;
       this._cache = [];
     } else {
-      this.size = records.length;
-      this.householdsDataArray = [];
-      this.householdNames = [];
+      this.householdsData = records.housesholds;
+      this.result = [];
+      this.size = this.householdsData.length;
       this.count = 1;
-
-      records.forEach(r => {
-        let alreadyAdded = false;
-        if (this.householdNames.length) {
-          this.householdNames.forEach(h =>{
-            console.log("forEach h = ", h);
-            if (h === r.households.name) {
-              alreadyAdded = true;
-            }
-          })
-        }
-        if (!alreadyAdded) {
-          let householdsObject = r.households;
-          let accountsObject = r.accounts;
-          let securitiesObject = r.securities;
-          let modelsObject = r.models;
-          let rawDate = securitiesObject.maturity_date;
-          let trimmedDate = rawDate.substring(0, 10);
-          let householdsData = {
-            id: this.count,
-            name: householdsObject.name,
-            description: accountsObject.account_description,
-            model: modelsObject.name,
-            balance: householdsObject.ladder_to_total_percentage,
-            marketValue: securitiesObject.price * 100,
-            accounts: [
-              {
-                accountNumber: accountsObject.account_number,
-                securities: [
-                  {
-                    cusip: securitiesObject.cusip,
-                    currentPrice: securitiesObject.price,
-                    maturityDate: trimmedDate,
-                    quantity: 100,
-                  }
-                ]
-              }
-            ]
-          }
-          this.count++;
-          this.householdsDataArray.push(householdsData);
-          this._cache = this.householdsDataArray
+      this.householdName = '';
+      this.householdsData.forEach(h => {
+        this.householdName = h.household.name;
+        if (!h.accounts.length) {
+          this.size--;
         } else {
-          console.log("addToExistingHousehold function would've been hit!!");
+          this.result.push({
+            type: "household",
+            name: this.householdName,
+            description: h.model.sector,
+            model: h.model.id,
+            balance: h.household.ladder_to_total_percentage,
+            marketValue: 10000
+          })
+          // h.accounts.forEach(a => {
+          //   let rawDate = a.securities[0].maturity_date;
+          //   let trimmedDate = rawDate.substring(0, 10);
+          //   this.result.push({
+          //     type: "account",
+          //     name: this.householdName,
+          //     id: this.count,
+          //     accountNumber: a.account_number,
+          //     cusip: a.securities[0].cusip,
+          //     currentPrice: a.securities[0].price,
+          //     maturityDate: trimmedDate,
+          //     quantity: 100,
+          //   })
+          // })
         }
       })
+      this._cache = this.result;
     }
   }
 
   getRowData(/*number*/ index) /*object*/ {
     let data = this._cache[index];
-    return {
-      id: data.id,
-      name: data.name,
-      description: data.description,
-      model: data.model,
-      accountNumber: data.accounts[0].accountNumber,
-      cusip: data.accounts[0].securities[0].cusip,
-      currentPrice: data.accounts[0].securities[0].currentPrice,
-      maturityDate: data.accounts[0].securities[0].maturityDate,
-      quantity: data.accounts[0].securities[0].quantity,
-      balance: data.balance,
-      marketValue: data.marketValue
+    if (data.type === "household") {
+      return {
+        name: data.name,
+        description: data.description,
+        model: data.model,
+        balance: data.balance,
+        marketValue: 10000
+      }
     }
+    // else {
+    //   return {
+    //     id: data.id,
+    //     name: data.name,
+    //     accountNumber: data.accountNumber,
+    //     cusip: data.cusip,
+    //     currentPrice: data.currentPrice,
+    //     maturityDate: data.maturityDate,
+    //     quantity: data.quantity
+    //   }
+    // }
   }
 
   getObjectAt(/*number*/ index) /*?object*/ {

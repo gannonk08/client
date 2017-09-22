@@ -10,7 +10,7 @@ import HouseholdsGrid from '../HouseholdsGrid/HouseholdsGrid';
 import HouseholdsGridStore from '../HouseholdsGrid/HouseholdsGridStore';
 
 let PATH_BASE = '';
-const PATH_GET_CLIENTS = '/clients';
+const PATH_GET_CLIENTS = '/clients?uploadId=';
 
 process.env.NODE_ENV === 'production'
 ? PATH_BASE = process.env.REACT_APP_API_PROD
@@ -27,11 +27,12 @@ class Grid extends Component {
 	}
 
   componentDidMount() {
-    this.fetchData();
+    let uploadId = localStorage.getItem("uploadId");
+    this.fetchData(uploadId);
   }
 
-  fetchData() {
-    fetch(PATH_BASE + PATH_GET_CLIENTS, {
+  fetchData(uploadId) {
+    fetch(PATH_BASE + PATH_GET_CLIENTS + uploadId, {
       mode: 'cors',
       credentials: 'include',
       method: 'GET',

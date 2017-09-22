@@ -37,7 +37,8 @@ class HeaderMenu extends Component {
 		.then(res => {
 			if (res.ok) {
 				this.setState({ loaded: true });
-				localStorage.clear();
+				localStorage.setItem("activeSession", "false");
+				localStorage.setItem("user", "");
 				this.props.history.push('/');
 			}
 		})

@@ -260,8 +260,9 @@ class HouseholdsGrid extends Component {
       return null;
     }
 
-    let { adjustedDataList } = this.state;
+    let { adjustedDataList, columnWidths, tableWidth } = this.state;
     let expandedHeight = (40 * adjustedDataList.size) + 2;
+    console.log("columnWidths: ", columnWidths);
 
     return (
           <Table
@@ -270,7 +271,7 @@ class HouseholdsGrid extends Component {
             headerHeight={0}
             onColumnResizeEndCallback={this._onColumnResizeEndCallback}
             isColumnResizing={false}
-            width={1000}
+            width={tableWidth}
             height={expandedHeight}
             {...this.props}>
             <Column
@@ -279,39 +280,49 @@ class HouseholdsGrid extends Component {
               width={39}
             />
             <Column
-            header={<Cell>ID</Cell>}
+            header={<Cell>Name</Cell>}
             cell={<TextCell data={adjustedDataList} />}
-            width={164}
+            width={columnWidths.name}
             />
             <Column
               columnKey="accountNumber"
               header={<Cell>First Name</Cell>}
               cell={<TextCell data={adjustedDataList} />}
-              width={117}
+              width={columnWidths.accountNumber}
             />
             <Column
               columnKey="cusip"
               header={<Cell>Last Name</Cell>}
               cell={<TextCell data={adjustedDataList} />}
-              width={117}
+              width={columnWidths.cusip}
             />
             <Column
               columnKey="currentPrice"
               header={<Cell>City</Cell>}
               cell={<TextCell data={adjustedDataList} />}
-              width={117}
+              width={columnWidths.currentPrice}
             />
             <Column
               columnKey="maturityDate"
               header={<Cell>Street</Cell>}
               cell={<TextCell data={adjustedDataList} />}
-              width={117}
+              width={columnWidths.maturityDate}
             />
             <Column
               columnKey="quantity"
               header={<Cell>Zip Code</Cell>}
               cell={<TextCell data={adjustedDataList} />}
-              width={117}
+              width={columnWidths.quantity}
+            />
+            <Column
+            header={<Cell>% Out of Balance</Cell>}
+            cell={<TextCell data={adjustedDataList} />}
+            width={columnWidths.balance}
+            />
+            <Column
+            header={<Cell>Market Value</Cell>}
+            cell={<TextCell data={adjustedDataList} />}
+            width={columnWidths.marketValue}
             />
           </Table>
     );

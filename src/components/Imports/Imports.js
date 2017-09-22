@@ -63,8 +63,9 @@ class Imports extends Component {
 				})
 				.then(res => {
 					if (res.status === 'OK') {
-            let uploadId = res.uploadId
-            const PATH_GET_CLIENTS = '/clients/?uploadId=';
+            let uploadId = res.uploadId;
+            localStorage.setItem("uploadId", uploadId);
+            const PATH_GET_CLIENTS = '/clients?uploadId=';
             fetch(PATH_BASE + PATH_GET_CLIENTS + uploadId, {
     					mode: 'cors',
     		      credentials: 'include',
