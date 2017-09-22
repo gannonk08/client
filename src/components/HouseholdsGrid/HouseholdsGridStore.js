@@ -5,66 +5,73 @@ class HouseholdsGridStore {
       this._cache = [];
     } else {
       this.size = records.length;
-      let refinedDataArray = [];
-      let count = 0;
+      this.householdsDataArray = [];
+      this.householdNames = [];
+      this.count = 1;
+
       records.forEach(r => {
-        let householdsObject = r.households;
-        let accountsObject = r.accounts;
-        let securitiesObject = r.securities;
-        let modelsObject = r.models;
-        let rawDate = securitiesObject.maturity_date;
-        let trimmedDate = rawDate.substring(0, 10);
-        let refinedData = {
-          id: count + 1,
-          name: householdsObject.name,
-          description: accountsObject.account_description,
-          model: modelsObject.name,
-          accountNumber: accountsObject.account_number,
-          cusip: securitiesObject.cusip,
-          currentPrice: securitiesObject.price,
-          maturityDate: trimmedDate,
-          quantity: 100,
-          balance: householdsObject.ladder_to_total_percentage,
-          marketValue: securitiesObject.price * 100
+        let alreadyAdded = false;
+        if (this.householdNames.length) {
+          this.householdNames.forEach(h =>{
+            console.log("forEach h = ", h);
+            if (h === r.households.name) {
+              alreadyAdded = true;
+            }
+          })
         }
-        count++;
-        refinedDataArray.push(refinedData);
+        if (!alreadyAdded) {
+          let householdsObject = r.households;
+          let accountsObject = r.accounts;
+          let securitiesObject = r.securities;
+          let modelsObject = r.models;
+          let rawDate = securitiesObject.maturity_date;
+          let trimmedDate = rawDate.substring(0, 10);
+          let householdsData = {
+            id: this.count,
+            name: householdsObject.name,
+            description: accountsObject.account_description,
+            model: modelsObject.name,
+            balance: householdsObject.ladder_to_total_percentage,
+            marketValue: securitiesObject.price * 100,
+            accounts: [
+              {
+                accountNumber: accountsObject.account_number,
+                securities: [
+                  {
+                    cusip: securitiesObject.cusip,
+                    currentPrice: securitiesObject.price,
+                    maturityDate: trimmedDate,
+                    quantity: 100,
+                  }
+                ]
+              }
+            ]
+          }
+          this.count++;
+          this.householdsDataArray.push(householdsData);
+          this._cache = this.householdsDataArray
+        } else {
+          console.log("addToExistingHousehold function would've been hit!!");
+        }
       })
-      this._cache = refinedDataArray;
     }
   }
 
   getRowData(/*number*/ index) /*object*/ {
-    let householdsObject = this._cache[index]["households"];
-    let accountsObject = this._cache[index]["accounts"];
-    let securitiesObject = this._cache[index]["securities"];
-    let modelsObject = this._cache[index]["models"];
+    let data = this._cache[index];
     return {
-      id: index,
-      name: householdsObject.name,
-      description: accountsObject.account_description,
-      model: modelsObject.name,
-      accountNumber: accountsObject.account_number,
-      cusip: securitiesObject.cusip,
-      currentPrice: securitiesObject.price,
-      maturityDate: securitiesObject.maturity_date,
-      quantity: 100,
-      balance: householdsObject.ladder_to_total_percentage,
-      marketValue: securitiesObject.price * 100
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      model: data.model,
+      accountNumber: data.accounts[0].accountNumber,
+      cusip: data.accounts[0].securities[0].cusip,
+      currentPrice: data.accounts[0].securities[0].currentPrice,
+      maturityDate: data.accounts[0].securities[0].maturityDate,
+      quantity: data.accounts[0].securities[0].quantity,
+      balance: data.balance,
+      marketValue: data.marketValue
     }
-    // return {
-    //   id: index,
-    //   name: "Test Home",
-    //   description: "fake description",
-    //   model: "test model",
-    //   accountNumber: Math.floor(Math.random() * 100),
-    //   cusip: "123ABC",
-    //   currentPrice: 107,
-    //   maturityDate: "Sep 10, 2017",
-    //   quantity: 100,
-    //   balance: 80,
-    //   marketValue: Math.floor(Math.random() * 10000)
-    // }
   }
 
   getObjectAt(/*number*/ index) /*?object*/ {
@@ -72,10 +79,7 @@ class HouseholdsGridStore {
       if (index < 0 || index > this.size){
         return undefined;
       }
-      if (this._cache[index] === undefined) {
-        this._cache[index] = this.getRowData(index);
-      }
-      return this._cache[index];
+      return this.getRowData(index);
     } else {
       console.log("index undefined in clientsGridStore");
     }

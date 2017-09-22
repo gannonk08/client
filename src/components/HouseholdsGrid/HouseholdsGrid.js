@@ -74,6 +74,7 @@ class HouseholdsGrid extends Component {
     this.toggleFilters = this.toggleFilters.bind(this);
     this._onColumnResizeEndCallback = this._onColumnResizeEndCallback.bind(this);
     this.toggleTableGrouping = this.toggleTableGrouping.bind(this);
+    this.toggleAllColumnGroups = this.toggleAllColumnGroups.bind(this);
   }
 
   toggleTableGrouping() {
@@ -207,8 +208,8 @@ class HouseholdsGrid extends Component {
 
   _handleCollapseClick(rowIndex) {
     const {collapsedRows} = this.state;
+    console.log("collapsedRows: ", collapsedRows);
     const shallowCopyOfCollapsedRows = new Set([...collapsedRows]);
-    console.log("shallowCopyOfCollapsedRows: ", shallowCopyOfCollapsedRows);
     let scrollToRow = rowIndex;
     if (shallowCopyOfCollapsedRows.has(rowIndex)) {
       shallowCopyOfCollapsedRows.delete(rowIndex);
@@ -217,104 +218,37 @@ class HouseholdsGrid extends Component {
       shallowCopyOfCollapsedRows.add(rowIndex);
     }
 
+    let showDetails = collapsedRows.size === 0 && shallowCopyOfCollapsedRows.size === 1;
+    let hideDetails = collapsedRows.size === 1 && shallowCopyOfCollapsedRows.size === 0;
+
+    if (showDetails || hideDetails) {this.toggleAllColumnGroups();}
+
     this.setState({
       scrollToRow: scrollToRow,
       collapsedRows: shallowCopyOfCollapsedRows,
     });
-
-    if (!collapsedRows.size) {
-      this.setState({
-        aboutColumnsHidden: true,
-        detailsColumnsHidden: false,
-        ladderColumnsHidden: true
-      });
-      this.setState({ columnWidths: {
-        name: (window.innerWidth - 95) / 5,
-        description: 0,
-        model: 0,
-        balance: (window.innerWidth - 95) / 5,
-        marketValue: 0,
-        accountNumber: (window.innerWidth - 95) / 7,
-        cusip: (window.innerWidth - 95) / 7,
-        currentPrice: (window.innerWidth - 95) / 7,
-        maturityDate: (window.innerWidth - 95) / 7,
-        quantity: (window.innerWidth - 95) / 7,
-      }});
-    } else if (collapsedRows.size > 0) {
-      this.setState({
-        aboutColumnsHidden: false,
-        detailsColumnsHidden: true,
-        ladderColumnsHidden: false
-      });
-      this.setState({ columnWidths: {
-        name: (window.innerWidth - 95) / 5,
-        description: (window.innerWidth - 95) / 5,
-        model: (window.innerWidth - 95) / 5,
-        balance: (window.innerWidth - 95) / 5,
-        marketValue: (window.innerWidth - 95) / 5,
-        accountNumber: 0,
-        cusip: 0,
-        currentPrice: 0,
-        maturityDate: 0,
-        quantity: 0,
-      }});
-    }
   }
 
   _handleCollapseAllClick() {
-    const { collapsedRows, dataListSize } = this.state;
+    const { collapsedRows, dataListSize, allRowsExpanded, detailsColumnsHidden } = this.state;
     let shallowCopyOfCollapsedRows = new Set([...collapsedRows]);
-    console.log("copyofcollapsedrows", shallowCopyOfCollapsedRows);
-    console.log("dataListSize", dataListSize);
-    this.handleExpandAllRows();
-    for (let i = 0; i < dataListSize; i++) {
-      shallowCopyOfCollapsedRows.has(i)
-      ? shallowCopyOfCollapsedRows.delete(i)
-      : shallowCopyOfCollapsedRows.add(i);
+
+    if (!allRowsExpanded) {
+      this.handleExpandAllRows();
+      for (let i = 0; i < dataListSize; i++) {
+        if (!shallowCopyOfCollapsedRows.has(i)) {shallowCopyOfCollapsedRows.add(i);}
+      }
+      if (detailsColumnsHidden) {this.toggleAllColumnGroups();}
+    } else {
+      this.handleExpandAllRows();
+      shallowCopyOfCollapsedRows = new Set();
+      this.toggleAllColumnGroups();
     }
 
     this.setState({
       scrollToRow: null,
       collapsedRows: shallowCopyOfCollapsedRows
     });
-
-    if (!collapsedRows.size) {
-      this.setState({
-        aboutColumnsHidden: true,
-        detailsColumnsHidden: false,
-        ladderColumnsHidden: true
-      });
-      this.setState({ columnWidths: {
-        name: (window.innerWidth - 95) / 5,
-        description: 0,
-        model: 0,
-        balance: (window.innerWidth - 95) / 5,
-        marketValue: 0,
-        accountNumber: (window.innerWidth - 95) / 7,
-        cusip: (window.innerWidth - 95) / 7,
-        currentPrice: (window.innerWidth - 95) / 7,
-        maturityDate: (window.innerWidth - 95) / 7,
-        quantity: (window.innerWidth - 95) / 7,
-      }});
-    } else if (collapsedRows.size > 0) {
-      this.setState({
-        aboutColumnsHidden: false,
-        detailsColumnsHidden: true,
-        ladderColumnsHidden: false
-      });
-      this.setState({ columnWidths: {
-        name: (window.innerWidth - 95) / 5,
-        description: (window.innerWidth - 95) / 5,
-        model: (window.innerWidth - 95) / 5,
-        balance: (window.innerWidth - 95) / 5,
-        marketValue: (window.innerWidth - 95) / 5,
-        accountNumber: 0,
-        cusip: 0,
-        currentPrice: 0,
-        maturityDate: 0,
-        quantity: 0,
-      }})
-    }
   }
 
   _subRowHeightGetter(index) {
@@ -327,6 +261,7 @@ class HouseholdsGrid extends Component {
     }
 
     let { adjustedDataList } = this.state;
+    let expandedHeight = (40 * adjustedDataList.size) + 2;
 
     return (
           <Table
@@ -336,7 +271,7 @@ class HouseholdsGrid extends Component {
             onColumnResizeEndCallback={this._onColumnResizeEndCallback}
             isColumnResizing={false}
             width={1000}
-            height={42}
+            height={expandedHeight}
             {...this.props}>
             <Column
               header={<Cell>ID</Cell>}
@@ -385,7 +320,6 @@ class HouseholdsGrid extends Component {
   toggleAboutColumnGroup() {
     this.updateWindowDimensions();
     this.setState({ aboutColumnsHidden: !this.state.aboutColumnsHidden });
-    console.log("aboutColumnsHidden", this.state.aboutColumnsHidden);
   }
 
   toggleDetailsColumnGroup() {
@@ -398,6 +332,15 @@ class HouseholdsGrid extends Component {
     this.setState({ ladderColumnsHidden: !this.state.ladderColumnsHidden });
   }
 
+  toggleAllColumnGroups() {
+    this.updateWindowDimensions();
+    this.setState({
+      detailsColumnsHidden: !this.state.detailsColumnsHidden,
+      aboutColumnsHidden: !this.state.aboutColumnsHidden,
+      ladderColumnsHidden: !this.state.ladderColumnsHidden
+    });
+  }
+
   render() {
     let {percentageFilterValue, marketValueFilterValue, adjustedDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, detailsColumnsHidden, ladderColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold} = this.state;
 
@@ -408,9 +351,6 @@ class HouseholdsGrid extends Component {
     let rowWidth = (tableWidth - 60) / 6;
     let tableHeight = (this.state.height * 0.783) - 45;
 
-    let aboutToolsWidth = columnWidths.name + columnWidths.description + columnWidths.model;
-    let detailsToolsWidth = columnWidths.accountNumber + columnWidths.cusip + columnWidths.currentPrice + columnWidths.maturityDate + columnWidths.quantity;
-    let ladderToolsWidth = columnWidths.balance + columnWidths.marketValue;
     return (
       <div>
         <div id="grid-container">
