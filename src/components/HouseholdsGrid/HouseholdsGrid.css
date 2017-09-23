@@ -1,3 +1,32 @@
+.ScrollbarLayout_main.ScrollbarLayout_mainVertical.public_Scrollbar_main {
+  border-left: none;
+}
+
+div.fixedDataTableLayout_bottomShadow.public_fixedDataTable_bottomShadow {
+  display: none;
+}
+
+div.fixedDataTableLayout_rowsContainer {
+  overflow-x: none !important;
+  overflow-y: none !important;
+  overflow: none;
+}
+
+div.fixedDataTableRowLayout_rowExpanded div.fixedDataTableLayout_main.public_fixedDataTable_main {
+  border-left-style: none;
+}
+
+div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTableCell_cellContent {
+  font-size: 75%;
+  font-weight: lighter;
+  background-color: white;
+}
+
+div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTable_header div.public_fixedDataTableCell_cellContent {
+  font-size: 85%;
+  background-color: rgb(250,250,250);
+}
+
 #grid-filters {
   display: flex;
 }

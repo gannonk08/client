@@ -5,65 +5,56 @@ class HouseholdsGridStore {
       this._cache = [];
     } else {
       this.householdsData = records.housesholds;
-      this.result = [];
+      this.accountsData = [];
+      let result = [];
       this.size = this.householdsData.length;
       this.count = 1;
       this.householdName = '';
+
       this.householdsData.forEach(h => {
         this.householdName = h.household.name;
         if (!h.accounts.length) {
           this.size--;
         } else {
-          this.result.push({
+          let addAccounts = this.addAccountsData(h.accounts);
+          this.accountsData.push(addAccounts);
+          result.push({
             type: "household",
             name: this.householdName,
             description: h.model.sector,
             model: h.model.id,
             balance: h.household.ladder_to_total_percentage,
-            marketValue: 10000
+            marketValue: 10000,
+            accounts: addAccounts
           })
-          // h.accounts.forEach(a => {
-          //   let rawDate = a.securities[0].maturity_date;
-          //   let trimmedDate = rawDate.substring(0, 10);
-          //   this.result.push({
-          //     type: "account",
-          //     name: this.householdName,
-          //     id: this.count,
-          //     accountNumber: a.account_number,
-          //     cusip: a.securities[0].cusip,
-          //     currentPrice: a.securities[0].price,
-          //     maturityDate: trimmedDate,
-          //     quantity: 100,
-          //   })
-          // })
         }
+        this.count++;
       })
-      this._cache = this.result;
+      this._cache = result;
     }
   }
 
+  addAccountsData(accounts) {
+    let result = [];
+    accounts.forEach(a => {
+      let rawDate = a.securities[0].maturity_date;
+      let trimmedDate = rawDate.substring(0, 10);
+      result.push({
+        type: "account",
+        name: this.householdName,
+        id: this.count,
+        accountNumber: a.account_number,
+        cusip: a.securities[0].cusip,
+        currentPrice: a.securities[0].price,
+        maturityDate: trimmedDate,
+        quantity: 100,
+      })
+    })
+    return result;
+  }
+
   getRowData(/*number*/ index) /*object*/ {
-    let data = this._cache[index];
-    if (data.type === "household") {
-      return {
-        name: data.name,
-        description: data.description,
-        model: data.model,
-        balance: data.balance,
-        marketValue: 10000
-      }
-    }
-    // else {
-    //   return {
-    //     id: data.id,
-    //     name: data.name,
-    //     accountNumber: data.accountNumber,
-    //     cusip: data.cusip,
-    //     currentPrice: data.currentPrice,
-    //     maturityDate: data.maturityDate,
-    //     quantity: data.quantity
-    //   }
-    // }
+    return this._cache[index];
   }
 
   getObjectAt(/*number*/ index) /*?object*/ {
@@ -72,6 +63,21 @@ class HouseholdsGridStore {
         return undefined;
       }
       return this.getRowData(index);
+    } else {
+      console.log("index undefined in clientsGridStore");
+    }
+  }
+
+  getAccountsData(/*number*/ index) /*object*/ {
+    return this._cache[index].accounts;
+  }
+
+  getAccountsAt(/*number*/ index) /*?object*/ {
+    if (index >= 0) {
+      if (index < 0 || index > this.size){
+        return undefined;
+      }
+      return this.getAccountsData(index);
     } else {
       console.log("index undefined in clientsGridStore");
     }
