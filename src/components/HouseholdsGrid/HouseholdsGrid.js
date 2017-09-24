@@ -488,7 +488,7 @@ class HouseholdsGrid extends Component {
                   <SortHeaderCell id="description-header"
                     onSortChange={this._onSortChange}
                     sortDir={colSortDirs.description}>
-                    Description
+                    Model
                   </SortHeaderCell>
                   <div id="filter-buffer" className={filtersVisible}>
                     <input className="grid-filter" id="description-filter" onChange={(e) => this._onFilterChange(e, 'description')} placeholder="Filter by Description"
@@ -508,7 +508,7 @@ class HouseholdsGrid extends Component {
                   <SortHeaderCell
                     onSortChange={this._onSortChange}
                     sortDir={colSortDirs.model}>
-                    Notes
+                    Model ID
                   </SortHeaderCell>
                   <div id="filter-buffer" className={filtersVisible}>
                     <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'model')} placeholder="Filter by Notes"
