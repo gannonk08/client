@@ -22,13 +22,17 @@ class Grid extends Component {
 
     this.fetchData = this.fetchData.bind(this);
     this.cacheData = this.cacheData.bind(this);
-
+    this.uploadId = 0;
     this.state = { loaded: false, data: {}, };
 	}
 
+  componentWillMount() {
+    this.uploadId = localStorage.getItem("uploadId");
+  }
+
   componentDidMount() {
-    let uploadId = localStorage.getItem("uploadId");
-    this.fetchData(uploadId);
+    console.log('this.uploadId', this.uploadId);
+    this.fetchData(this.uploadId);
   }
 
   fetchData(uploadId) {
@@ -41,6 +45,7 @@ class Grid extends Component {
     .then (res => res.json())
     .then(res => {
       if (res.status === "OK") {
+        console.log('passed to store:::?', res.records);
         this.setState({ data: new HouseholdsGridStore(res.records)});
         return this.state.data;
       }
@@ -51,15 +56,16 @@ class Grid extends Component {
   }
 
   cacheData(data) {
+    console.log("DATA IN IDB", data);
     let indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
 
-    let open = indexedDB.open("BondLadderPro", 1);
-
+    let open = indexedDB.open("BLPro", 1);
+    let indexArray = [];
     // Create the schema
     open.onupgradeneeded = function() {
         let db = open.result;
         let store = db.createObjectStore("ClientsDataStore", {keyPath: "id"});
-        let index = store.createIndex("NameIndex", ["name.last", "name.first"]);
+        let index = store.createIndex("NameIndex", "name");
     };
 
     open.onsuccess = function() {
@@ -70,24 +76,39 @@ class Grid extends Component {
         let index = store.index("NameIndex");
 
         // Add some data
-        store.put({id: 12345, name: {first: "John", last: "Doe"}, age: 42});
-        store.put({id: 67890, name: {first: "Bob", last: "Smith"}, age: 35});
+        data.accountsData.forEach(accountsArray => {
+          accountsArray.forEach(a => {
+            indexArray.push(a.id);
+            let storedItem = {
+              id: a.id,
+              houseIndex: a.houseIndex,
+              name: a.name,
+              accountNumber: a.accountNumber,
+              balance: a.balance,
+              2017: a['2017'],
+              2018: a['2018'],
+              2019: a['2019'],
+              2020: a['2020'],
+              2021: a['2021'],
+              securities: a.securities
+            };
+            store.put(storedItem);
+            console.log('storedItem:', storedItem);
+          })
+        })
 
         // Query the data
-        let getJohn = store.get(12345);
-        let getBob = index.get(["Smith", "Bob"]);
-
-        getJohn.onsuccess = function() {
-            console.log(getJohn.result.name.first);  // => "John"
-        };
-
-        getBob.onsuccess = function() {
-            console.log(getBob.result.name.first);   // => "Bob"
-        };
+        indexArray.forEach(i => {
+          let getAccount = store.get(i);
+          getAccount.onsuccess = () => {
+            console.log("getAccount from IDB", getAccount.result);
+          };
+        })
+        // let getBob = index.get("Hall Monitor");
 
         // Close the db when the transaction is done
         tx.oncomplete = function() {
-            db.close();
+          db.close();
         };
     }
     return data;

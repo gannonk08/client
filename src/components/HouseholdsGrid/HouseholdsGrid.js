@@ -4,6 +4,7 @@ import {ExpandAllRows, CollapseAllRows} from './GridCells/ExpandCollapseAllRows'
 import {HideFilters, ShowFilters} from './GridCells/ToggleFilters';
 import {DataListWrapper} from './GridCells/DataListWrapper';
 import {CollapseCell, TextCell, SortHeaderCell} from './GridCells/HelperCells';
+import UngroupHouseholds from './GridCells/UngroupHouseholds';
 import AccountsGridStore from './AccountsGridStore';
 import SecuritiesGridStore from './SecuritiesGridStore';
 import 'fixed-data-table-2/dist/fixed-data-table.min.css';
@@ -25,13 +26,19 @@ class HouseholdsGrid extends Component {
     this._dataList = this.props.freshData;
     let accountsArray = this._dataList._cache;
     let result = [];
+    let securitiesList = [];
     accountsArray.forEach(a => {
       a.accounts.forEach(account => {
         result.push(account);
+        account.securities.forEach(s => {
+          securitiesList.push(s);
+        })
       })
     })
     this._allAccountsList = new AccountsGridStore(result);
+    this._allSecuritiesList = new SecuritiesGridStore(securitiesList);
     console.log('this._allAccountList::', this._allAccountsList);
+    console.log('this._allSecuritiesList::', this._allSecuritiesList);
 
     this._defaultSortIndexes = [];
     let size = this._dataList.size;
@@ -47,6 +54,7 @@ class HouseholdsGrid extends Component {
     this.state = {
       aboutColumnsHidden: true,
       accountsDataList: this._allAccountsList,
+      acctSecuritiesDataList: this._allSecuritiesList,
       adjustedDataList: this._dataList,
       allRowsExpanded: false,
       collapsedRows: new Set(),
@@ -267,15 +275,17 @@ class HouseholdsGrid extends Component {
   _subRowHeightGetter(index) {
     const { adjustedDataList } = this.state;
     let securitiesArray = [];
-    let accountsArray = adjustedDataList._cache[index].accounts;
-    accountsArray.forEach(a => {
-      a.securities.forEach(s => {
-        securitiesArray.push(s);
+    if (adjustedDataList._cache[index]) {
+      let accountsArray = adjustedDataList._cache[index].accounts;
+      accountsArray.forEach(a => {
+        a.securities.forEach(s => {
+          securitiesArray.push(s);
+        })
       })
-    })
-    return this.state.collapsedRows.has(index)
+      return this.state.collapsedRows.has(index)
       ? (25 * securitiesArray.length) + 42
       : 0;
+    }
   }
 
   _rowExpandedGetter({rowIndex, width, height}) {
@@ -405,17 +415,53 @@ class HouseholdsGrid extends Component {
   }
 
   render() {
-    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, accountsDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold} = this.state;
+    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, accountsDataList, acctSecuritiesDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold} = this.state;
 
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
 
     let rowWidth = (tableWidth - 60) / 6;
     let tableHeight = (this.state.height * 0.83) - 45;
     let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5;
+    let detailsGroupWidth = aboutColumnsHidden ? columnWidths.name : (columnWidths.name + ((window.innerWidth - 95) / 5) * 2);
+    let detailsGroupFlex = aboutColumnsHidden ? 0 : 1;
 
     return (
       <div>
         <div id="grid-container">
+      {
+        groupByHousehold
+          ?
+            <div id="grid-header-tools">
+              <Table
+                rowHeight={40}
+                rowsCount={0}
+                headerHeight={40}
+                width={tableWidth}
+                height={40}
+                {...this.props}>
+                <Column
+                  header={
+                    <Cell onClick={this.toggleTableGrouping}>
+                      <UngroupHouseholds />
+                    </Cell>}
+                  width={40}
+                  fixed={true}
+                />
+                <Column
+                  header={
+                    <Cell onClick={this.toggleAboutColumnGroup}>Details &nbsp;
+                      {
+                        !aboutColumnsHidden
+                          ? <span>[-]</span>
+                          : <span>[+]</span>
+                      }
+                    </Cell>}
+                  width={detailsGroupWidth}
+                />
+              </Table>
+            </div>
+          : null
+      }
       {
         groupByHousehold
           ?
@@ -465,11 +511,6 @@ class HouseholdsGrid extends Component {
                       sortDir={colSortDirs.name}>
                       Name
                     </SortHeaderCell>
-                    {
-                      !aboutColumnsHidden
-                        ? <span onClick={this.toggleAboutColumnGroup}>[-]</span>
-                        : <span onClick={this.toggleAboutColumnGroup}>[+]</span>
-                    }
                   </div>
                   <div id="filter-buffer" className={filtersVisible}>
                     <input className="grid-filter" id="name-filter" onChange={(e) => this._onFilterChange(e, 'name')} placeholder="Filter by Name"
@@ -693,12 +734,12 @@ class HouseholdsGrid extends Component {
           :
           <Table
             rowHeight={40}
-            rowsCount={adjustedDataList.size}
+            rowsCount={acctSecuritiesDataList.size}
             groupHeaderHeight={30}
             headerHeight={60}
             width={tableWidth}
             height={tableHeight}
-            {...this.props}>
+            >
             <Column
               columnKey="id"
               header={
@@ -710,7 +751,7 @@ class HouseholdsGrid extends Component {
                   </Tooltip>
                 </Cell>
               }
-              cell={<TextCell data={accountsDataList} />}
+              cell={<TextCell data={acctSecuritiesDataList} />}
               fixed={false}
               width={40}
               flexGrow={0}
@@ -724,7 +765,7 @@ class HouseholdsGrid extends Component {
                   Name
                 </SortHeaderCell>
               }
-              cell={<TextCell data={accountsDataList} />}
+              cell={<TextCell data={acctSecuritiesDataList} />}
               fixed={false}
               width={rowWidth}
               flexGrow={0}
@@ -738,7 +779,7 @@ class HouseholdsGrid extends Component {
                   Account Number
                 </SortHeaderCell>
               }
-              cell={<TextCell data={accountsDataList} />}
+              cell={<TextCell data={acctSecuritiesDataList} />}
               width={rowWidth}
               flexGrow={1}
             />
@@ -751,7 +792,7 @@ class HouseholdsGrid extends Component {
                   CUSIP
                 </SortHeaderCell>
               }
-              cell={<TextCell data={accountsDataList} />}
+              cell={<TextCell data={acctSecuritiesDataList} />}
               width={rowWidth}
               flexGrow={1}
             />
@@ -764,7 +805,7 @@ class HouseholdsGrid extends Component {
                   Current Price
                 </SortHeaderCell>
               }
-              cell={<TextCell data={accountsDataList} />}
+              cell={<TextCell data={acctSecuritiesDataList} />}
               width={rowWidth}
               flexGrow={1}
             />
@@ -777,7 +818,7 @@ class HouseholdsGrid extends Component {
                   Maturity Date
                 </SortHeaderCell>
               }
-              cell={<TextCell data={accountsDataList} />}
+              cell={<TextCell data={acctSecuritiesDataList} />}
               width={rowWidth}
               flexGrow={1}
             />
@@ -790,7 +831,7 @@ class HouseholdsGrid extends Component {
                   Quantity
                 </SortHeaderCell>
               }
-              cell={<TextCell data={accountsDataList} />}
+              cell={<TextCell data={acctSecuritiesDataList} />}
               width={rowWidth}
               flexGrow={1}
             />

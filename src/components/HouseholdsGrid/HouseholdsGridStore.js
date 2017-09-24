@@ -1,6 +1,8 @@
 class HouseholdsGridStore {
   constructor(records) {
-    if (!records) {
+    let dataRecords = records;
+    console.log('records', dataRecords);
+    if (!dataRecords.housesholds.length) {
       this.size = 200;
       this._cache = [];
     } else {
@@ -42,14 +44,15 @@ class HouseholdsGridStore {
             description: h.model.sector,
             model: h.model.id,
             balance: h.household.ladder_to_total_percentage,
-            2017: this.houses2017,
-            2018: this.houses2018,
-            2019: this.houses2019,
-            2020: this.houses2020,
-            2021: this.houses2021,
+            2017: '$ ' + this.houses2017.toLocaleString(),
+            2018: '$ ' + this.houses2018.toLocaleString(),
+            2019: '$ ' + this.houses2019.toLocaleString(),
+            2020: '$ ' + this.houses2020.toLocaleString(),
+            2021: '$ ' + this.houses2021.toLocaleString(),
             accounts: addAccounts
           })
           this.numHouseholds++;
+          console.log('race forEach');
         }
       })
       this._cache = result;
@@ -107,29 +110,29 @@ class HouseholdsGridStore {
     securities.forEach(s => {
       let rawMaturityDate = s.maturity_date;
       let rawMaturityDate2 = s.maturity_date;
-      let monthDay = rawMaturityDate.substring(3,9);
-      let year = rawMaturityDate2.substring(24, 28);
-      let maturityDate = monthDay + ', ' + year;
+      let monthDay = rawMaturityDate.substring(0,6);
+      let year = rawMaturityDate2.substring(6,10);
+      let maturityDate = monthDay + year;
       let faceValue = parseFloat(s.face_value.replace(/\$|,/g, ''));
       switch (year) {
         case '2017':
-          marketValue17 = faceValue;
+          marketValue17 = s.price * faceValue;
           this.accounts2017 += marketValue17;
           break;
         case '2018':
-          marketValue18 = faceValue;
+          marketValue18 = s.price * faceValue;
           this.accounts2018 += marketValue18;
           break;
         case '2019':
-          marketValue19 = faceValue;
+          marketValue19 = s.price * faceValue;
           this.accounts2019 += marketValue19;
           break;
         case '2020':
-          marketValue20 = faceValue;
+          marketValue20 = s.price * faceValue;
           this.accounts2020 += marketValue20;
           break;
         case '2021':
-          marketValue21 = faceValue;
+          marketValue21 = s.price * faceValue;
           this.accounts2021 += marketValue21;
           break;
         default:
@@ -145,7 +148,7 @@ class HouseholdsGridStore {
         cusipLabel: 'CUSIP',
         cusip: s.cusip,
         currentPrice: s.price,
-        quantity: Math.floor(faceValue / s.price),
+        quantity: faceValue,
         balance: '-',
         maturityDate: maturityDate,
         2017: marketValue17,

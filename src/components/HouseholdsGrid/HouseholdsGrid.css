@@ -12,6 +12,11 @@ div.fixedDataTableLayout_rowsContainer {
   overflow: none;
 }
 
+div.fixedDataTableRowLayout_rowExpanded .ScrollbarLayout_mainHorizontal {
+  display: none;
+  /*height: 13px;*/
+}
+
 div.fixedDataTableRowLayout_rowExpanded div.fixedDataTableLayout_main.public_fixedDataTable_main {
   border-left-style: none;
 }
