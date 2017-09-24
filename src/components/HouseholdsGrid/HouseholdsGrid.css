@@ -16,15 +16,18 @@ div.fixedDataTableRowLayout_rowExpanded div.fixedDataTableLayout_main.public_fix
   border-left-style: none;
 }
 
+div.public_fixedDataTable_bodyRow div.public_fixedDataTableCell_cellContent {
+  font-size: 90%;
+}
+
 div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTableCell_cellContent {
   font-size: 75%;
   font-weight: lighter;
-  background-color: white;
 }
 
 div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTable_header div.public_fixedDataTableCell_cellContent {
   font-size: 85%;
-  background-color: rgb(250,250,250);
+  background: none;
 }
 
 #grid-filters {
@@ -33,6 +36,14 @@ div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTable_header div.pub
 
 #about-filters {
   display: flex;
+}
+
+#name-header-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 2vw;
 }
 
 #group-image-container {
@@ -44,7 +55,7 @@ div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTable_header div.pub
   margin-bottom: 0.5vh;
 }
 
-#header-tools-container {
+div.header-tools-container {
   height: 100%;
   width: 100%;
   display: flex;
@@ -62,8 +73,8 @@ div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTable_header div.pub
 }
 
 #group-image {
-  height: 17.5px;
-  width: 17.5px;
+  height: 16px;
+  width: 16px;
 }
 
 #group-image:hover {
@@ -77,6 +88,13 @@ div#filter-buffer {
 
 div#filter-buffer.false, div#percentage-filter-container.false {
   display: none;
+}
+
+div.header-spacing {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 span:hover {
@@ -104,7 +122,7 @@ select.percentage-dropdown {
 }
 
 input#current-price-filter, input#percentage-filter, input#quantity-filter, input#market-value-filter {
-  width: 70%;
+  width: 60%;
 }
 
 select.percentage-dropdown {
@@ -123,4 +141,14 @@ div.percentage-slider-container {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+div.info-image {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  margin: -8px;
+  margin-left: -4px;
 }

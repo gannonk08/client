@@ -8,7 +8,9 @@ class HouseholdsGridStore {
       this.accountsData = [];
       let result = [];
       this.size = this.householdsData.length;
-      this.count = 1;
+      this.numHouseholds = 0;
+      this.numAccounts = 0;
+      this.numSecurities = 0;
       this.householdName = '';
 
       this.householdsData.forEach(h => {
@@ -19,16 +21,21 @@ class HouseholdsGridStore {
           let addAccounts = this.addAccountsData(h.accounts);
           this.accountsData.push(addAccounts);
           result.push({
+            houseIndex: this.numHouseholds,
             type: "household",
             name: this.householdName,
             description: h.model.sector,
             model: h.model.id,
             balance: h.household.ladder_to_total_percentage,
-            marketValue: 10000,
+            2017: 10000,
+            2018: 10000,
+            2019: 10000,
+            2020: 10000,
+            2021: 10000,
             accounts: addAccounts
           })
+          this.numHouseholds++;
         }
-        this.count++;
       })
       this._cache = result;
     }
@@ -37,18 +44,51 @@ class HouseholdsGridStore {
   addAccountsData(accounts) {
     let result = [];
     accounts.forEach(a => {
-      let rawDate = a.securities[0].maturity_date;
-      let trimmedDate = rawDate.substring(0, 10);
+      let addSecurities = this.addSecuritiesData(a.securities, a.account_number);
       result.push({
         type: "account",
         name: this.householdName,
-        id: this.count,
+        id: this.numAccounts + 1,
+        houseIndex: this.numHouseholds,
+        accountNumLabel: 'Acct #',
         accountNumber: a.account_number,
-        cusip: a.securities[0].cusip,
-        currentPrice: a.securities[0].price,
-        maturityDate: trimmedDate,
-        quantity: 100,
+        balance: 0,
+        2017: 10000,
+        2018: 10000,
+        2019: 10000,
+        2020: 10000,
+        2021: 10000,
+        securities: addSecurities
       })
+      this.numAccounts++;
+    })
+    return result;
+  }
+
+  addSecuritiesData(securities, accountNumber) {
+    let result = [];
+    let securitiesIndex = 1;
+    securities.forEach(s => {
+      result.push({
+        type: "security",
+        accountNumber: accountNumber,
+        name: this.householdName,
+        id: securitiesIndex,
+        accountsIndex: this.numAccounts,
+        houseIndex: this.numHouseholds,
+        cusipLabel: 'CUSIP',
+        cusip: s.cusip,
+        currentPrice: s.price,
+        quantity: s.face_value,
+        balance: '-',
+        2017: 10000,
+        2018: 10000,
+        2019: 10000,
+        2020: 10000,
+        2021: 10000,
+      })
+      this.numSecurities++;
+      securitiesIndex++;
     })
     return result;
   }
