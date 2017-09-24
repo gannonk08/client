@@ -12,8 +12,23 @@ class HouseholdsGridStore {
       this.numAccounts = 0;
       this.numSecurities = 0;
       this.householdName = '';
+      this.accounts2017 = 0;
+      this.accounts2018 = 0;
+      this.accounts2019 = 0;
+      this.accounts2020 = 0;
+      this.accounts2021 = 0;
+      this.houses2017 = 0;
+      this.houses2018 = 0;
+      this.houses2019 = 0;
+      this.houses2020 = 0;
+      this.houses2021 = 0;
 
       this.householdsData.forEach(h => {
+        this.houses2017 = 0;
+        this.houses2018 = 0;
+        this.houses2019 = 0;
+        this.houses2020 = 0;
+        this.houses2021 = 0;
         this.householdName = h.household.name;
         if (!h.accounts.length) {
           this.size--;
@@ -27,24 +42,35 @@ class HouseholdsGridStore {
             description: h.model.sector,
             model: h.model.id,
             balance: h.household.ladder_to_total_percentage,
-            2017: 10000,
-            2018: 10000,
-            2019: 10000,
-            2020: 10000,
-            2021: 10000,
+            2017: this.houses2017,
+            2018: this.houses2018,
+            2019: this.houses2019,
+            2020: this.houses2020,
+            2021: this.houses2021,
             accounts: addAccounts
           })
           this.numHouseholds++;
         }
       })
       this._cache = result;
+      console.log('this._cache', this._cache);
     }
   }
 
   addAccountsData(accounts) {
     let result = [];
+    this.houses2017 = 0;
+    this.houses2018 = 0;
+    this.houses2019 = 0;
+    this.houses2020 = 0;
+    this.houses2021 = 0;
     accounts.forEach(a => {
       let addSecurities = this.addSecuritiesData(a.securities, a.account_number);
+      this.houses2017 += this.accounts2017;
+      this.houses2018 += this.accounts2018;
+      this.houses2019 += this.accounts2019;
+      this.houses2020 += this.accounts2020;
+      this.houses2021 += this.accounts2021;
       result.push({
         type: "account",
         name: this.householdName,
@@ -53,11 +79,11 @@ class HouseholdsGridStore {
         accountNumLabel: 'Acct #',
         accountNumber: a.account_number,
         balance: 0,
-        2017: 10000,
-        2018: 10000,
-        2019: 10000,
-        2020: 10000,
-        2021: 10000,
+        2017: this.accounts2017,
+        2018: this.accounts2018,
+        2019: this.accounts2019,
+        2020: this.accounts2020,
+        2021: this.accounts2021,
         securities: addSecurities
       })
       this.numAccounts++;
@@ -68,7 +94,47 @@ class HouseholdsGridStore {
   addSecuritiesData(securities, accountNumber) {
     let result = [];
     let securitiesIndex = 1;
+    let marketValue17 = 0;
+    let marketValue18 = 0;
+    let marketValue19 = 0;
+    let marketValue20 = 0;
+    let marketValue21 = 0;
+    this.accounts2017 = 0;
+    this.accounts2018 = 0;
+    this.accounts2019 = 0;
+    this.accounts2020 = 0;
+    this.accounts2021 = 0;
     securities.forEach(s => {
+      let rawMaturityDate = s.maturity_date;
+      let rawMaturityDate2 = s.maturity_date;
+      let monthDay = rawMaturityDate.substring(3,9);
+      let year = rawMaturityDate2.substring(24, 28);
+      let maturityDate = monthDay + ', ' + year;
+      let quantity = parseFloat(s.face_value.replace(/\$|,/g, ''));
+      switch (year) {
+        case '2017':
+          marketValue17 = s.price * quantity;
+          this.accounts2017 += marketValue17;
+          break;
+        case '2018':
+          marketValue18 = s.price * quantity;
+          this.accounts2018 += marketValue18;
+          break;
+        case '2019':
+          marketValue19 = s.price * quantity;
+          this.accounts2019 += marketValue19;
+          break;
+        case '2020':
+          marketValue20 = s.price * quantity;
+          this.accounts2020 += marketValue20;
+          break;
+        case '2021':
+          marketValue21 = s.price * quantity;
+          this.accounts2021 += marketValue21;
+          break;
+        default:
+          console.log('switch dont work!!');
+      }
       result.push({
         type: "security",
         accountNumber: accountNumber,
@@ -79,13 +145,14 @@ class HouseholdsGridStore {
         cusipLabel: 'CUSIP',
         cusip: s.cusip,
         currentPrice: s.price,
-        quantity: s.face_value,
+        quantity: quantity,
         balance: '-',
-        2017: 10000,
-        2018: 10000,
-        2019: 10000,
-        2020: 10000,
-        2021: 10000,
+        maturityDate: maturityDate,
+        2017: marketValue17,
+        2018: marketValue18,
+        2019: marketValue19,
+        2020: marketValue20,
+        2021: marketValue21
       })
       this.numSecurities++;
       securitiesIndex++;
