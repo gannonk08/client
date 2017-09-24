@@ -282,7 +282,7 @@ class HouseholdsGrid extends Component {
     if (!this.state.collapsedRows.has(rowIndex)) {
       return null;
     }
-    let { adjustedDataList, tableWidth } = this.state;
+    let { adjustedDataList, tableWidth, aboutColumnsHidden } = this.state;
 
     let securitiesArray = [];
     let numAccounts = 0;
@@ -302,6 +302,8 @@ class HouseholdsGrid extends Component {
     let expandedHeight = (25 * numSecurities) + 42;
 
     let detailsWidths = (window.innerWidth - 95) / 7;
+    let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
+    let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5;
 
     return (
           <Table
@@ -328,7 +330,16 @@ class HouseholdsGrid extends Component {
             />
             <Column
               columnKey="accountNumber"
-              header={<Cell>Account #</Cell>}
+              header={
+                  <div id="accountNumber-header">
+                    <Cell>Account #</Cell>
+                    {
+                      !aboutColumnsHidden
+                        ? <span onClick={this.toggleAboutColumnGroup}>[-]</span>
+                        : <span onClick={this.toggleAboutColumnGroup}>[+]</span>
+                    }
+                  </div>
+              }
               cell={<TextCell data={securitiesDataList} />}
               width={detailsWidths}
               flexGrow={0}
@@ -337,15 +348,15 @@ class HouseholdsGrid extends Component {
               columnKey="currentPrice"
               header={<Cell>Price</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={0}
-              flexGrow={0}
+              width={hiddenColumnsWidth}
+              flexGrow={columnFlexAbout}
             />
             <Column
               columnKey="quantity"
               header={<Cell>Quantity</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={0}
-              flexGrow={0}
+              width={hiddenColumnsWidth}
+              flexGrow={columnFlexAbout}
             />
             <Column
               columnKey="cusip"

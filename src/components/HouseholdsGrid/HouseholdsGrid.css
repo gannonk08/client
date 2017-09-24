@@ -38,12 +38,12 @@ div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTable_header div.pub
   display: flex;
 }
 
-#name-header-group {
+#name-header-group, #accountNumber-header {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-right: 2vw;
+  margin-right: 1vw;
 }
 
 #group-image-container {
