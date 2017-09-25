@@ -47,7 +47,7 @@ class HouseholdsGrid extends Component {
     };
 
     let aboutColumnsWidth = (window.innerWidth - 95) / 7;
-    let ladderColumnsWidth = (window.innerWidth - 95) / 7;
+    let ladderColumnsWidth = (window.innerWidth - 95) / 9;
     let detailsColumnsWidth = (window.innerWidth - 95) / 5;
 
     // ordered alphabetically
@@ -65,7 +65,7 @@ class HouseholdsGrid extends Component {
         name: aboutColumnsWidth,
         description: 0,
         model: 0,
-        balance: ladderColumnsWidth,
+        balance: aboutColumnsWidth,
         marketValue: ladderColumnsWidth,
         accountNumber: detailsColumnsWidth,
         cusip: detailsColumnsWidth,
@@ -87,7 +87,6 @@ class HouseholdsGrid extends Component {
     // order of appearance
     this.toggleTableGrouping = this.toggleTableGrouping.bind(this);
     this.toggleAboutColumnGroup = this.toggleAboutColumnGroup.bind(this);
-    this._onColumnResizeEndCallback = this._onColumnResizeEndCallback.bind(this);
     this.handleExpandAllRows = this.handleExpandAllRows.bind(this);
     this.toggleFilters = this.toggleFilters.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
@@ -111,15 +110,6 @@ class HouseholdsGrid extends Component {
       model: aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5
     }})
     this.updateWindowDimensions();
-  }
-
-  _onColumnResizeEndCallback(newColumnWidth, columnKey) {
-    this.setState(({columnWidths}) => ({
-      columnWidths: {
-        ...columnWidths,
-        [columnKey]: newColumnWidth,
-      }
-    }));
   }
 
   handleExpandAllRows() {
@@ -228,7 +218,7 @@ class HouseholdsGrid extends Component {
       description: this.state.columnWidths.description ? (window.innerWidth - 95) / 5 : 0,
       model: this.state.columnWidths.model ? (window.innerWidth - 95) / 5 : 0,
       balance: (window.innerWidth - 95) / 7,
-      marketValue: (window.innerWidth - 95) / 7,
+      marketValue: (window.innerWidth - 95) / 9,
       accountNumber: (window.innerWidth - 95) / 5,
       cusip: (window.innerWidth - 95) / 5,
       currentPrice: (window.innerWidth - 95) / 5,
@@ -292,7 +282,7 @@ class HouseholdsGrid extends Component {
     if (!this.state.collapsedRows.has(rowIndex)) {
       return null;
     }
-    let { adjustedDataList, tableWidth, aboutColumnsHidden } = this.state;
+    let { adjustedDataList, tableWidth, aboutColumnsHidden, columnWidths } = this.state;
 
     let securitiesArray = [];
     let numAccounts = 0;
@@ -311,7 +301,8 @@ class HouseholdsGrid extends Component {
       : headerTooltip = numAccounts + " account, " + numSecurities + " securities";
     let expandedHeight = (25 * numSecurities) + 42;
 
-    let detailsWidths = (window.innerWidth - 95) / 7;
+    let nameWidth = (window.innerWidth - 95) / 7;
+    let detailsWidths = (window.innerWidth - 95) / 9;
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
     let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5;
 
@@ -320,8 +311,6 @@ class HouseholdsGrid extends Component {
             rowHeight={25}
             rowsCount={numSecurities}
             headerHeight={25}
-            onColumnResizeEndCallback={this._onColumnResizeEndCallback}
-            isColumnResizing={false}
             width={tableWidth}
             height={expandedHeight}
             {...this.props}>
@@ -346,7 +335,7 @@ class HouseholdsGrid extends Component {
                   </div>
               }
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={nameWidth}
               flexGrow={0}
             />
             <Column
@@ -367,8 +356,8 @@ class HouseholdsGrid extends Component {
               columnKey="cusip"
               header={<Cell>CUSIP</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
-              flexGrow={1}
+              width={columnWidths.balance}
+              flexGrow={0}
             />
             <Column
               columnKey="2017"
@@ -401,6 +390,13 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2021"
               header={<Cell>2021</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+              flexGrow={1}
+            />
+            <Column
+              columnKey="2022"
+              header={<Cell>2022+</Cell>}
               cell={<TextCell data={securitiesDataList} />}
               width={detailsWidths}
               flexGrow={1}
@@ -444,7 +440,7 @@ class HouseholdsGrid extends Component {
                 />
                 <Column
                   header={
-                    <div id="about-header">
+                    <div id="about-header" onClick={this.toggleAboutColumnGroup}>
                       <Cell>Details</Cell>
                       {
                         !aboutColumnsHidden
@@ -469,8 +465,6 @@ class HouseholdsGrid extends Component {
             subRowHeightGetter={this._subRowHeightGetter}
             rowExpanded={this._rowExpandedGetter}
             headerHeight={80}
-            onColumnResizeEndCallback={this._onColumnResizeEndCallback}
-            isColumnResizing={false}
             width={tableWidth}
             height={tableHeight}
             {...this.props}>
@@ -517,7 +511,6 @@ class HouseholdsGrid extends Component {
               }
               cell={<TextCell data={adjustedDataList} />}
               width={columnWidths.name}
-              isResizable={true}
             />
             <Column
               columnKey="description"
@@ -537,7 +530,6 @@ class HouseholdsGrid extends Component {
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={columnFlexAbout}
               width={hiddenColumnsWidth}
-              isResizable={true}
             />
             <Column
               columnKey="model"
@@ -557,7 +549,6 @@ class HouseholdsGrid extends Component {
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={columnFlexAbout}
               width={hiddenColumnsWidth}
-              isResizable={true}
             />
             <Column
               columnKey="balance"
@@ -583,9 +574,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              flexGrow={1}
+              flexGrow={0}
               width={columnWidths.balance}
-              isResizable={true}
             />
             <Column
               columnKey="2017"
@@ -603,9 +593,8 @@ class HouseholdsGrid extends Component {
                       <option value="<">&#60;</option>
                     </select>
                     <div className="percentage-slider-container">
-                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="range"
+                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='10000000'
                       />
-                      <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
                     </div>
                   </div>
                 </div>
@@ -613,7 +602,6 @@ class HouseholdsGrid extends Component {
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={1}
               width={columnWidths.marketValue}
-              isResizable={true}
             />
             <Column
               columnKey="2018"
@@ -631,9 +619,8 @@ class HouseholdsGrid extends Component {
                       <option value="<">&#60;</option>
                     </select>
                     <div className="percentage-slider-container">
-                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="range"
+                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='10000000'
                       />
-                      <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
                     </div>
                   </div>
                 </div>
@@ -641,7 +628,6 @@ class HouseholdsGrid extends Component {
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={1}
               width={columnWidths.marketValue}
-              isResizable={true}
             />
             <Column
               columnKey="2019"
@@ -659,9 +645,8 @@ class HouseholdsGrid extends Component {
                       <option value="<">&#60;</option>
                     </select>
                     <div className="percentage-slider-container">
-                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="range"
+                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='10000000'
                       />
-                      <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
                     </div>
                   </div>
                 </div>
@@ -669,7 +654,6 @@ class HouseholdsGrid extends Component {
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={1}
               width={columnWidths.marketValue}
-              isResizable={true}
             />
             <Column
               columnKey="2020"
@@ -687,9 +671,8 @@ class HouseholdsGrid extends Component {
                       <option value="<">&#60;</option>
                     </select>
                     <div className="percentage-slider-container">
-                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="range"
+                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='10000000'
                       />
-                      <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
                     </div>
                   </div>
                 </div>
@@ -697,7 +680,6 @@ class HouseholdsGrid extends Component {
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={1}
               width={columnWidths.marketValue}
-              isResizable={true}
             />
             <Column
               columnKey="2021"
@@ -715,9 +697,8 @@ class HouseholdsGrid extends Component {
                       <option value="<">&#60;</option>
                     </select>
                     <div className="percentage-slider-container">
-                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="range"
+                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='10000000'
                       />
-                      <div>&nbsp;$&nbsp;{marketValueFilterValue}</div>
                     </div>
                   </div>
                 </div>
@@ -725,7 +706,32 @@ class HouseholdsGrid extends Component {
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={1}
               width={columnWidths.marketValue}
-              isResizable={true}
+            />
+            <Column
+              columnKey="2022"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2022+
+                  </SortHeaderCell>
+                  <div id="percentage-filter-container" className={filtersVisible}>
+                    <select className="percentage-dropdown">
+                      <option value=">" selected>&#62;</option>
+                      <option value="=">=</option>
+                      <option value="<">&#60;</option>
+                    </select>
+                    <div className="percentage-slider-container">
+                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='10000000'
+                      />
+                    </div>
+                  </div>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              flexGrow={1}
+              width={columnWidths.marketValue}
             />
           </Table>
           :
