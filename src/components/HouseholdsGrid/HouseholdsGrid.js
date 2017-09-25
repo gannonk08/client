@@ -47,7 +47,7 @@ class HouseholdsGrid extends Component {
     };
 
     let aboutColumnsWidth = (window.innerWidth - 95) / 7;
-    let ladderColumnsWidth = (window.innerWidth - 95) / 9;
+    let ladderColumnsWidth = (window.innerWidth - 95) / 11;
     let detailsColumnsWidth = (window.innerWidth - 95) / 5;
 
     // ordered alphabetically
@@ -218,7 +218,7 @@ class HouseholdsGrid extends Component {
       description: this.state.columnWidths.description ? (window.innerWidth - 95) / 5 : 0,
       model: this.state.columnWidths.model ? (window.innerWidth - 95) / 5 : 0,
       balance: (window.innerWidth - 95) / 7,
-      marketValue: (window.innerWidth - 95) / 9,
+      marketValue: (window.innerWidth - 95) / 12,
       accountNumber: (window.innerWidth - 95) / 5,
       cusip: (window.innerWidth - 95) / 5,
       currentPrice: (window.innerWidth - 95) / 5,
@@ -302,9 +302,9 @@ class HouseholdsGrid extends Component {
     let expandedHeight = (25 * numSecurities) + 42;
 
     let nameWidth = (window.innerWidth - 95) / 7;
-    let detailsWidths = (window.innerWidth - 95) / 9;
+    let detailsWidths = (window.innerWidth - 95) / 11;
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
-    let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5;
+    let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 7;
 
     return (
           <Table
@@ -364,42 +364,180 @@ class HouseholdsGrid extends Component {
               header={<Cell>2017</Cell>}
               cell={<TextCell data={securitiesDataList} />}
               width={detailsWidths}
-              flexGrow={1}
             />
             <Column
               columnKey="2018"
               header={<Cell>2018</Cell>}
               cell={<TextCell data={securitiesDataList} />}
               width={detailsWidths}
-              flexGrow={1}
             />
             <Column
               columnKey="2019"
               header={<Cell>2019</Cell>}
               cell={<TextCell data={securitiesDataList} />}
               width={detailsWidths}
-              flexGrow={1}
             />
             <Column
               columnKey="2020"
               header={<Cell>2020</Cell>}
               cell={<TextCell data={securitiesDataList} />}
               width={detailsWidths}
-              flexGrow={1}
             />
             <Column
               columnKey="2021"
               header={<Cell>2021</Cell>}
               cell={<TextCell data={securitiesDataList} />}
               width={detailsWidths}
-              flexGrow={1}
             />
             <Column
               columnKey="2022"
-              header={<Cell>2022+</Cell>}
+              header={<Cell>2022</Cell>}
               cell={<TextCell data={securitiesDataList} />}
               width={detailsWidths}
-              flexGrow={1}
+            />
+            <Column
+              columnKey="2023"
+              header={<Cell>2023</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2024"
+              header={<Cell>2024</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2025"
+              header={<Cell>2025</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2026"
+              header={<Cell>2026</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2027"
+              header={<Cell>2027</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2028"
+              header={<Cell>2028</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2029"
+              header={<Cell>2029</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2030"
+              header={<Cell>2030</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2031"
+              header={<Cell>2031</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2032"
+              header={<Cell>2032</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2033"
+              header={<Cell>2033</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2034"
+              header={<Cell>2034</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2035"
+              header={<Cell>2035</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2036"
+              header={<Cell>2036</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2037"
+              header={<Cell>2037</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2038"
+              header={<Cell>2038</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2039"
+              header={<Cell>2039</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2040"
+              header={<Cell>2040</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2041"
+              header={<Cell>2041</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2042"
+              header={<Cell>2042</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2043"
+              header={<Cell>2043</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2044"
+              header={<Cell>2044</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2045"
+              header={<Cell>2045</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
+            />
+            <Column
+              columnKey="2046"
+              header={<Cell>2046</Cell>}
+              cell={<TextCell data={securitiesDataList} />}
+              width={detailsWidths}
             />
           </Table>
     );
@@ -412,8 +550,8 @@ class HouseholdsGrid extends Component {
 
     let rowWidth = (tableWidth - 60) / 6;
     let tableHeight = (this.state.height * 0.79) - 45;
-    let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5;
-    let detailsGroupWidth = aboutColumnsHidden ? columnWidths.name : (columnWidths.name + ((window.innerWidth - 95) / 5) * 2);
+    let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 7;
+    let detailsGroupWidth = aboutColumnsHidden ? columnWidths.name : (columnWidths.name * 3);
     let detailsGroupFlex = aboutColumnsHidden ? 0 : 1;
 
     return (
@@ -586,17 +724,6 @@ class HouseholdsGrid extends Component {
                     sortDir={colSortDirs.value}>
                     2017
                   </SortHeaderCell>
-                  <div id="percentage-filter-container" className={filtersVisible}>
-                    <select className="percentage-dropdown">
-                      <option value=">" selected>&#62;</option>
-                      <option value="=">=</option>
-                      <option value="<">&#60;</option>
-                    </select>
-                    <div className="percentage-slider-container">
-                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='10000000'
-                      />
-                    </div>
-                  </div>
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
@@ -612,17 +739,6 @@ class HouseholdsGrid extends Component {
                     sortDir={colSortDirs.value}>
                     2018
                   </SortHeaderCell>
-                  <div id="percentage-filter-container" className={filtersVisible}>
-                    <select className="percentage-dropdown">
-                      <option value=">" selected>&#62;</option>
-                      <option value="=">=</option>
-                      <option value="<">&#60;</option>
-                    </select>
-                    <div className="percentage-slider-container">
-                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='10000000'
-                      />
-                    </div>
-                  </div>
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
@@ -638,17 +754,6 @@ class HouseholdsGrid extends Component {
                     sortDir={colSortDirs.value}>
                     2019
                   </SortHeaderCell>
-                  <div id="percentage-filter-container" className={filtersVisible}>
-                    <select className="percentage-dropdown">
-                      <option value=">" selected>&#62;</option>
-                      <option value="=">=</option>
-                      <option value="<">&#60;</option>
-                    </select>
-                    <div className="percentage-slider-container">
-                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='10000000'
-                      />
-                    </div>
-                  </div>
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
@@ -664,17 +769,6 @@ class HouseholdsGrid extends Component {
                     sortDir={colSortDirs.value}>
                     2020
                   </SortHeaderCell>
-                  <div id="percentage-filter-container" className={filtersVisible}>
-                    <select className="percentage-dropdown">
-                      <option value=">" selected>&#62;</option>
-                      <option value="=">=</option>
-                      <option value="<">&#60;</option>
-                    </select>
-                    <div className="percentage-slider-container">
-                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='10000000'
-                      />
-                    </div>
-                  </div>
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
@@ -690,17 +784,6 @@ class HouseholdsGrid extends Component {
                     sortDir={colSortDirs.value}>
                     2021
                   </SortHeaderCell>
-                  <div id="percentage-filter-container" className={filtersVisible}>
-                    <select className="percentage-dropdown">
-                      <option value=">" selected>&#62;</option>
-                      <option value="=">=</option>
-                      <option value="<">&#60;</option>
-                    </select>
-                    <div className="percentage-slider-container">
-                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='10000000'
-                      />
-                    </div>
-                  </div>
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
@@ -714,23 +797,347 @@ class HouseholdsGrid extends Component {
                   <SortHeaderCell
                     onSortChange={this._onSortChange}
                     sortDir={colSortDirs.value}>
-                    2022+
+                    2022
                   </SortHeaderCell>
-                  <div id="percentage-filter-container" className={filtersVisible}>
-                    <select className="percentage-dropdown">
-                      <option value=">" selected>&#62;</option>
-                      <option value="=">=</option>
-                      <option value="<">&#60;</option>
-                    </select>
-                    <div className="percentage-slider-container">
-                      <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='10000000'
-                      />
-                    </div>
-                  </div>
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              flexGrow={1}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2023"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2023
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2024"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2024
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2025"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2025
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2026"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2026
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2027"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2027
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2028"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2028
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2029"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2029
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2030"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2030
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2031"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2031
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2032"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2032
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2033"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2033
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2034"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2034
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2035"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2035
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2036"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2036
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2037"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2037
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2038"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2038
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2039"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2039
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2040"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2040
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2041"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2041
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2042"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2042
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2043"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2043
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2044"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2044
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2045"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2045
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
+              width={columnWidths.marketValue}
+            />
+            <Column
+              columnKey="2046"
+              header={
+                <div className="header-spacing">
+                  <SortHeaderCell
+                    onSortChange={this._onSortChange}
+                    sortDir={colSortDirs.value}>
+                    2046
+                  </SortHeaderCell>
+                </div>
+              }
+              cell={<TextCell data={adjustedDataList} />}
               width={columnWidths.marketValue}
             />
           </Table>
