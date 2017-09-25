@@ -15,11 +15,17 @@ class Nav extends Component {
     this.handleHouseholds = this.handleHouseholds.bind(this);
     this.mouseEnter = this.mouseEnter.bind(this);
     this.mouseLeave = this.mouseLeave.bind(this);
+
+    if (this.props.importsVisible === false) {
+      this.state = { importsVisible: false };
+    }
     this.state = {
       rebalanceToolsVisible: false,
       importsVisible: false,
-      rebalanceImageSrc: 'rebalance.png'
+      rebalanceImageSrc: 'rebalance.png',
+      csvData: this.props.csvData
     };
+    console.log('this.props.csvData', this.props.csvData);
   }
 
   componentDidMount() {
@@ -71,6 +77,7 @@ class Nav extends Component {
   }
 
 	render() {
+    let { csvData } = this.state;
 		return (
       <div>
         <nav>
@@ -91,7 +98,7 @@ class Nav extends Component {
               </Tooltip>
             </div>
             <div id="exportCsv" className="false">
-              <CSVLink data={"testing-123"} id="csv-link"
+              <CSVLink data={csvData} id="csv-link"
                 filename={"sampleCSV.csv"}
                 target="_blank">
                 <Tooltip title='Export to CSV' position='top'>

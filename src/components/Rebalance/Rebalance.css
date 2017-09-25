@@ -6,22 +6,29 @@ div#add-form-container {
   border: 3px solid #eee;
 }
 
-div.add-form {
+div.rebalance-form {
   margin: 2.5vw;
   width: 20vw;
   background-color: #333;
 }
 
-div.add-form label, div.add-form input {
+div.rebalance-form input, div.rebalance-form label {
+  font-size: 85%;
+}
+
+div.rebalance-form input {
+  color: black;
+}
+
+div.rebalance-form label {
   color: #eee;
 }
 
-div.add-form button {
-  font-size: 1.25rem;
-  padding: 10px;
+div.rebalance-form button {
+  background-color: gray;
+  color: white;
+  border: none;
+  font-size: 1rem;
   margin-top: 20px;
-  margin-left: 5px;
-  border-radius: 6px;
-  opacity: 1.0;
-  color: black;
+  margin-left: 1px;
 }

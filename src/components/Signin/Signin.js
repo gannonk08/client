@@ -13,12 +13,12 @@ const PATH_SIGNIN = '/signin';
 class Signin extends Component {
 	constructor(props) {
     super(props);
-    this.postSignin = this.postSignin.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
 
 		this.state = { loaded: true };
   }
 
-	postSignin() {
+	onSubmit() {
 		this.setState({ loaded: false });
 		let formData = JSON.stringify({
 			email: document.getElementById('email').value,
@@ -57,17 +57,19 @@ class Signin extends Component {
 		let { loaded } = this.state;
 		return (
 			<div>
-				<div className="email">
-					<label htmlFor="email">Email</label>
-					<input id="email" className="form-control" name="email" type="text"/>
-				</div>
-				<div className="pass">
-					<label htmlFor="pass">Password</label>
-					<input id="password" className="form-control" name="pass" type="password"/>
-				</div>
-				<div className="buttons">
-					<div className="log-in-button btn btn-primary" onClick={this.postSignin}>Log In</div>
-				</div>
+				<form onSubmit={this.onSubmit}>
+					<div className="email">
+						<label htmlFor="email">Email</label>
+						<input id="email" className="form-control" name="email" type="text"/>
+					</div>
+					<div className="pass">
+						<label htmlFor="pass">Password</label>
+						<input id="password" className="form-control" name="pass" type="password"/>
+					</div>
+					<div className="buttons">
+						<button type='submit' className="log-in-button btn btn-primary">Log In</button>
+					</div>
+				</form>
 				<Loader loaded={loaded}>
 				</Loader>
 			</div>

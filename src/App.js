@@ -19,9 +19,10 @@ class App extends Component {
         <Router>
           <div>
             <Route exact path={"/"} component={Authenticate} />
-            <Route path={"/about"} component={About} />
-            <Route path={"/accounts"} component={ClientsGrid} />
-            <Route path={"/clients"} component={Grid} />
+            <Route exact path={"/about"} component={About} />
+            <Route exact path={"/accounts"} component={ClientsGrid} />
+            <Route exact path={"/accounts/rebalanced"} component={ClientsGrid} />
+            <Route exact path={"/clients"} component={Grid} />
             <Footer />
           </div>
         </Router>

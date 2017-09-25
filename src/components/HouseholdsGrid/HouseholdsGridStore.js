@@ -19,11 +19,14 @@ class HouseholdsGridStore {
       this.accounts2019 = 0;
       this.accounts2020 = 0;
       this.accounts2021 = 0;
+      this.accounts2022 = 0;
       this.houses2017 = 0;
       this.houses2018 = 0;
       this.houses2019 = 0;
       this.houses2020 = 0;
       this.houses2021 = 0;
+      this.houses2022 = 0;
+      this.latestYear = 2017;
 
       this.householdsData.forEach(h => {
         this.houses2017 = 0;
@@ -31,11 +34,13 @@ class HouseholdsGridStore {
         this.houses2019 = 0;
         this.houses2020 = 0;
         this.houses2021 = 0;
+        this.houses2022 = 0;
         this.householdName = h.household.name;
         if (!h.accounts.length) {
           this.size--;
         } else {
           let addAccounts = this.addAccountsData(h.accounts);
+          let getBalance = this.getBalancePercentage();
           this.accountsData.push(addAccounts);
           result.push({
             houseIndex: this.numHouseholds,
@@ -43,12 +48,13 @@ class HouseholdsGridStore {
             name: this.householdName,
             description: h.model.sector,
             model: h.model.id,
-            balance: h.household.ladder_to_total_percentage,
+            balance: getBalance,
             2017: '$ ' + this.houses2017.toLocaleString(),
             2018: '$ ' + this.houses2018.toLocaleString(),
             2019: '$ ' + this.houses2019.toLocaleString(),
             2020: '$ ' + this.houses2020.toLocaleString(),
             2021: '$ ' + this.houses2021.toLocaleString(),
+            2022: '$ ' + this.houses2022.toLocaleString(),
             accounts: addAccounts
           })
           this.numHouseholds++;
@@ -60,6 +66,18 @@ class HouseholdsGridStore {
     }
   }
 
+  getBalancePercentage() {
+    let yearArray = [ this.houses2017, this.houses2018, this.houses2019, this.houses2020, this.houses2021, this.houses2022];
+    let count = 0;
+    for (let i = 0; i < yearArray.length; i++) {
+      if (yearArray[i] !== 0) {
+        count++
+      }
+    }
+    let result = count / 5 * 100;
+    return result;
+  }
+
   addAccountsData(accounts) {
     let result = [];
     this.houses2017 = 0;
@@ -67,6 +85,7 @@ class HouseholdsGridStore {
     this.houses2019 = 0;
     this.houses2020 = 0;
     this.houses2021 = 0;
+    this.houses2022 = 0;
     accounts.forEach(a => {
       let addSecurities = this.addSecuritiesData(a.securities, a.account_number);
       this.houses2017 += this.accounts2017;
@@ -74,6 +93,7 @@ class HouseholdsGridStore {
       this.houses2019 += this.accounts2019;
       this.houses2020 += this.accounts2020;
       this.houses2021 += this.accounts2021;
+      this.houses2022 += this.accounts2022;
       result.push({
         type: "account",
         name: this.householdName,
@@ -87,56 +107,70 @@ class HouseholdsGridStore {
         2019: this.accounts2019,
         2020: this.accounts2020,
         2021: this.accounts2021,
+        2022: this.accounts2022,
         securities: addSecurities
       })
       this.numAccounts++;
     })
+    console.log('this.latestYear', this.latestYear);
     return result;
   }
 
   addSecuritiesData(securities, accountNumber) {
     let result = [];
     let securitiesIndex = 1;
-    let marketValue17 = 0;
-    let marketValue18 = 0;
-    let marketValue19 = 0;
-    let marketValue20 = 0;
-    let marketValue21 = 0;
     this.accounts2017 = 0;
     this.accounts2018 = 0;
     this.accounts2019 = 0;
     this.accounts2020 = 0;
     this.accounts2021 = 0;
+    this.accounts2022 = 0;
+
     securities.forEach(s => {
+      let marketValue17 = 0;
+      let marketValue18 = 0;
+      let marketValue19 = 0;
+      let marketValue20 = 0;
+      let marketValue21 = 0;
+      let marketValue22 = 0;
       let rawMaturityDate = s.maturity_date;
       let rawMaturityDate2 = s.maturity_date;
       let monthDay = rawMaturityDate.substring(0,6);
       let year = rawMaturityDate2.substring(6,10);
+      if (year.indexOf("19") === 0) {
+        let lastTwo = year.substring(1,3);
+        year = '20' + lastTwo;
+      }
+      if (+year > this.latestYear) { this.latestYear = +year }
       let maturityDate = monthDay + year;
       let faceValue = parseFloat(s.face_value.replace(/\$|,/g, ''));
+      // for (var i = 2017; i < this.latestYear; i++) {
+      //
+      // }
       switch (year) {
         case '2017':
-          marketValue17 = s.price * faceValue;
+          marketValue17 = s.price * faceValue / 100;
           this.accounts2017 += marketValue17;
           break;
         case '2018':
-          marketValue18 = s.price * faceValue;
+          marketValue18 = s.price * faceValue / 100;
           this.accounts2018 += marketValue18;
           break;
         case '2019':
-          marketValue19 = s.price * faceValue;
+          marketValue19 = s.price * faceValue / 100;
           this.accounts2019 += marketValue19;
           break;
         case '2020':
-          marketValue20 = s.price * faceValue;
+          marketValue20 = s.price * faceValue / 100;
           this.accounts2020 += marketValue20;
           break;
         case '2021':
-          marketValue21 = s.price * faceValue;
+          marketValue21 = s.price * faceValue / 100;
           this.accounts2021 += marketValue21;
           break;
         default:
-          console.log('switch dont work!!');
+          marketValue22 = s.price * faceValue / 100;
+          this.accounts2022 += marketValue22;
       }
       result.push({
         type: "security",
@@ -151,11 +185,12 @@ class HouseholdsGridStore {
         quantity: faceValue,
         balance: '-',
         maturityDate: maturityDate,
-        2017: marketValue17,
-        2018: marketValue18,
-        2019: marketValue19,
-        2020: marketValue20,
-        2021: marketValue21
+        2017: '$ ' + marketValue17.toLocaleString(),
+        2018: '$ ' + marketValue18.toLocaleString(),
+        2019: '$ ' + marketValue19.toLocaleString(),
+        2020: '$ ' + marketValue20.toLocaleString(),
+        2021: '$ ' + marketValue21.toLocaleString(),
+        2022: '$ ' + marketValue22.toLocaleString()
       })
       this.numSecurities++;
       securitiesIndex++;

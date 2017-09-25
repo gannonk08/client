@@ -7,7 +7,7 @@ class SMO extends Component {
     super(props);
     this.showAddForm = this.showAddForm.bind(this);
     this.state = {
-      addFormVisible: false,
+      addFormVisible: true,
     };
   }
 

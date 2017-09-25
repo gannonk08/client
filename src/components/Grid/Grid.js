@@ -8,6 +8,7 @@ import Nav from '../Nav/Nav';
 import Header from '../Header/Header';
 import HouseholdsGrid from '../HouseholdsGrid/HouseholdsGrid';
 import HouseholdsGridStore from '../HouseholdsGrid/HouseholdsGridStore';
+import AccountsGridStore from '../HouseholdsGrid/AccountsGridStore';
 
 let PATH_BASE = '';
 const PATH_GET_CLIENTS = '/clients?uploadId=';
@@ -47,6 +48,21 @@ class Grid extends Component {
       if (res.status === "OK") {
         console.log('passed to store:::?', res.records);
         this.setState({ data: new HouseholdsGridStore(res.records)});
+
+        let accountsArray = this.state.data._cache;
+        let result = [];
+        let securitiesList = [];
+        accountsArray.forEach(a => {
+          a.accounts.forEach(account => {
+            result.push(account);
+            account.securities.forEach(s => {
+              securitiesList.push(s);
+            })
+          })
+        })
+        let newCsvData = new AccountsGridStore(result);
+        this.setState({ csvData: newCsvData._cache });
+        console.log('newCsvData', newCsvData);
         return this.state.data;
       }
     })
@@ -93,17 +109,17 @@ class Grid extends Component {
               securities: a.securities
             };
             store.put(storedItem);
-            console.log('storedItem:', storedItem);
+            // console.log('storedItem:', storedItem);
           })
         })
 
         // Query the data
-        indexArray.forEach(i => {
-          let getAccount = store.get(i);
-          getAccount.onsuccess = () => {
-            console.log("getAccount from IDB", getAccount.result);
-          };
-        })
+        // indexArray.forEach(i => {
+        //   let getAccount = store.get(i);
+        //   getAccount.onsuccess = () => {
+        //     console.log("getAccount from IDB", getAccount.result);
+        //   };
+        // })
         // let getBob = index.get("Hall Monitor");
 
         // Close the db when the transaction is done
@@ -115,7 +131,7 @@ class Grid extends Component {
   }
 
   render() {
-    let { data, loaded } = this.state;
+    let { data, loaded, csvData } = this.state;
 
     let sessionIndicator;
     let storageSessionIndicator = localStorage.getItem("activeSession");
@@ -133,7 +149,7 @@ class Grid extends Component {
           />
           <Nav
             groupByHousehold={true}
-            csvData={this.csvData}
+            csvData={csvData}
             importsVisible={false}
           />
           <div id="grid-container">

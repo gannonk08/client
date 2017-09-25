@@ -273,7 +273,7 @@ class HouseholdsGrid extends Component {
   }
 
   _subRowHeightGetter(index) {
-    const { adjustedDataList } = this.state;
+    const { adjustedDataList, groupByHousehold } = this.state;
     let securitiesArray = [];
     if (adjustedDataList._cache[index]) {
       let accountsArray = adjustedDataList._cache[index].accounts;
@@ -282,7 +282,7 @@ class HouseholdsGrid extends Component {
           securitiesArray.push(s);
         })
       })
-      return this.state.collapsedRows.has(index)
+      return this.state.collapsedRows.has(index) && groupByHousehold
       ? (25 * securitiesArray.length) + 42
       : 0;
     }
@@ -420,7 +420,7 @@ class HouseholdsGrid extends Component {
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
 
     let rowWidth = (tableWidth - 60) / 6;
-    let tableHeight = (this.state.height * 0.83) - 45;
+    let tableHeight = (this.state.height * 0.79) - 45;
     let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 5;
     let detailsGroupWidth = aboutColumnsHidden ? columnWidths.name : (columnWidths.name + ((window.innerWidth - 95) / 5) * 2);
     let detailsGroupFlex = aboutColumnsHidden ? 0 : 1;
