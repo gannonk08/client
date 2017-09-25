@@ -35,9 +35,10 @@ div#auth-form-container {
   height: 100%;
 }
 
-p.sign-up-button:hover, div.log-in-button:hover {
+p.sign-up-button:hover, button.log-in-button.btn.btn-primary:hover {
   cursor: pointer;
   transform: scale(1.03);
+  background-color: #375a7f;
 }
 
 p.sign-up-button:hover {
@@ -51,7 +52,7 @@ p.sign-up-button {
   margin-left: 0.1vw;
 }
 
-div.log-in-button {
+button.log-in-button.btn.btn-primary {
   margin-bottom: 5vh;
   margin-left: 0.25vw;
   background-color: gray;

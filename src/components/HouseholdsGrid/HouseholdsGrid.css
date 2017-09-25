@@ -35,6 +35,15 @@ div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTable_header div.pub
   background: none;
 }
 
+#about-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 1vw;
+  height: 100%;
+}
+
 #grid-filters {
   display: flex;
 }
@@ -49,6 +58,7 @@ div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTable_header div.pub
   align-items: center;
   justify-content: space-between;
   margin-right: 1vw;
+  height: 100%;
 }
 
 #group-image-container {

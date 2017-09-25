@@ -18,7 +18,8 @@ class Signin extends Component {
 		this.state = { loaded: true };
   }
 
-	onSubmit() {
+	onSubmit = (e) => {
+		e.preventDefault();
 		this.setState({ loaded: false });
 		let formData = JSON.stringify({
 			email: document.getElementById('email').value,

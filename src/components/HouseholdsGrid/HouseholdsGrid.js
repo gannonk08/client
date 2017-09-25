@@ -341,13 +341,8 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="accountNumber"
               header={
-                  <div id="accountNumber-header">
+                  <div id="accountNumber-header" onClick={this.toggleAboutColumnGroup}>
                     <Cell>Account #</Cell>
-                    {
-                      !aboutColumnsHidden
-                        ? <span onClick={this.toggleAboutColumnGroup}>[-]</span>
-                        : <span onClick={this.toggleAboutColumnGroup}>[+]</span>
-                    }
                   </div>
               }
               cell={<TextCell data={securitiesDataList} />}
@@ -449,13 +444,15 @@ class HouseholdsGrid extends Component {
                 />
                 <Column
                   header={
-                    <Cell onClick={this.toggleAboutColumnGroup}>Details &nbsp;
+                    <div id="about-header">
+                      <Cell>Details</Cell>
                       {
                         !aboutColumnsHidden
-                          ? <span>[-]</span>
-                          : <span>[+]</span>
+                          ? <span onClick={this.toggleAboutColumnGroup}>[-]</span>
+                          : <span onClick={this.toggleAboutColumnGroup}>[+]</span>
                       }
-                    </Cell>}
+                    </div>
+                  }
                   width={detailsGroupWidth}
                 />
               </Table>
