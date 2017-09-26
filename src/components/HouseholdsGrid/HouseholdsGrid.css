@@ -39,6 +39,12 @@ div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTable_header div.pub
   background: none;
 }
 
+.years-control {
+  margin-right: 1vw;
+  height: 15px;
+  width: 15px;
+}
+
 #about-header, #ladder-header {
   display: flex;
   flex-direction: row;

@@ -89,6 +89,9 @@ class HouseholdsGrid extends Component {
     }
 
     // order of appearance
+    this.handleArrowKeys = this.handleArrowKeys.bind(this);
+    this.getYearsStart = this.getYearsStart.bind(this);
+    this.getYearsEnd = this.getYearsEnd.bind(this);
     this.getYearsAfter = this.getYearsAfter.bind(this);
     this.getYearsBefore = this.getYearsBefore.bind(this);
     this.toggleTableGrouping = this.toggleTableGrouping.bind(this);
@@ -102,6 +105,25 @@ class HouseholdsGrid extends Component {
     this._handleCollapseAllClick = this._handleCollapseAllClick.bind(this);
     this._subRowHeightGetter = this._subRowHeightGetter.bind(this);
     this._rowExpandedGetter = this._rowExpandedGetter.bind(this);
+  }
+
+  handleArrowKeys = (e) => {
+    if (e.code === 'ArrowRight') {
+        this.getYearsAfter();
+      }
+      if (e.code === 'ArrowLeft') {
+        this.getYearsBefore();
+      }
+  }
+
+  getYearsStart() {
+    let {showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
+    this.setState({showYearGroupOne: true, showYearGroupTwo: false, showYearGroupThree: false});
+  }
+
+  getYearsEnd() {
+    let {showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
+    this.setState({showYearGroupOne: false, showYearGroupTwo: false, showYearGroupThree: true});
   }
 
   getYearsAfter() {
@@ -119,6 +141,9 @@ class HouseholdsGrid extends Component {
 
   getYearsBefore() {
     let {showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
+    if (showYearGroupOne) {
+      this.setState({ showYearGroupOne: false, showYearGroupThree: true});
+    }
     if (showYearGroupTwo) {
       this.setState({ showYearGroupTwo: false, showYearGroupOne: true});
     }
@@ -232,10 +257,12 @@ class HouseholdsGrid extends Component {
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
+    document.addEventListener("keydown", this.handleArrowKeys, false);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions);
+    document.removeEventListener("keydown", this.handleArrowKeys, false);
   }
 
   updateWindowDimensions() {
@@ -626,9 +653,6 @@ class HouseholdsGrid extends Component {
     let ladderGroupWidth = tableWidth - 65 - detailsGroupWidth;
     let detailsGroupFlex = aboutColumnsHidden ? 0 : 1;
 
-    let next = '-->';
-    let previous = '<--';
-
     return (
       <div>
         <div id="grid-container">
@@ -668,16 +692,20 @@ class HouseholdsGrid extends Component {
                   header={
                     <div id="ladder-header">
                       <Cell>Bond Ladder</Cell>
-                      {
-                        showYearGroupOne
-                          ? <span onClick={this.getYearsAfter}>Next 10 years -></span>
-                          : null
-                      }
-                      {
-                        showYearGroupTwo || showYearGroupThree
-                          ? <div><span onClick={this.getYearsBefore}> {previous} Previous</span><span onClick={this.getYearsAfter}> Next {next} </span></div>
-                          : null
-                      }
+                      <div>
+                        <span onClick={this.getYearsStart}>
+                          <img className="years-control" src={require("./images/doubleLeftArrow.png")} alt="left" />
+                        </span>
+                        <span onClick={this.getYearsBefore}>
+                          <img className="years-control" src={require("./images/leftArrow.png")} alt="left" />
+                        </span>
+                        <span onClick={this.getYearsAfter}>
+                          <img className="years-control" src={require("./images/rightArrow.png")} alt="right" />
+                        </span>
+                        <span onClick={this.getYearsEnd}>
+                          <img className="years-control" src={require("./images/doubleRightArrow.png")} alt="right" />
+                        </span>
+                      </div>
                     </div>
                   }
                   width={ladderGroupWidth}
