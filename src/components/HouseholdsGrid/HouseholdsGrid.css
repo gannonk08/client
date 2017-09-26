@@ -21,21 +21,25 @@ div.fixedDataTableRowLayout_rowExpanded div.fixedDataTableLayout_main.public_fix
   border-left-style: none;
 }
 
+div.public_fixedDataTableCell_cellContent a {
+  font-size: 85%;
+}
+
 div.public_fixedDataTable_bodyRow div.public_fixedDataTableCell_cellContent {
-  font-size: 90%;
+  font-size: 80%;
 }
 
 div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTableCell_cellContent {
-  font-size: 75%;
+  font-size: 80%;
   font-weight: lighter;
 }
 
 div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTable_header div.public_fixedDataTableCell_cellContent {
-  font-size: 85%;
+  font-size: 80%;
   background: none;
 }
 
-#about-header {
+#about-header, #ladder-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

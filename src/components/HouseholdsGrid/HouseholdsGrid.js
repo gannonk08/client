@@ -46,8 +46,9 @@ class HouseholdsGrid extends Component {
       this._defaultSortIndexes.push(index);
     };
 
-    let aboutColumnsWidth = (window.innerWidth - 95) / 7;
-    let ladderColumnsWidth = (window.innerWidth - 95) / 11;
+    let aboutColumnsWidth = (window.innerWidth - 95) / 8;
+    let ladderColumnsWidth = (window.innerWidth - 95) / 12.5;
+    let balanceColumnWidth = (window.innerWidth - 95) / 12;
     let detailsColumnsWidth = (window.innerWidth - 95) / 5;
 
     // ordered alphabetically
@@ -65,7 +66,7 @@ class HouseholdsGrid extends Component {
         name: aboutColumnsWidth,
         description: 0,
         model: 0,
-        balance: aboutColumnsWidth,
+        balance: balanceColumnWidth,
         marketValue: ladderColumnsWidth,
         accountNumber: detailsColumnsWidth,
         cusip: detailsColumnsWidth,
@@ -80,11 +81,16 @@ class HouseholdsGrid extends Component {
       marketValueFilterValue: 0,
       percentageFilterValue: 0,
       scrollToRow: null,
+      showYearGroupOne: true,
+      showYearGroupTwo: false,
+      showYearGroupThree: false,
       tableWidth: 0,
       width: '0',
     }
 
     // order of appearance
+    this.getYearsAfter = this.getYearsAfter.bind(this);
+    this.getYearsBefore = this.getYearsBefore.bind(this);
     this.toggleTableGrouping = this.toggleTableGrouping.bind(this);
     this.toggleAboutColumnGroup = this.toggleAboutColumnGroup.bind(this);
     this.handleExpandAllRows = this.handleExpandAllRows.bind(this);
@@ -96,6 +102,29 @@ class HouseholdsGrid extends Component {
     this._handleCollapseAllClick = this._handleCollapseAllClick.bind(this);
     this._subRowHeightGetter = this._subRowHeightGetter.bind(this);
     this._rowExpandedGetter = this._rowExpandedGetter.bind(this);
+  }
+
+  getYearsAfter() {
+    let {showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
+    if (showYearGroupOne) {
+      this.setState({ showYearGroupOne: false, showYearGroupTwo: true});
+    }
+    if (showYearGroupTwo) {
+      this.setState({ showYearGroupTwo: false, showYearGroupThree: true});
+    }
+    if (showYearGroupThree) {
+      this.setState({ showYearGroupThree: false, showYearGroupOne: true});
+    }
+  }
+
+  getYearsBefore() {
+    let {showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
+    if (showYearGroupTwo) {
+      this.setState({ showYearGroupTwo: false, showYearGroupOne: true});
+    }
+    if (showYearGroupThree) {
+      this.setState({ showYearGroupThree: false, showYearGroupTwo: true});
+    }
   }
 
   toggleTableGrouping() {
@@ -214,11 +243,11 @@ class HouseholdsGrid extends Component {
     this.setState({ tableWidth: window.innerWidth - 10 });
     this.setState({ colWidth: (window.innerWidth - 95) / 5 });
     this.setState({ columnWidths: {
-      name: (window.innerWidth - 95) / 7,
+      name: (window.innerWidth - 95) / 8,
       description: this.state.columnWidths.description ? (window.innerWidth - 95) / 5 : 0,
       model: this.state.columnWidths.model ? (window.innerWidth - 95) / 5 : 0,
-      balance: (window.innerWidth - 95) / 7,
-      marketValue: (window.innerWidth - 95) / 12,
+      balance: (window.innerWidth - 95) / 12,
+      marketValue: (window.innerWidth - 95) / 12.5,
       accountNumber: (window.innerWidth - 95) / 5,
       cusip: (window.innerWidth - 95) / 5,
       currentPrice: (window.innerWidth - 95) / 5,
@@ -282,7 +311,7 @@ class HouseholdsGrid extends Component {
     if (!this.state.collapsedRows.has(rowIndex)) {
       return null;
     }
-    let { adjustedDataList, tableWidth, aboutColumnsHidden, columnWidths } = this.state;
+    let { adjustedDataList, tableWidth, aboutColumnsHidden, columnWidths, showYearGroupOne, showYearGroupTwo, showYearGroupThree } = this.state;
 
     let securitiesArray = [];
     let numAccounts = 0;
@@ -301,10 +330,18 @@ class HouseholdsGrid extends Component {
       : headerTooltip = numAccounts + " account, " + numSecurities + " securities";
     let expandedHeight = (25 * numSecurities) + 42;
 
-    let nameWidth = (window.innerWidth - 95) / 7;
-    let detailsWidths = (window.innerWidth - 95) / 11;
+    let nameWidth = (window.innerWidth - 95) / 8;
+    let detailsWidths = (window.innerWidth - 95) / 12.5;
+    let cusipWidth = (window.innerWidth - 95) / 12;
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
     let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 7;
+
+    let yearGroupOneWidth = showYearGroupOne ? columnWidths.marketValue : 0;
+    let yearGroupTwoWidth = showYearGroupTwo ? columnWidths.marketValue : 0;
+    let yearGroupThreeWidth = showYearGroupThree ? columnWidths.marketValue : 0;
+    let yearGroupOneFlex = showYearGroupOne ? 1 : 0;
+    let yearGroupTwoFlex = showYearGroupTwo ? 1 : 0;
+    let yearGroupThreeFlex = showYearGroupThree ? 1 : 0;
 
     return (
           <Table
@@ -336,7 +373,6 @@ class HouseholdsGrid extends Component {
               }
               cell={<TextCell data={securitiesDataList} />}
               width={nameWidth}
-              flexGrow={0}
             />
             <Column
               columnKey="currentPrice"
@@ -356,195 +392,224 @@ class HouseholdsGrid extends Component {
               columnKey="cusip"
               header={<Cell>CUSIP</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={columnWidths.balance}
-              flexGrow={0}
+              width={cusipWidth}
             />
             <Column
               columnKey="2017"
               header={<Cell>2017</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupOneWidth}
+              flexGrow={yearGroupOneFlex}
             />
             <Column
               columnKey="2018"
               header={<Cell>2018</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupOneWidth}
+              flexGrow={yearGroupOneFlex}
             />
             <Column
               columnKey="2019"
               header={<Cell>2019</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupOneWidth}
+              flexGrow={yearGroupOneFlex}
             />
             <Column
               columnKey="2020"
               header={<Cell>2020</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupOneWidth}
+              flexGrow={yearGroupOneFlex}
             />
             <Column
               columnKey="2021"
               header={<Cell>2021</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupOneWidth}
+              flexGrow={yearGroupOneFlex}
             />
             <Column
               columnKey="2022"
               header={<Cell>2022</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupOneWidth}
+              flexGrow={yearGroupOneFlex}
             />
             <Column
               columnKey="2023"
               header={<Cell>2023</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupOneWidth}
+              flexGrow={yearGroupOneFlex}
             />
             <Column
               columnKey="2024"
               header={<Cell>2024</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupOneWidth}
+              flexGrow={yearGroupOneFlex}
             />
             <Column
               columnKey="2025"
               header={<Cell>2025</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupOneWidth}
+              flexGrow={yearGroupOneFlex}
             />
             <Column
               columnKey="2026"
               header={<Cell>2026</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupOneWidth}
+              flexGrow={yearGroupOneFlex}
             />
             <Column
               columnKey="2027"
               header={<Cell>2027</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupTwoWidth}
+              flexGrow={yearGroupTwoFlex}
             />
             <Column
               columnKey="2028"
               header={<Cell>2028</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupTwoWidth}
+              flexGrow={yearGroupTwoFlex}
             />
             <Column
               columnKey="2029"
               header={<Cell>2029</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupTwoWidth}
+              flexGrow={yearGroupTwoFlex}
             />
             <Column
               columnKey="2030"
               header={<Cell>2030</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupTwoWidth}
+              flexGrow={yearGroupTwoFlex}
             />
             <Column
               columnKey="2031"
               header={<Cell>2031</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupTwoWidth}
+              flexGrow={yearGroupTwoFlex}
             />
             <Column
               columnKey="2032"
               header={<Cell>2032</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupTwoWidth}
+              flexGrow={yearGroupTwoFlex}
             />
             <Column
               columnKey="2033"
               header={<Cell>2033</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupTwoWidth}
+              flexGrow={yearGroupTwoFlex}
             />
             <Column
               columnKey="2034"
               header={<Cell>2034</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupTwoWidth}
+              flexGrow={yearGroupTwoFlex}
             />
             <Column
               columnKey="2035"
               header={<Cell>2035</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupTwoWidth}
+              flexGrow={yearGroupTwoFlex}
             />
             <Column
               columnKey="2036"
               header={<Cell>2036</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupTwoWidth}
+              flexGrow={yearGroupTwoFlex}
             />
             <Column
               columnKey="2037"
               header={<Cell>2037</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupThreeWidth}
+              flexGrow={yearGroupThreeFlex}
             />
             <Column
               columnKey="2038"
               header={<Cell>2038</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupThreeWidth}
+              flexGrow={yearGroupThreeFlex}
             />
             <Column
               columnKey="2039"
               header={<Cell>2039</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupThreeWidth}
+              flexGrow={yearGroupThreeFlex}
             />
             <Column
               columnKey="2040"
               header={<Cell>2040</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupThreeWidth}
+              flexGrow={yearGroupThreeFlex}
             />
             <Column
               columnKey="2041"
               header={<Cell>2041</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupThreeWidth}
+              flexGrow={yearGroupThreeFlex}
             />
             <Column
               columnKey="2042"
               header={<Cell>2042</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupThreeWidth}
+              flexGrow={yearGroupThreeFlex}
             />
             <Column
               columnKey="2043"
               header={<Cell>2043</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupThreeWidth}
+              flexGrow={yearGroupThreeFlex}
             />
             <Column
               columnKey="2044"
               header={<Cell>2044</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupThreeWidth}
+              flexGrow={yearGroupThreeFlex}
             />
             <Column
               columnKey="2045"
               header={<Cell>2045</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupThreeWidth}
+              flexGrow={yearGroupThreeFlex}
             />
             <Column
               columnKey="2046"
               header={<Cell>2046</Cell>}
               cell={<TextCell data={securitiesDataList} />}
-              width={detailsWidths}
+              width={yearGroupThreeWidth}
+              flexGrow={yearGroupThreeFlex}
             />
           </Table>
     );
   }
 
   render() {
-    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, accountsDataList, acctSecuritiesDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold} = this.state;
+    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, accountsDataList, acctSecuritiesDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold, showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
 
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
 
@@ -552,7 +617,17 @@ class HouseholdsGrid extends Component {
     let tableHeight = (this.state.height * 0.79) - 45;
     let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 7;
     let detailsGroupWidth = aboutColumnsHidden ? columnWidths.name : (columnWidths.name * 3);
+    let yearGroupOneWidth = showYearGroupOne ? columnWidths.marketValue : 0;
+    let yearGroupTwoWidth = showYearGroupTwo ? columnWidths.marketValue : 0;
+    let yearGroupThreeWidth = showYearGroupThree ? columnWidths.marketValue : 0;
+    let yearGroupOneFlex = showYearGroupOne ? 1 : 0;
+    let yearGroupTwoFlex = showYearGroupTwo ? 1 : 0;
+    let yearGroupThreeFlex = showYearGroupThree ? 1 : 0;
+    let ladderGroupWidth = tableWidth - 65 - detailsGroupWidth;
     let detailsGroupFlex = aboutColumnsHidden ? 0 : 1;
+
+    let next = '-->';
+    let previous = '<--';
 
     return (
       <div>
@@ -588,6 +663,24 @@ class HouseholdsGrid extends Component {
                     </div>
                   }
                   width={detailsGroupWidth}
+                />
+                <Column
+                  header={
+                    <div id="ladder-header">
+                      <Cell>Bond Ladder</Cell>
+                      {
+                        showYearGroupOne
+                          ? <span onClick={this.getYearsAfter}>Next 10 years -></span>
+                          : null
+                      }
+                      {
+                        showYearGroupTwo || showYearGroupThree
+                          ? <div><span onClick={this.getYearsBefore}> {previous} Previous</span><span onClick={this.getYearsAfter}> Next {next} </span></div>
+                          : null
+                      }
+                    </div>
+                  }
+                  width={ladderGroupWidth}
                 />
               </Table>
             </div>
@@ -697,22 +790,9 @@ class HouseholdsGrid extends Component {
                     sortDir={colSortDirs.percentage}>
                     % Optimized
                   </SortHeaderCell>
-                  <div id="percentage-filter-container" className={filtersVisible}>
-                    <select className="percentage-dropdown">
-                      <option value=">" selected>&#62;</option>
-                      <option value="=">=</option>
-                      <option value="<">&#60;</option>
-                    </select>
-                    <div className="percentage-slider-container">
-                      <input className="grid-filter" id="percentage-filter" onChange={(e) => this._onFilterChange(e, 'percentage')} type="range"
-                      />
-                      <div>&nbsp;{percentageFilterValue}&nbsp;%</div>
-                    </div>
-                  </div>
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              flexGrow={0}
               width={columnWidths.balance}
             />
             <Column
@@ -727,8 +807,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              flexGrow={1}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupOneFlex}
+              width={yearGroupOneWidth}
             />
             <Column
               columnKey="2018"
@@ -742,8 +822,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              flexGrow={1}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupOneFlex}
+              width={yearGroupOneWidth}
             />
             <Column
               columnKey="2019"
@@ -757,8 +837,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              flexGrow={1}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupOneFlex}
+              width={yearGroupOneWidth}
             />
             <Column
               columnKey="2020"
@@ -772,8 +852,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              flexGrow={1}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupOneFlex}
+              width={yearGroupOneWidth}
             />
             <Column
               columnKey="2021"
@@ -787,8 +867,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              flexGrow={1}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupOneFlex}
+              width={yearGroupOneWidth}
             />
             <Column
               columnKey="2022"
@@ -802,7 +882,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupOneFlex}
+              width={yearGroupOneWidth}
             />
             <Column
               columnKey="2023"
@@ -816,7 +897,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupOneFlex}
+              width={yearGroupOneWidth}
             />
             <Column
               columnKey="2024"
@@ -830,7 +912,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupOneFlex}
+              width={yearGroupOneWidth}
             />
             <Column
               columnKey="2025"
@@ -844,7 +927,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupOneFlex}
+              width={yearGroupOneWidth}
             />
             <Column
               columnKey="2026"
@@ -858,7 +942,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupOneFlex}
+              width={yearGroupOneWidth}
             />
             <Column
               columnKey="2027"
@@ -872,7 +957,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupTwoFlex}
+              width={yearGroupTwoWidth}
             />
             <Column
               columnKey="2028"
@@ -886,7 +972,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupTwoFlex}
+              width={yearGroupTwoWidth}
             />
             <Column
               columnKey="2029"
@@ -900,7 +987,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupTwoFlex}
+              width={yearGroupTwoWidth}
             />
             <Column
               columnKey="2030"
@@ -914,7 +1002,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupTwoFlex}
+              width={yearGroupTwoWidth}
             />
             <Column
               columnKey="2031"
@@ -928,7 +1017,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupTwoFlex}
+              width={yearGroupTwoWidth}
             />
             <Column
               columnKey="2032"
@@ -942,7 +1032,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupTwoFlex}
+              width={yearGroupTwoWidth}
             />
             <Column
               columnKey="2033"
@@ -956,7 +1047,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupTwoFlex}
+              width={yearGroupTwoWidth}
             />
             <Column
               columnKey="2034"
@@ -970,7 +1062,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupTwoFlex}
+              width={yearGroupTwoWidth}
             />
             <Column
               columnKey="2035"
@@ -984,7 +1077,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupTwoFlex}
+              width={yearGroupTwoWidth}
             />
             <Column
               columnKey="2036"
@@ -998,7 +1092,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupTwoFlex}
+              width={yearGroupTwoWidth}
             />
             <Column
               columnKey="2037"
@@ -1012,7 +1107,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupThreeFlex}
+              width={yearGroupThreeWidth}
             />
             <Column
               columnKey="2038"
@@ -1026,7 +1122,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupThreeFlex}
+              width={yearGroupThreeWidth}
             />
             <Column
               columnKey="2039"
@@ -1040,7 +1137,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupThreeFlex}
+              width={yearGroupThreeWidth}
             />
             <Column
               columnKey="2040"
@@ -1054,7 +1152,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupThreeFlex}
+              width={yearGroupThreeWidth}
             />
             <Column
               columnKey="2041"
@@ -1068,7 +1167,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupThreeFlex}
+              width={yearGroupThreeWidth}
             />
             <Column
               columnKey="2042"
@@ -1082,7 +1182,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupThreeFlex}
+              width={yearGroupThreeWidth}
             />
             <Column
               columnKey="2043"
@@ -1096,7 +1197,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupThreeFlex}
+              width={yearGroupThreeWidth}
             />
             <Column
               columnKey="2044"
@@ -1110,7 +1212,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupThreeFlex}
+              width={yearGroupThreeWidth}
             />
             <Column
               columnKey="2045"
@@ -1124,7 +1227,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupThreeFlex}
+              width={yearGroupThreeWidth}
             />
             <Column
               columnKey="2046"
@@ -1138,7 +1242,8 @@ class HouseholdsGrid extends Component {
                 </div>
               }
               cell={<TextCell data={adjustedDataList} />}
-              width={columnWidths.marketValue}
+              flexGrow={yearGroupThreeFlex}
+              width={yearGroupThreeWidth}
             />
           </Table>
           :
