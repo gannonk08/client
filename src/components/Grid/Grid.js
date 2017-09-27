@@ -12,6 +12,7 @@ import AccountsGridStore from '../HouseholdsGrid/AccountsGridStore';
 
 let PATH_BASE = '';
 const PATH_GET_CLIENTS = '/clients?uploadId=';
+this.getClients = '';
 
 process.env.NODE_ENV === 'production'
 ? PATH_BASE = process.env.REACT_APP_API_PROD
@@ -29,14 +30,17 @@ class Grid extends Component {
 
   componentWillMount() {
     this.uploadId = localStorage.getItem("uploadId");
+    this.uploadId === null
+      ? this.getClients = PATH_BASE + '/clients'
+      : this.getClients = PATH_BASE + PATH_GET_CLIENTS + this.uploadId;
   }
 
   componentDidMount() {
-    this.fetchData(this.uploadId);
+    this.fetchData();
   }
 
-  fetchData(uploadId) {
-    fetch(PATH_BASE + PATH_GET_CLIENTS + uploadId, {
+  fetchData() {
+    fetch(this.getClients, {
       mode: 'cors',
       credentials: 'include',
       method: 'GET',

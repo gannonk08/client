@@ -45,7 +45,6 @@ export class SortHeaderCell extends React.Component {
 export class CollapseCell extends React.PureComponent {
   render() {
     const {data, rowIndex, columnKey, collapsedRows, callback, ...props} = this.props;
-    console.log("CollapseCell DATA !!", data[rowIndex]);
     let rowType = data[rowIndex].type;
     let rowId = data[rowIndex].id;
 

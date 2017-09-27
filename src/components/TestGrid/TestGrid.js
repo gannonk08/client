@@ -104,6 +104,7 @@ class TestGrid extends Component {
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this._handleCollapseClick = this._handleCollapseClick.bind(this);
     this._handleCollapseAllClick = this._handleCollapseAllClick.bind(this);
+    // this._subRowHeightGetter = this._subRowHeightGetter.bind(this);
   }
 
   handleArrowKeys = (e) => {
@@ -283,7 +284,7 @@ class TestGrid extends Component {
   }
 
   _handleCollapseClick(rowIndex) {
-    const {collapsedRows, adjustedDataList} = this.state;
+    const {collapsedRows, adjustedDataList, dataListSize} = this.state;
     const shallowCopyOfCollapsedRows = new Set([...collapsedRows]);
 
     if (shallowCopyOfCollapsedRows.has(rowIndex)) {
@@ -295,7 +296,7 @@ class TestGrid extends Component {
     this.setState({
       collapsedRows: shallowCopyOfCollapsedRows,
     });
-
+    let indexMap = [];
     let securitiesArray = [];
     let numAccounts = 0;
     let accountsArray = adjustedDataList._cache[rowIndex].accounts;
@@ -308,6 +309,8 @@ class TestGrid extends Component {
     let securitiesDataList = new SecuritiesGridStore(securitiesArray);
     let numSecurities = securitiesArray.length;
     let newDataList = _.clone(adjustedDataList);
+    let insertIndex = rowIndex;
+    let rowsCount = adjustedDataList.size + 1;
     let securityHeader = {
       name: 'Account Number',
       type: 'header',
@@ -346,13 +349,22 @@ class TestGrid extends Component {
       2046: '2046'
     }
     securitiesArray.forEach(s => {
-      newDataList._cache.splice(rowIndex + 1, 0, s);
+      newDataList._cache.splice(insertIndex + 1, 0, s);
+      insertIndex++;
+      rowsCount++;
     })
     newDataList._cache.splice(rowIndex + 1, 0, securityHeader);
-
-    adjustedDataList._cache = newDataList;
+    rowsCount++;
     console.log('adjustedDataList:()()()(): ', newDataList);
-    this.setState({ adjustedDataList: newDataList });
+    console.log('dataListSize: ', adjustedDataList._cache.length);
+
+    for (let i = 0; i < newDataList._cache.length; i++) {
+      indexMap.push(i);
+    }
+
+    this.setState({
+      adjustedDataList: new DataListWrapper(indexMap, newDataList),
+      dataListSize: newDataList._cache.length });
   }
 
   _handleCollapseAllClick() {
@@ -375,8 +387,22 @@ class TestGrid extends Component {
     });
   }
 
+  // _subRowHeightGetter(index) {
+  //   const { adjustedDataList, groupByHousehold } = this.state;
+  //   let newRows = 0;
+  //   adjustedDataList._cache.forEach(h => {
+  //     if (h.type === 'header' || h.type === 'security') {
+  //       newRows++;
+  //     }
+  //   })
+  //
+  //   return this.state.collapsedRows.has(index) && groupByHousehold
+  //   ? (40 * newRows) + 42
+  //   : 0;
+  // }
+
   render() {
-    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, accountsDataList, acctSecuritiesDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold, showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
+    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, accountsDataList, acctSecuritiesDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold, showYearGroupOne, showYearGroupTwo, showYearGroupThree, dataListSize} = this.state;
 
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
 
@@ -460,7 +486,7 @@ class TestGrid extends Component {
           <Table
             scrollToRow={scrollToRow}
             rowHeight={40}
-            rowsCount={adjustedDataList.size}
+            rowsCount={dataListSize}
             headerHeight={80}
             width={tableWidth}
             height={tableHeight}
