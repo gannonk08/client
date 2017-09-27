@@ -271,8 +271,8 @@ class HouseholdsGrid extends Component {
     this.setState({ colWidth: (window.innerWidth - 95) / 5 });
     this.setState({ columnWidths: {
       name: (window.innerWidth - 95) / 8,
-      description: this.state.columnWidths.description ? (window.innerWidth - 95) / 5 : 0,
-      model: this.state.columnWidths.model ? (window.innerWidth - 95) / 5 : 0,
+      description: this.state.columnWidths.description ? (window.innerWidth - 95) / 8 : 0,
+      model: this.state.columnWidths.model ? (window.innerWidth - 95) / 8 : 0,
       balance: (window.innerWidth - 95) / 12,
       marketValue: (window.innerWidth - 95) / 12.5,
       accountNumber: (window.innerWidth - 95) / 5,
@@ -361,7 +361,7 @@ class HouseholdsGrid extends Component {
     let detailsWidths = (window.innerWidth - 95) / 12.5;
     let cusipWidth = (window.innerWidth - 95) / 12;
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
-    let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 7;
+    let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 8;
 
     let yearGroupOneWidth = showYearGroupOne ? columnWidths.marketValue : 0;
     let yearGroupTwoWidth = showYearGroupTwo ? columnWidths.marketValue : 0;
@@ -642,7 +642,7 @@ class HouseholdsGrid extends Component {
 
     let rowWidth = (tableWidth - 60) / 6;
     let tableHeight = (this.state.height * 0.79) - 45;
-    let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 7;
+    let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 8;
     let detailsGroupWidth = aboutColumnsHidden ? columnWidths.name : (columnWidths.name * 3);
     let yearGroupOneWidth = showYearGroupOne ? columnWidths.marketValue : 0;
     let yearGroupTwoWidth = showYearGroupTwo ? columnWidths.marketValue : 0;

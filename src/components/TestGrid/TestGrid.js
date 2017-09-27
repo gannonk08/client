@@ -76,6 +76,7 @@ class TestGrid extends Component {
         quantity: detailsColumnsWidth
       },
       dataListSize: this._dataList.size,
+      expandedDataList: this._dataList._cache,
       filtersVisible: true,
       groupByHousehold: true,
       height: '0',
@@ -362,8 +363,11 @@ class TestGrid extends Component {
       indexMap.push(i);
     }
 
+    console.log('indexMap :', indexMap);
+
     this.setState({
       adjustedDataList: new DataListWrapper(indexMap, newDataList),
+      expandedDataList: newDataList._cache,
       dataListSize: newDataList._cache.length });
   }
 
@@ -402,7 +406,7 @@ class TestGrid extends Component {
   // }
 
   render() {
-    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, accountsDataList, acctSecuritiesDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold, showYearGroupOne, showYearGroupTwo, showYearGroupThree, dataListSize} = this.state;
+    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, expandedDataList, accountsDataList, acctSecuritiesDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold, showYearGroupOne, showYearGroupTwo, showYearGroupThree, dataListSize} = this.state;
 
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
 
@@ -486,7 +490,7 @@ class TestGrid extends Component {
           <Table
             scrollToRow={scrollToRow}
             rowHeight={40}
-            rowsCount={dataListSize}
+            rowsCount={adjustedDataList.getSize()}
             headerHeight={80}
             width={tableWidth}
             height={tableHeight}

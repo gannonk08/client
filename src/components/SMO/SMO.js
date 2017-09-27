@@ -5,13 +5,13 @@ import Rebalance from '../Rebalance/Rebalance';
 class SMO extends Component {
 	constructor(props) {
     super(props);
-    this.showAddForm = this.showAddForm.bind(this);
+    this.toggleAddForm = this.toggleAddForm.bind(this);
     this.state = {
       addFormVisible: true,
     };
   }
 
-  showAddForm() {
+  toggleAddForm() {
     this.setState({ addFormVisible: !this.state.addFormVisible });
   }
 
@@ -20,14 +20,13 @@ class SMO extends Component {
       <div>
         <div className="rebalance-body">
           <div className="rebalance-nav">
-            <div onClick={this.showAddForm} className="smo btn btn-success" data-toggle="modal" data-target="#smo">Secondary Market Offer</div>
+						{
+		          this.state.addFormVisible
+		            ? <Rebalance />
+		            : null
+		        }
           </div>
         </div>
-				{
-          this.state.addFormVisible
-            ? <Rebalance />
-            : null
-        }
       </div>
     );
 	}

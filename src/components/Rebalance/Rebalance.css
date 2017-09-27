@@ -3,7 +3,6 @@ div#add-form-container {
   width: 100%;
   display: flex;
   justify-content: flex-start;
-  border: 3px solid #eee;
 }
 
 div.rebalance-form {
@@ -28,7 +27,13 @@ div.rebalance-form button {
   background-color: gray;
   color: white;
   border: none;
-  font-size: 1rem;
-  margin-top: 20px;
+  font-size: 0.85rem;
+  margin-top: 10px;
   margin-left: 1px;
+  padding: 6px;
+  width: 100%;
+}
+
+div.rebalance-form button:hover {
+  background-color: #375a7f;
 }

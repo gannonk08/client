@@ -14,11 +14,17 @@ class Rebalance extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit() {
+  onSubmit = (e) => {
+    e.preventDefault();
+    let rawMaturityDate = document.getElementById('rebalance-maturityDate').value;
+    let rawMaturityDate2 = document.getElementById('rebalance-maturityDate').value;
+    let year = rawMaturityDate.substring(0,4);
+    let monthDay = rawMaturityDate2.substring(5,10);
+    let adjustedMaturityDate = monthDay + '-' + year;
 		let formData = JSON.stringify({
 			cusip: document.getElementById('rebalance-cusip').value,
-			quantity: document.getElementById('rebalance-quantity').value,
-			price: document.getElementById('rebalance-price').value,
+			quantity: +document.getElementById('rebalance-quantity').value,
+			price: +document.getElementById('rebalance-price').value,
 			maturityDate: document.getElementById('rebalance-maturityDate').value
 		})
 
@@ -37,8 +43,7 @@ class Rebalance extends Component {
 		.then(res => {
 			if (res.status === "OK") {
 				console.log('rebalance response is OK!!');
-				this.props.history.push('/accounts/rebalanced');
-				this.props.addUserEmail(res.record.email);
+				// this.props.history.push('/accounts/rebalanced');
 			}
 		})
 		.catch(e => {
@@ -53,18 +58,18 @@ class Rebalance extends Component {
         <div className="rebalance-form">
           <form onSubmit={this.onSubmit}>
             <label htmlFor="cusip">CUSIP</label>
-            <input id="rebalance-cusip" type="text" name="cusip"/>
+            <input id="rebalance-cusip" type="text" name="cusip" required/>
 
             <label htmlFor="quantity">Quantity</label>
-            <input id="rebalance-quantity" type="number" name="quantity"/>
+            <input id="rebalance-quantity" type="number" name="quantity" step=".01" required/>
 
             <label htmlFor="price">Price</label>
-            <input id="rebalance-price" type="number" name="price"/>
+            <input id="rebalance-price" type="number" name="price" step=".01" required/>
 
             <label htmlFor="maturityDate">Maturity Date</label>
-            <input id="rebalance-maturityDate" type="date" name="maturityDate"/>
+            <input id="rebalance-maturityDate" type="date" name="maturityDate" required/>
 
-            <button type="submit" className="btn btn-success">Submit</button>
+            <button type="submit" className="smo btn btn-success">New Secondary Market Offer</button>
           </form>
         </div>
       </div>

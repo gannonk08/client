@@ -45,30 +45,42 @@ export class SortHeaderCell extends React.Component {
 export class CollapseCell extends React.PureComponent {
   render() {
     const {data, rowIndex, columnKey, collapsedRows, callback, ...props} = this.props;
-    let rowType = data[rowIndex].type;
-    let rowId = data[rowIndex].id;
-
+    let doesDataExist = false;
     let headerTooltip = '';
-    if (rowType === 'header') {
-      let numAccounts = data[rowIndex - 1].accounts.length
-      numAccounts > 1
+    let rowType = 'household';
+    let rowId = 1;
+
+    if (data) {
+      doesDataExist = true;
+      let rowType = data[rowIndex].type;
+      let rowId = data[rowIndex].id;
+
+      if (rowType === 'header') {
+        let numAccounts = data[rowIndex - 1].accounts.length
+        numAccounts > 1
         ? headerTooltip = numAccounts + " accounts, " + 1 + " securities"
         : headerTooltip = numAccounts + " account, " + 1 + " securities";
+      }
     }
 
     return (
       <div>
       {
-        rowType === "household"
+        !doesDataExist
+          ? <Cell></Cell>
+          : null
+      }
+      {
+        doesDataExist && rowType === "household"
           ? <Cell {...props}>
               <a onClick={() => callback(rowIndex)}>
                 {collapsedRows.has(rowIndex) ? '\u25BC' : '\u25BA'}
               </a>
             </Cell>
-          : <Cell>{rowId}</Cell>
+          : null
       }
       {
-        rowType === "header"
+        doesDataExist && rowType === "header"
           ? <div className="sub-header">
               <Cell>
                 <Tooltip title={headerTooltip} position='right'>
@@ -78,7 +90,14 @@ export class CollapseCell extends React.PureComponent {
                 </Tooltip>
               </Cell>
             </div>
-          : <Cell></Cell>
+          : null
+      }
+      {
+        doesDataExist && rowType === "security"
+          ? <div className="sub-header">
+              <Cell>{rowId}</Cell>
+            </div>
+          : null
       }
       </div>
     );
