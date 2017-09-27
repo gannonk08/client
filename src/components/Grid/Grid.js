@@ -32,7 +32,6 @@ class Grid extends Component {
   }
 
   componentDidMount() {
-    console.log('this.uploadId', this.uploadId);
     this.fetchData(this.uploadId);
   }
 
@@ -46,7 +45,6 @@ class Grid extends Component {
     .then (res => res.json())
     .then(res => {
       if (res.status === "OK") {
-        console.log('passed to store:::?', res.records);
         this.setState({ data: new HouseholdsGridStore(res.records)});
 
         let accountsArray = this.state.data._cache;
@@ -62,7 +60,6 @@ class Grid extends Component {
         })
         let newCsvData = new AccountsGridStore(result);
         this.setState({ csvData: newCsvData._cache });
-        console.log('newCsvData', newCsvData);
         return this.state.data;
       }
     })
@@ -72,7 +69,6 @@ class Grid extends Component {
   }
 
   cacheData(data) {
-    console.log("DATA IN IDB", data);
     let indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
 
     let open = indexedDB.open("BLPro", 1);
@@ -132,7 +128,7 @@ class Grid extends Component {
 
   render() {
     let { data, loaded, csvData } = this.state;
-
+    let { importsVisible } = this.props;
     let sessionIndicator;
     let storageSessionIndicator = localStorage.getItem("activeSession");
     if (storageSessionIndicator === 'true') {
@@ -150,12 +146,12 @@ class Grid extends Component {
           <Nav
             groupByHousehold={true}
             csvData={csvData}
-            importsVisible={false}
+            importsVisible={importsVisible}
           />
           <div id="grid-container">
             {
               sessionIndicator
-                ? <HouseholdsGrid freshData={data}/>
+                ? <HouseholdsGrid freshData={data} />
                 :
                 <div>
                   <p id="redirect-login-paragraph"><Link to={"/"} id="redirect-login">You must be logged in to view this page. Click here to log in.</Link></p>

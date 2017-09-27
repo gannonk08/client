@@ -1,7 +1,6 @@
 class HouseholdsGridStore {
   constructor(records) {
     let dataRecords = records;
-    console.log('records', dataRecords);
     if (!dataRecords.housesholds.length) {
       this.size = 200;
       this._cache = [];
@@ -125,11 +124,9 @@ class HouseholdsGridStore {
             accounts: addAccounts
           })
           this.numHouseholds++;
-          console.log('race forEach');
         }
       })
       this._cache = result;
-      console.log('this._cache', this._cache);
     }
   }
 
@@ -252,7 +249,6 @@ class HouseholdsGridStore {
       })
       this.numAccounts++;
     })
-    console.log('this.latestYear', this.latestYear);
     return result;
   }
 
@@ -332,9 +328,6 @@ class HouseholdsGridStore {
       if (+year > this.latestYear) { this.latestYear = +year }
       let maturityDate = monthDay + year;
       let faceValue = parseFloat(s.face_value.replace(/\$|,/g, ''));
-      // for (var i = 2017; i < this.latestYear; i++) {
-      //
-      // }
       switch (year) {
         case '2017':
           marketValue17 = s.price * faceValue / 100;

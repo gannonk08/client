@@ -21,17 +21,10 @@ class Nav extends Component {
     }
     this.state = {
       rebalanceToolsVisible: false,
-      importsVisible: false,
+      importsVisible: this.props.importsVisible,
       rebalanceImageSrc: 'rebalance.png',
       csvData: this.props.csvData
     };
-    console.log('this.props.csvData', this.props.csvData);
-  }
-
-  componentDidMount() {
-    this.props.importsVisible === undefined || this.props.importsVisible === false
-      ? this.setState({ importsVisible: false })
-      : this.setState({ importsVisible: true });
   }
 
   showRebalanceBanner() {

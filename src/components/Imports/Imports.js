@@ -61,6 +61,7 @@ class Imports extends Component {
 				  method: 'GET',
 					headers: { 'Accept': 'application/json' }
 				})
+        .then (res => res.json())
 				.then(res => {
 					if (res.status === 'OK') {
             let uploadId = res.uploadId;
@@ -80,7 +81,11 @@ class Imports extends Component {
                 this.props.history.push('/clients');
               }
             })
-            .catch(e => console.log(e));
+            .catch(e => {
+              console.log(e);
+              this.setState({ loaded: true });
+              this.props.history.push('/clients/import');
+            });
 					}
 				})
 				.catch(e => console.log(e));
