@@ -17,7 +17,7 @@ class Nav extends Component {
 
     this.state = {
       rebalanceToolsVisible: false,
-      importsVisible: false,
+      importsVisible: this.props.importsVisible,
       rebalanceImageSrc: 'rebalance.png',
       csvData: this.props.csvData
     };

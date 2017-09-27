@@ -15,6 +15,10 @@ class ClientsImport extends Component {
     this.state = { loaded: false, data: {}, };
 	}
 
+  componentDidMount() {
+    this.setState({ loaded: true });
+  }
+
   render() {
     let { data, loaded } = this.state;
     let { uploadIdExists } = this.props;
@@ -35,7 +39,8 @@ class ClientsImport extends Component {
                 />
                 <Nav
                   groupByHousehold={true}
-                  importsVisible={false}
+                  importsVisible={true}
+                  csvData={'import data to populate this csv'}
                 />
                 <div id="grid-container">
                   <Table

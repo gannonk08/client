@@ -20,6 +20,7 @@ class Authenticate extends Component {
 	}
 
 	render() {
+		let { isSigninVisible } = this.state;
 		return (
 			<div>
 				<Header
@@ -28,21 +29,21 @@ class Authenticate extends Component {
 	      <div className="log-in">
 					<div className="row">
 						<div id="auth-form-container">
-							<form id="auth-form">
+							<div id="auth-form">
 								{
-									this.state.isSigninVisible
+									isSigninVisible
 										? <Signin />
 										: <Signup />
 								}
-								<div id="not-member" className={this.state.isSigninVisible}>
+								<div id="not-member" className={isSigninVisible}>
 									<p className="already-member">Not a member?</p>
 									<p className="sign-up-button" onClick={this.toggleAuthComponent}>Sign Up</p>
 								</div>
-								<div id="already-member" className={this.state.isSigninVisible}>
+								<div id="already-member" className={isSigninVisible}>
 									<p className="already-member">Already a member?</p>
 									<p className="sign-up-button" onClick={this.toggleAuthComponent}>Log In</p>
 								</div>
-							</form>
+							</div>
 						</div>
 						<Hero />
 					</div>
