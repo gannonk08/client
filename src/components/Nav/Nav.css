@@ -45,6 +45,14 @@ img.nav-image {
   width: 25px;
 }
 
+div#importsVisible.false, div#rebalanceToolsVisible.false {
+  display: none;
+}
+
+div#importsVisible.true, div#rebalanceToolsVisible.true {
+  display: block;
+}
+
 #importsNav, #rebalanceNav, #exportCsv, .inactive-tab {
   height: 35px;
   width: 35px;

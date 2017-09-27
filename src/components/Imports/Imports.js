@@ -76,8 +76,9 @@ class Imports extends Component {
             .then (res => res.json())
             .then(res => {
               if (res.status === "OK") {
-                console.log("imported data: ", res.records);
                 this.setState({ loaded: true });
+                document.getElementById("importsVisible").className = "false";
+                document.getElementById("importsNav").className = "false";
                 this.props.history.push('/clients');
               }
             })

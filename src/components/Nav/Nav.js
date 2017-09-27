@@ -11,51 +11,40 @@ class Nav extends Component {
     super(props);
     this.showRebalanceBanner = this.showRebalanceBanner.bind(this);
     this.showImports = this.showImports.bind(this);
-    this.handleClients = this.handleClients.bind(this);
     this.handleHouseholds = this.handleHouseholds.bind(this);
     this.mouseEnter = this.mouseEnter.bind(this);
     this.mouseLeave = this.mouseLeave.bind(this);
 
-    if (this.props.importsVisible === false) {
-      this.state = { importsVisible: false };
-    }
     this.state = {
       rebalanceToolsVisible: false,
-      importsVisible: this.props.importsVisible,
+      importsVisible: false,
       rebalanceImageSrc: 'rebalance.png',
       csvData: this.props.csvData
     };
   }
 
   showRebalanceBanner() {
-    if (this.state.importsVisible) {
+    let { importsVisible, rebalanceToolsVisible } = this.state;
+    if (importsVisible) {
       this.setState({ importsVisible: false });
     }
-    this.setState({ rebalanceToolsVisible: !this.state.rebalanceToolsVisible });
+    this.setState({ rebalanceToolsVisible: !rebalanceToolsVisible });
   }
 
   showImports() {
-    if (this.state.rebalanceToolsVisible) {
+    let { importsVisible, rebalanceToolsVisible } = this.state;
+    if (rebalanceToolsVisible) {
       this.setState({ rebalanceToolsVisible: false });
     }
-    this.setState({ importsVisible: !this.state.importsVisible });
-  }
-
-  handleClients() {
-    if (this.state.rebalanceToolsVisible) {
-      this.setState({ rebalanceToolsVisible: false });
-    }
-    if (this.state.importsVisible) {
-      this.setState({ importsVisible: false });
-    }
-    this.props.history.push('/accounts');
+    this.setState({ importsVisible: !importsVisible });
   }
 
   handleHouseholds() {
-    if (this.state.rebalanceToolsVisible) {
+    let { importsVisible, rebalanceToolsVisible } = this.state;
+    if (rebalanceToolsVisible) {
       this.setState({ rebalanceToolsVisible: false });
     }
-    if (this.state.importsVisible) {
+    if (importsVisible) {
       this.setState({ importsVisible: false });
     }
     this.props.history.push('/clients');
@@ -70,24 +59,24 @@ class Nav extends Component {
   }
 
 	render() {
-    let { csvData } = this.state;
+    let {csvData, importsVisible, rebalanceToolsVisible, rebalanceImageSrc} = this.state;
 		return (
       <div>
         <nav>
           <div className="nav-left">
             <div id="clientsNav" className={true}>
               <Tooltip title='Clients' position='top'>
-                <img className="nav-image" onClick={this.handleClients} src={require("./images/clients.png")} alt="clients" />
+                <img className="nav-image" onClick={this.handleHouseholds} src={require("./images/clients.png")} alt="clients" />
               </Tooltip>
             </div>
-            <div id="importsNav" className={this.state.importsVisible}>
+            <div id="importsNav" className={importsVisible}>
               <Tooltip title='Import CSV' position='top'>
                 <img className="nav-image" onClick={this.showImports}  src={require("./images/imports.png")} alt="imports" />
               </Tooltip>
             </div>
-            <div id="rebalanceNav" className={this.state.rebalanceToolsVisible} onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
+            <div id="rebalanceNav" className={rebalanceToolsVisible} onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}>
               <Tooltip title='Rebalance Accounts' position='top'>
-                <img className="nav-image" onClick={this.showRebalanceBanner} src={require('./images/' + this.state.rebalanceImageSrc)} alt="rebalance"/>
+                <img className="nav-image" onClick={this.showRebalanceBanner} src={require('./images/' + rebalanceImageSrc)} alt="rebalance"/>
               </Tooltip>
             </div>
             <div id="exportCsv" className="false">
@@ -102,16 +91,12 @@ class Nav extends Component {
           </div>
           <div className="nav-right"></div>
         </nav>
-        {
-          this.state.importsVisible
-            ? <Imports />
-            : null
-        }
-        {
-          this.state.rebalanceToolsVisible
-            ? <SMO />
-            : null
-        }
+        <div id="importsVisible" className={importsVisible}>
+          <Imports />
+        </div>
+        <div id="rebalanceToolsVisible" className={rebalanceToolsVisible}>
+          <SMO />
+        </div>
       </div>
 		)
 	}
