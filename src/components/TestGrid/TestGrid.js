@@ -5,10 +5,11 @@ import {HideFilters, ShowFilters} from './GridCells/ToggleFilters';
 import {DataListWrapper} from './GridCells/DataListWrapper';
 import {CollapseCell, TextCell, SortHeaderCell} from './GridCells/HelperCells';
 import UngroupHouseholds from './GridCells/UngroupHouseholds';
-import AccountsGridStore from './AccountsGridStore';
-import SecuritiesGridStore from './SecuritiesGridStore';
+import AccountsGridStore from './TestAccountsGridStore';
+import SecuritiesGridStore from './TestSecuritiesGridStore';
 import 'fixed-data-table-2/dist/fixed-data-table.min.css';
-import './HouseholdsGrid.css';
+import './TestGrid.css';
+import _ from 'lodash';
 
 import Tooltip from 'react-tooltip-component';
 
@@ -18,7 +19,7 @@ const SortTypes = {
 };
 
 // variables and functions starting with '_' are used by 'fixed-data-table-2' library
-class HouseholdsGrid extends Component {
+class TestGrid extends Component {
   constructor(props) {
     super(props);
     console.log("Households props in constructor", this.props.freshData);
@@ -103,8 +104,6 @@ class HouseholdsGrid extends Component {
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this._handleCollapseClick = this._handleCollapseClick.bind(this);
     this._handleCollapseAllClick = this._handleCollapseAllClick.bind(this);
-    this._subRowHeightGetter = this._subRowHeightGetter.bind(this);
-    this._rowExpandedGetter = this._rowExpandedGetter.bind(this);
   }
 
   handleArrowKeys = (e) => {
@@ -284,7 +283,7 @@ class HouseholdsGrid extends Component {
   }
 
   _handleCollapseClick(rowIndex) {
-    const {collapsedRows} = this.state;
+    const {collapsedRows, adjustedDataList} = this.state;
     const shallowCopyOfCollapsedRows = new Set([...collapsedRows]);
 
     if (shallowCopyOfCollapsedRows.has(rowIndex)) {
@@ -296,6 +295,64 @@ class HouseholdsGrid extends Component {
     this.setState({
       collapsedRows: shallowCopyOfCollapsedRows,
     });
+
+    let securitiesArray = [];
+    let numAccounts = 0;
+    let accountsArray = adjustedDataList._cache[rowIndex].accounts;
+    accountsArray.forEach(a => {
+      numAccounts++;
+      a.securities.forEach(s => {
+        securitiesArray.push(s);
+      })
+    })
+    let securitiesDataList = new SecuritiesGridStore(securitiesArray);
+    let numSecurities = securitiesArray.length;
+    let newDataList = _.clone(adjustedDataList);
+    let securityHeader = {
+      name: 'Account Number',
+      type: 'header',
+      description: 'Price',
+      model: 'Quantity',
+      balance: 'CUSIP',
+      2017: '2017',
+      2018: '2018',
+      2019: '2019',
+      2020: '2020',
+      2021: '2021',
+      2022: '2022',
+      2023: '2023',
+      2024: '2024',
+      2025: '2025',
+      2026: '2026',
+      2027: '2027',
+      2028: '2028',
+      2029: '2029',
+      2030: '2030',
+      2031: '2031',
+      2032: '2032',
+      2033: '2033',
+      2034: '2034',
+      2035: '2035',
+      2036: '2036',
+      2037: '2037',
+      2038: '2038',
+      2039: '2039',
+      2040: '2040',
+      2041: '2041',
+      2042: '2042',
+      2043: '2043',
+      2044: '2044',
+      2045: '2045',
+      2046: '2046'
+    }
+    securitiesArray.forEach(s => {
+      newDataList._cache.splice(rowIndex + 1, 0, s);
+    })
+    newDataList._cache.splice(rowIndex + 1, 0, securityHeader);
+
+    adjustedDataList._cache = newDataList;
+    console.log('adjustedDataList:()()()(): ', newDataList);
+    this.setState({ adjustedDataList: newDataList });
   }
 
   _handleCollapseAllClick() {
@@ -316,323 +373,6 @@ class HouseholdsGrid extends Component {
       scrollToRow: null,
       collapsedRows: shallowCopyOfCollapsedRows
     });
-  }
-
-  _subRowHeightGetter(index) {
-    const { adjustedDataList, groupByHousehold } = this.state;
-    let securitiesArray = [];
-    if (adjustedDataList._cache[index]) {
-      let accountsArray = adjustedDataList._cache[index].accounts;
-      accountsArray.forEach(a => {
-        a.securities.forEach(s => {
-          securitiesArray.push(s);
-        })
-      })
-      return this.state.collapsedRows.has(index) && groupByHousehold
-      ? (25 * securitiesArray.length) + 42
-      : 0;
-    }
-  }
-
-  _rowExpandedGetter({rowIndex, width, height}) {
-    if (!this.state.collapsedRows.has(rowIndex)) {
-      return null;
-    }
-    let { adjustedDataList, tableWidth, aboutColumnsHidden, columnWidths, showYearGroupOne, showYearGroupTwo, showYearGroupThree } = this.state;
-
-    let securitiesArray = [];
-    let numAccounts = 0;
-    let accountsArray = adjustedDataList._cache[rowIndex].accounts;
-    accountsArray.forEach(a => {
-      numAccounts++;
-      a.securities.forEach(s => {
-        securitiesArray.push(s);
-      })
-    })
-    let securitiesDataList = new SecuritiesGridStore(securitiesArray);
-    let numSecurities = securitiesArray.length;
-    let headerTooltip = '';
-    numAccounts > 1
-      ? headerTooltip = numAccounts + " accounts, " + numSecurities + " securities"
-      : headerTooltip = numAccounts + " account, " + numSecurities + " securities";
-    let expandedHeight = (25 * numSecurities) + 42;
-
-    let nameWidth = (window.innerWidth - 95) / 8;
-    let detailsWidths = (window.innerWidth - 95) / 12.5;
-    let cusipWidth = (window.innerWidth - 95) / 12;
-    let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
-    let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 7;
-
-    let yearGroupOneWidth = showYearGroupOne ? columnWidths.marketValue : 0;
-    let yearGroupTwoWidth = showYearGroupTwo ? columnWidths.marketValue : 0;
-    let yearGroupThreeWidth = showYearGroupThree ? columnWidths.marketValue : 0;
-    let yearGroupOneFlex = showYearGroupOne ? 1 : 0;
-    let yearGroupTwoFlex = showYearGroupTwo ? 1 : 0;
-    let yearGroupThreeFlex = showYearGroupThree ? 1 : 0;
-
-    return (
-      <Table
-        rowHeight={25}
-        rowsCount={numSecurities}
-        headerHeight={25}
-        width={tableWidth}
-        height={expandedHeight}
-        {...this.props}>
-        <Column
-          columnKey="id"
-          header={
-            <Cell>
-                <Tooltip title={headerTooltip} position='right'>
-                  <div className="info-image">
-                    <img id="info" src={require("./images/info.png")} alt="info" />
-                  </div>
-                </Tooltip>
-            </Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={40}
-        />
-        <Column
-          columnKey="accountNumber"
-          header={
-              <div id="accountNumber-header" onClick={this.toggleAboutColumnGroup}>
-                <Cell>Account #</Cell>
-              </div>
-          }
-          cell={<TextCell data={securitiesDataList} />}
-          width={nameWidth}
-        />
-        <Column
-          columnKey="currentPrice"
-          header={<Cell>Price</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={hiddenColumnsWidth}
-          flexGrow={columnFlexAbout}
-        />
-        <Column
-          columnKey="quantity"
-          header={<Cell>Quantity</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={hiddenColumnsWidth}
-          flexGrow={columnFlexAbout}
-        />
-        <Column
-          columnKey="cusip"
-          header={<Cell>CUSIP</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={cusipWidth}
-        />
-        <Column
-          columnKey="2017"
-          header={<Cell>2017</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupOneWidth}
-          flexGrow={yearGroupOneFlex}
-        />
-        <Column
-          columnKey="2018"
-          header={<Cell>2018</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupOneWidth}
-          flexGrow={yearGroupOneFlex}
-        />
-        <Column
-          columnKey="2019"
-          header={<Cell>2019</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupOneWidth}
-          flexGrow={yearGroupOneFlex}
-        />
-        <Column
-          columnKey="2020"
-          header={<Cell>2020</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupOneWidth}
-          flexGrow={yearGroupOneFlex}
-        />
-        <Column
-          columnKey="2021"
-          header={<Cell>2021</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupOneWidth}
-          flexGrow={yearGroupOneFlex}
-        />
-        <Column
-          columnKey="2022"
-          header={<Cell>2022</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupOneWidth}
-          flexGrow={yearGroupOneFlex}
-        />
-        <Column
-          columnKey="2023"
-          header={<Cell>2023</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupOneWidth}
-          flexGrow={yearGroupOneFlex}
-        />
-        <Column
-          columnKey="2024"
-          header={<Cell>2024</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupOneWidth}
-          flexGrow={yearGroupOneFlex}
-        />
-        <Column
-          columnKey="2025"
-          header={<Cell>2025</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupOneWidth}
-          flexGrow={yearGroupOneFlex}
-        />
-        <Column
-          columnKey="2026"
-          header={<Cell>2026</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupOneWidth}
-          flexGrow={yearGroupOneFlex}
-        />
-        <Column
-          columnKey="2027"
-          header={<Cell>2027</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupTwoWidth}
-          flexGrow={yearGroupTwoFlex}
-        />
-        <Column
-          columnKey="2028"
-          header={<Cell>2028</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupTwoWidth}
-          flexGrow={yearGroupTwoFlex}
-        />
-        <Column
-          columnKey="2029"
-          header={<Cell>2029</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupTwoWidth}
-          flexGrow={yearGroupTwoFlex}
-        />
-        <Column
-          columnKey="2030"
-          header={<Cell>2030</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupTwoWidth}
-          flexGrow={yearGroupTwoFlex}
-        />
-        <Column
-          columnKey="2031"
-          header={<Cell>2031</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupTwoWidth}
-          flexGrow={yearGroupTwoFlex}
-        />
-        <Column
-          columnKey="2032"
-          header={<Cell>2032</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupTwoWidth}
-          flexGrow={yearGroupTwoFlex}
-        />
-        <Column
-          columnKey="2033"
-          header={<Cell>2033</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupTwoWidth}
-          flexGrow={yearGroupTwoFlex}
-        />
-        <Column
-          columnKey="2034"
-          header={<Cell>2034</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupTwoWidth}
-          flexGrow={yearGroupTwoFlex}
-        />
-        <Column
-          columnKey="2035"
-          header={<Cell>2035</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupTwoWidth}
-          flexGrow={yearGroupTwoFlex}
-        />
-        <Column
-          columnKey="2036"
-          header={<Cell>2036</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupTwoWidth}
-          flexGrow={yearGroupTwoFlex}
-        />
-        <Column
-          columnKey="2037"
-          header={<Cell>2037</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupThreeWidth}
-          flexGrow={yearGroupThreeFlex}
-        />
-        <Column
-          columnKey="2038"
-          header={<Cell>2038</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupThreeWidth}
-          flexGrow={yearGroupThreeFlex}
-        />
-        <Column
-          columnKey="2039"
-          header={<Cell>2039</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupThreeWidth}
-          flexGrow={yearGroupThreeFlex}
-        />
-        <Column
-          columnKey="2040"
-          header={<Cell>2040</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupThreeWidth}
-          flexGrow={yearGroupThreeFlex}
-        />
-        <Column
-          columnKey="2041"
-          header={<Cell>2041</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupThreeWidth}
-          flexGrow={yearGroupThreeFlex}
-        />
-        <Column
-          columnKey="2042"
-          header={<Cell>2042</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupThreeWidth}
-          flexGrow={yearGroupThreeFlex}
-        />
-        <Column
-          columnKey="2043"
-          header={<Cell>2043</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupThreeWidth}
-          flexGrow={yearGroupThreeFlex}
-        />
-        <Column
-          columnKey="2044"
-          header={<Cell>2044</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupThreeWidth}
-          flexGrow={yearGroupThreeFlex}
-        />
-        <Column
-          columnKey="2045"
-          header={<Cell>2045</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupThreeWidth}
-          flexGrow={yearGroupThreeFlex}
-        />
-        <Column
-          columnKey="2046"
-          header={<Cell>2046</Cell>}
-          cell={<TextCell data={securitiesDataList} />}
-          width={yearGroupThreeWidth}
-          flexGrow={yearGroupThreeFlex}
-        />
-      </Table>
-    );
   }
 
   render() {
@@ -721,8 +461,6 @@ class HouseholdsGrid extends Component {
             scrollToRow={scrollToRow}
             rowHeight={40}
             rowsCount={adjustedDataList.size}
-            subRowHeightGetter={this._subRowHeightGetter}
-            rowExpanded={this._rowExpandedGetter}
             headerHeight={80}
             width={tableWidth}
             height={tableHeight}
@@ -748,6 +486,7 @@ class HouseholdsGrid extends Component {
               }
               cell={<CollapseCell
                 callback={this._handleCollapseClick} collapsedRows={collapsedRows}
+                data={adjustedDataList._cache}
               />}
               width={40}
             />
@@ -1386,4 +1125,4 @@ class HouseholdsGrid extends Component {
   }
 }
 
-export default HouseholdsGrid;
+export default TestGrid;

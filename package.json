@@ -6,6 +6,7 @@
     "aws-sdk": "^2.109.0",
     "bootstrap": "^3.3.7",
     "fixed-data-table-2": "^0.8.0",
+    "lodash": "^4.17.4",
     "react": "^15.6.1",
     "react-csv": "^1.0.8",
     "react-dom": "^15.6.1",

@@ -12,6 +12,7 @@ import About from './components/About/About';
 import Grid from './components/Grid/Grid';
 import ClientsGrid from './components/ClientsGrid/ClientsGrid';
 import ClientsImport from './components/ClientsImport/ClientsImport';
+import GridTest from './components/GridTest/GridTest';
 import Footer from './components/Footer/Footer';
 
 class App extends Component {
@@ -30,6 +31,10 @@ class App extends Component {
             <Route
               exact path={"/clients"}
               render={(props) => <Grid {...props} importsVisible={false}/>} />
+            <Footer />
+            <Route
+              exact path={"/test"}
+              render={(props) => <GridTest {...props} importsVisible={false}/>} />
             <Footer />
           </div>
         </Router>

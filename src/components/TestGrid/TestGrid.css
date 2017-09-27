@@ -1,0 +1,205 @@
+.sub-header {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.ScrollbarLayout_main.ScrollbarLayout_mainVertical.public_Scrollbar_main {
+  border-left: none;
+}
+
+div.fixedDataTableLayout_bottomShadow.public_fixedDataTable_bottomShadow {
+  display: none;
+}
+
+div.fixedDataTableLayout_rowsContainer {
+  overflow-x: none !important;
+  overflow-y: none !important;
+  overflow: none;
+}
+
+div.fixedDataTableRowLayout_rowExpanded .ScrollbarLayout_mainHorizontal {
+  display: none;
+  /*height: 13px;*/
+}
+
+div.fixedDataTableRowLayout_rowExpanded div.fixedDataTableLayout_main.public_fixedDataTable_main {
+  border-left-style: none;
+}
+
+div.public_fixedDataTableCell_cellContent a {
+  font-size: 85%;
+}
+
+div.public_fixedDataTable_bodyRow div.public_fixedDataTableCell_cellContent {
+  font-size: 80%;
+}
+
+div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTableCell_cellContent {
+  font-size: 80%;
+  font-weight: lighter;
+}
+
+div.fixedDataTableRowLayout_rowExpanded div.public_fixedDataTable_header div.public_fixedDataTableCell_cellContent {
+  font-size: 80%;
+  background: none;
+}
+
+.years-control {
+  margin-right: 1vw;
+  height: 15px;
+  width: 15px;
+}
+
+#about-header, #ladder-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 1vw;
+  height: 100%;
+  width: 100%;
+  padding-right: 1vw;
+  cursor: pointer;
+}
+
+#account-details {
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+}
+
+#grid-filters {
+  display: flex;
+}
+
+#about-filters {
+  display: flex;
+}
+
+#accountNumber-header {
+  width: 100%;
+  cursor: pointer;
+}
+
+#name-header-group, #accountNumber-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 1vw;
+  height: 100%;
+}
+
+#group-image-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  padding: -8px;
+  margin-bottom: 0.5vh;
+}
+
+div.header-tools-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.header-tools {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: -8px;
+  margin-left: 0.5vw;
+}
+
+#group-image {
+  height: 16px;
+  width: 16px;
+}
+
+#group-image:hover {
+  cursor: pointer;
+  transform: scale(1.08);
+}
+
+div#filter-buffer {
+  margin-left: 0.5vw;
+}
+
+div#filter-buffer.false, div#percentage-filter-container.false {
+  display: none;
+}
+
+div.header-spacing {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+span:hover {
+  cursor: pointer;
+}
+
+div.public_fixedDataTableCell_cellContent a {
+  color: #333 !important;
+}
+
+div.public_fixedDataTableCell_cellContent a:hover {
+  color: #375a7f !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+input.grid-filter, select.percentage-dropdown {
+  font-size: 80%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+select.percentage-dropdown {
+  margin-left: 0.5vw;
+}
+
+input#current-price-filter, input#percentage-filter, input#quantity-filter {
+  width: 60%;
+}
+
+input#nme-filter, input#market-value-filter {
+  width: 80%;
+}
+
+select.percentage-dropdown {
+  margin-right: 0.5vw;
+}
+
+div#percentage-filter-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 75%;
+}
+
+div.percentage-slider-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+div.info-image {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  margin: -8px;
+  margin-left: -4px;
+}
