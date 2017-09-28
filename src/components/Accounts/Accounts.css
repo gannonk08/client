@@ -1,3 +1,13 @@
+#back-to-clients a {
+  color: black;
+  font-size: 1.1rem;
+  margin: 3vh .5vw;
+}
+
+#back-to-clients a:hover {
+  text-decoration: none;
+}
+
 #grid-container {
   padding: 5px 2.5px;
   display: flex;

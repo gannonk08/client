@@ -75,7 +75,12 @@ class Accounts extends Component {
           <div id="grid-container">
             {
               sessionIndicator
-                ? <AccountsGrid freshData={data} />
+                ? <div>
+                    <div id="back-to-clients">
+                      <Link to={"/clients"}>⬅ Back to clients page</Link>
+                    </div>
+                    <AccountsGrid freshData={data} />
+                  </div>
                 :
                 <div>
                   <p id="redirect-login-paragraph"><Link to={"/"} id="redirect-login">You must be logged in to view this page. Click here to log in.</Link></p>
