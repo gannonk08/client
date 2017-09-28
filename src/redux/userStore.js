@@ -16,7 +16,7 @@ function rootReducer(state=initialState, action) {
 
 function addAccountsReducer(state, action) {
 	const newState = {accounts: JSON.parse(JSON.stringify(state.accounts))};
-	newState.accounts.push(action.account);
+	newState.accounts.unshift(action.account);
 	return newState;
 }
 

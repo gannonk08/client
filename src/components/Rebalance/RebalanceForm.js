@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 import {connector} from '../../redux/userStore';
 import {withRouter} from 'react-router-dom';
+import Loader from 'react-loader';
 
 let uploadId = '';
 let PATH_BASE = '';
-let numAccounts = 1;
+let numAccounts = 10;
 process.env.NODE_ENV === 'production'
 ? PATH_BASE = process.env.REACT_APP_API_PROD
 : PATH_BASE = process.env.REACT_APP_API_DEV;
@@ -19,6 +20,8 @@ class RebalanceForm extends Component {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
     this.addAccount = this.addAccount.bind(this);
+    this.numberWithCommas = this.numberWithCommas.bind(this);
+    this.state = { loaded: true };
   }
 
   componentWillMount() {
@@ -33,22 +36,32 @@ class RebalanceForm extends Component {
       : this.rebalance = PATH_BASE + PATH_REBALANCE + uploadId;
   }
 
+  numberWithCommas(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   addAccount(record) {
+    let rawTotal = record.total;
+    let rawTotalNumber = +rawTotal;
+    let adjustedTotalNumber = rawTotalNumber.toFixed(0);
+    let total = this.numberWithCommas(adjustedTotalNumber);
+    console.log('total result: ', total);
     let result = {
       type: "account",
       id: numAccounts,
       accountNumber: record.account.account_number,
-      total: record.total,
+      total: "$ " + total,
       year: record.year
     };
-    rebalanceResult.push(result);
+    rebalanceResult.unshift(result);
     this.props.addAccounts(result);
-    numAccounts++;
+    numAccounts--;
   }
 
   onSubmit = (e) => {
-    console.log('this.rebalance', this.rebalance);
     e.preventDefault();
+    console.log('this.rebalance', this.rebalance);
+    this.setState({ loaded: false });
 		let formData = JSON.stringify({
 			cusip: document.getElementById('rebalance-cusip').value,
 			quantity: +document.getElementById('rebalance-quantity').value,
@@ -92,6 +105,7 @@ class RebalanceForm extends Component {
         })
         console.log('uniqueAccounts: ', uniqueAccounts);
         console.log('rebalanceResult', rebalanceResult);
+        this.setState({ loaded: true });
         this.props.history.push('/accounts/rebalanced');
 			}
 		})
@@ -102,6 +116,7 @@ class RebalanceForm extends Component {
 	}
 
   render() {
+    let { loaded } = this.state;
 		return (
       <Modal {...this.props} bsSize="small" aria-labelledby="contained-modal-title-sm">
         <Modal.Header closeButton>
@@ -125,6 +140,7 @@ class RebalanceForm extends Component {
 
                 <button type="submit" className="smo btn btn-success">Submit</button>
               </form>
+              <Loader loaded={loaded}></Loader>
             </div>
           </div>
         </Modal.Body>

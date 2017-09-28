@@ -63,9 +63,10 @@ class AccountsGrid extends Component {
             >
             <Column
               columnKey="id"
-              header={<Cell></Cell>}
+              header={<Cell>Priority</Cell>}
               cell={<TextCell data={adjustedDataList} />}
-              width={50}
+              width={colWidth}
+              flexGrow={1}
             />
             <Column
               columnKey="type"

@@ -15,19 +15,32 @@ class Accounts extends Component {
 		super(props);
 
     this.getAccountData = this.getAccountData.bind(this);
+    this.addAccountData = this.addAccountData.bind(this);
     this.accounts = [];
     this.state = { loaded: false, data: {}, accountsReceived: true };
 	}
 
   componentWillMount() {
-    this.accounts = this.props.accounts;
-    this.accounts
-      ? this.setState({ accountsReceived: true })
-      : this.setState({ accountsReceived: false });
+    let accountsStore = this.props.accounts;
+    this.addAccountData(accountsStore);
   }
 
   componentDidMount() {
     this.getAccountData(this.accounts);
+  }
+
+  addAccountData(accountsArray) {
+    let numAccounts = 13;
+    console.log('accountsArray:::', accountsArray);
+    for (let i = 0; i < numAccounts; i++) {
+      if (accountsArray[i]) {
+        this.accounts.push(accountsArray[i]);
+      }
+    }
+    console.log('this.accounts:::', this.accounts);
+    this.accounts
+      ? this.setState({ accountsReceived: true })
+      : this.setState({ accountsReceived: false });
   }
 
   getAccountData(accounts) {

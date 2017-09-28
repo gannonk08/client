@@ -75,7 +75,7 @@ class HouseholdsGrid extends Component {
         quantity: detailsColumnsWidth
       },
       dataListSize: this._dataList.size,
-      filtersVisible: true,
+      filtersVisible: false,
       groupByHousehold: true,
       height: '0',
       marketValueFilterValue: 0,
@@ -653,9 +653,74 @@ class HouseholdsGrid extends Component {
     let ladderGroupWidth = tableWidth - 65 - detailsGroupWidth;
     let detailsGroupFlex = aboutColumnsHidden ? 0 : 1;
 
+    let yearFiltersWidth = ladderGroupWidth - columnWidths.balance;
     return (
       <div>
         <div id="grid-container">
+      {
+        filtersVisible
+          ?
+            <div id="grid-header-filters">
+              <Table
+                rowHeight={40}
+                rowsCount={0}
+                headerHeight={100}
+                width={tableWidth}
+                height={40}
+                {...this.props}>
+                <Column
+                  header={<Cell></Cell>}
+                  width={40}
+                  fixed={true}
+                />
+                <Column
+                  header={
+                    <div id="filter-buffer" className={filtersVisible}>
+                      <label htmlFor="name-filter" className="grid-filter-labels">Filter by Name</label>
+                      <input className="grid-filter" id="name-filter" onChange={(e) => this._onFilterChange(e, 'name')} name="name-filter"
+                      />
+                    </div>
+                  }
+                  width={columnWidths.name}
+                />
+                <Column
+                  header={
+                    <div id="ladder-header">
+                      <div id="percentage-filter-container" className={filtersVisible}>
+                        <select className="percentage-dropdown">
+                          <option value=">" selected>&#62;</option>
+                          <option value="=">=</option>
+                          <option value="<">&#60;</option>
+                        </select>
+                        <div className="percentage-slider-container">
+                          <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='100' placeholder='0'/>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  width={columnWidths.balance}
+                />
+                <Column
+                  header={
+                    <div id="years-header">
+                      <div id="years-filter-container" className={filtersVisible}>
+                        <select className="percentage-dropdown">
+                          <option value=">" selected>&#62;</option>
+                          <option value="=">=</option>
+                          <option value="<">&#60;</option>
+                        </select>
+                        <div className="percentage-slider-container">
+                          <input className="grid-filter" id="years-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="range" min='0' max='100' placeholder='0'/>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  width={yearFiltersWidth}
+                />
+              </Table>
+            </div>
+          : null
+      }
       {
         groupByHousehold
           ?
@@ -717,34 +782,28 @@ class HouseholdsGrid extends Component {
       {
         groupByHousehold
           ?
-        <div>
           <Table
             scrollToRow={scrollToRow}
             rowHeight={40}
             rowsCount={adjustedDataList.size}
             subRowHeightGetter={this._subRowHeightGetter}
             rowExpanded={this._rowExpandedGetter}
-            headerHeight={80}
+            headerHeight={50}
             width={tableWidth}
             height={tableHeight}
             {...this.props}>
             <Column
               header={
                 <div className="header-tools-container">
-                  { !allRowsExpanded
-                      ? <div onClick={this._handleCollapseAllClick}>
-                          <ExpandAllRows />
-                        </div>
-                      : <div onClick={this._handleCollapseAllClick}>
-                          <CollapseAllRows />
-                        </div> }
-                  { filtersVisible
-                      ? <div onClick={this.toggleFilters}>
-                          <HideFilters />
-                        </div>
-                      : <div onClick={this.toggleFilters}>
-                          <ShowFilters />
-                        </div> }
+                {
+                  filtersVisible
+                    ? <div onClick={this.toggleFilters}>
+                        <HideFilters />
+                      </div>
+                    : <div onClick={this.toggleFilters}>
+                        <ShowFilters />
+                      </div>
+                }
                 </div>
               }
               cell={<CollapseCell
@@ -762,10 +821,6 @@ class HouseholdsGrid extends Component {
                       sortDir={colSortDirs.name}>
                       Name
                     </SortHeaderCell>
-                  </div>
-                  <div id="filter-buffer" className={filtersVisible}>
-                    <input className="grid-filter" id="name-filter" onChange={(e) => this._onFilterChange(e, 'name')} placeholder="Filter by Name"
-                    />
                   </div>
                 </div>
               }
@@ -1275,18 +1330,6 @@ class HouseholdsGrid extends Component {
               width={yearGroupThreeWidth}
             />
           </Table>
-          <div id="grid-totals">
-            <div>
-              Households: {adjustedDataList.numHouseholds}
-            </div>
-            <div>
-              Accounts: {adjustedDataList.numAccounts}
-            </div>
-            <div>
-              Securities: {adjustedDataList.numSecurities}
-            </div>
-          </div>
-        </div>
           :
           <Table
             rowHeight={40}
@@ -1393,6 +1436,17 @@ class HouseholdsGrid extends Component {
             />
           </Table>
       }
+        </div>
+        <div id="grid-totals">
+          <div>
+            Households: {adjustedDataList.numHouseholds}
+          </div>
+          <div>
+            Accounts: {adjustedDataList.numAccounts}
+          </div>
+          <div>
+            Securities: {adjustedDataList.numSecurities}
+          </div>
         </div>
       </div>
     );

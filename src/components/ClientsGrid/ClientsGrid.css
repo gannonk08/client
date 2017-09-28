@@ -12,13 +12,6 @@ div.public_fixedDataTableCell_cellContent a:hover {
   cursor: pointer;
 }
 
-input.grid-filter {
-  font-size: 80%;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  width: 150px;
-}
-
 #group-image-container {
   display: flex;
   justify-content: flex-start;
