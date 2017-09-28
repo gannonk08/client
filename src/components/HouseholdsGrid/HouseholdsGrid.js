@@ -287,7 +287,19 @@ class HouseholdsGrid extends Component {
     let sortIndexes = this._defaultSortIndexes.slice();
     sortIndexes.sort((indexA, indexB) => {
       let sortVal = 0;
-      if (columnKey === 'balance') {
+      if (columnKey === 'name') {
+        let valueA = this._dataList.getObjectAt(indexA)[columnKey];
+        let valueB = this._dataList.getObjectAt(indexB)[columnKey];
+        if (valueA > valueB) {
+          sortVal = 1;
+        }
+        if (valueA < valueB) {
+          sortVal = -1;
+        }
+        if (sortVal !== 0 && sortDir === SortTypes.ASC) {
+          sortVal = sortVal * -1;
+        }
+      } else if (columnKey === 'balance') {
         let valueAraw = this._dataList.getObjectAt(indexA)[columnKey];
         let valueBraw = this._dataList.getObjectAt(indexB)[columnKey];
         let valueAstr = valueAraw.substring(0,5);
@@ -304,8 +316,14 @@ class HouseholdsGrid extends Component {
           sortVal = sortVal * -1;
         }
       } else {
-        let valueA = this._dataList.getObjectAt(indexA)[columnKey];
-        let valueB = this._dataList.getObjectAt(indexB)[columnKey];
+        let valueAraw = this._dataList.getObjectAt(indexA)[columnKey];
+        let valueBraw = this._dataList.getObjectAt(indexB)[columnKey];
+        let valueAstr = valueAraw.substring(2);
+        let valueBstr = valueBraw.substring(2);
+        let valueA = parseFloat(valueAstr.replace(/,/g, ''));
+        let valueB = parseFloat(valueBstr.replace(/,/g, ''));
+        console.log('valueA', valueA);
+        console.log('valueB', valueB);
         if (valueA > valueB) {
           sortVal = 1;
         }
@@ -415,7 +433,7 @@ class HouseholdsGrid extends Component {
 
     let securitiesArray = [];
     let numAccounts = 0;
-    let accountsArray = adjustedDataList._cache[rowIndex].accounts;
+    let accountsArray = this._dataList._cache[rowIndex].accounts;
     accountsArray.forEach(a => {
       numAccounts++;
       a.securities.forEach(s => {
@@ -905,26 +923,14 @@ class HouseholdsGrid extends Component {
             />
             <Column
               columnKey="description"
-              header={
-                <SortHeaderCell id="description-header"
-                  onSortChange={this._onSortChange}
-                  sortDir={colSortDirs.description}>
-                  Model
-                </SortHeaderCell>
-              }
+              header={<Cell className="unsortable-header">Model</Cell>}
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={columnFlexAbout}
               width={hiddenColumnsWidth}
             />
             <Column
               columnKey="model"
-              header={
-                <SortHeaderCell
-                  onSortChange={this._onSortChange}
-                  sortDir={colSortDirs.model}>
-                  Model ID
-                </SortHeaderCell>
-              }
+              header={<Cell className="unsortable-header">Model ID</Cell>}
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={columnFlexAbout}
               width={hiddenColumnsWidth}
