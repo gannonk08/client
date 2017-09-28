@@ -717,6 +717,7 @@ class HouseholdsGrid extends Component {
       {
         groupByHousehold
           ?
+        <div>
           <Table
             scrollToRow={scrollToRow}
             rowHeight={40}
@@ -1274,6 +1275,18 @@ class HouseholdsGrid extends Component {
               width={yearGroupThreeWidth}
             />
           </Table>
+          <div id="grid-totals">
+            <div>
+              Households: {adjustedDataList.numHouseholds}
+            </div>
+            <div>
+              Accounts: {adjustedDataList.numAccounts}
+            </div>
+            <div>
+              Securities: {adjustedDataList.numSecurities}
+            </div>
+          </div>
+        </div>
           :
           <Table
             rowHeight={40}

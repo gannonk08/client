@@ -1,3 +1,17 @@
+#grid-totals {
+  width: 100vw;
+  display: flex;
+  justify-content: flex-start;
+  color: black;
+  position: absolute;
+  bottom: 7.5vh;
+  font-size: 90%;
+}
+
+#grid-totals div {
+  margin-left: 1.5vw;
+}
+
 .grid-cell-highlighted {
   color: rgba(170, 5, 0, 0.7);
   width: 100%;
