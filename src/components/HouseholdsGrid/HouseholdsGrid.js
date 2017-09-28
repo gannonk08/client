@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import {Table, Column, Cell} from 'fixed-data-table-2';
 import {ExpandAllRows, CollapseAllRows} from './GridCells/ExpandCollapseAllRows';
 import {HideFilters, ShowFilters} from './GridCells/ToggleFilters';
-import {DataListWrapper} from './GridCells/DataListWrapper';
-import {CollapseCell, TextCell, SortHeaderCell} from './GridCells/HelperCells';
+import {CollapseCell, TextCell} from './GridCells/HelperCells';
 import UngroupHouseholds from './GridCells/UngroupHouseholds';
 import AccountsGridStore from './AccountsGridStore';
 import SecuritiesGridStore from './SecuritiesGridStore';
@@ -16,6 +15,59 @@ const SortTypes = {
   ASC: 'ASC',
   DESC: 'DESC',
 };
+
+function reverseSortDirection(sortDir) {
+  return sortDir === SortTypes.DESC ? SortTypes.ASC : SortTypes.DESC;
+}
+
+class SortHeaderCell extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this._onSortChange = this._onSortChange.bind(this);
+  }
+
+  render() {
+    var {onSortChange, sortDir, children, ...props} = this.props;
+    return (
+      <Cell {...props}>
+        <a onClick={this._onSortChange}>
+          {children} {sortDir ? (sortDir === SortTypes.DESC ? '↓' : '↑') : ''}
+        </a>
+      </Cell>
+    );
+  }
+
+  _onSortChange(e) {
+    e.preventDefault();
+
+    if (this.props.onSortChange) {
+      this.props.onSortChange(
+        this.props.columnKey,
+        this.props.sortDir ?
+          reverseSortDirection(this.props.sortDir) :
+          SortTypes.DESC
+      );
+    }
+  }
+}
+
+class DataListWrapper {
+  constructor(indexMap, data) {
+    this._indexMap = indexMap;
+    this._data = data;
+  }
+
+  getSize() {
+    return this._indexMap.length;
+  }
+
+  getObjectAt(index) {
+    return this._data.getObjectAt(
+      this._indexMap[index],
+    );
+  }
+}
 
 // variables and functions starting with '_' are used by 'fixed-data-table-2' library
 class HouseholdsGrid extends Component {
@@ -79,11 +131,15 @@ class HouseholdsGrid extends Component {
       groupByHousehold: true,
       height: '0',
       marketValueFilterValue: 0,
+      numHouseholds: this._dataList.numHouseholds,
+      numAccounts: this._dataList.numAccounts,
+      numSecurities: this._dataList.numSecurities,
       percentageFilterValue: 0,
       scrollToRow: null,
       showYearGroupOne: true,
       showYearGroupTwo: false,
       showYearGroupThree: false,
+      sortedDataList: this._dataList,
       tableWidth: 0,
       width: '0',
     }
@@ -230,19 +286,36 @@ class HouseholdsGrid extends Component {
   _onSortChange(columnKey, sortDir) {
     let sortIndexes = this._defaultSortIndexes.slice();
     sortIndexes.sort((indexA, indexB) => {
-      let valueA = this._dataList.getObjectAt(indexA)[columnKey];
-      let valueB = this._dataList.getObjectAt(indexB)[columnKey];
       let sortVal = 0;
-      if (valueA > valueB) {
-        sortVal = 1;
+      if (columnKey === 'balance') {
+        let valueAraw = this._dataList.getObjectAt(indexA)[columnKey];
+        let valueBraw = this._dataList.getObjectAt(indexB)[columnKey];
+        let valueAstr = valueAraw.substring(0,5);
+        let valueBstr = valueBraw.substring(0,5);
+        let valueA = +valueAstr;
+        let valueB = +valueBstr;
+        if (valueA > valueB) {
+          sortVal = 1;
+        }
+        if (valueA < valueB) {
+          sortVal = -1;
+        }
+        if (sortVal !== 0 && sortDir === SortTypes.ASC) {
+          sortVal = sortVal * -1;
+        }
+      } else {
+        let valueA = this._dataList.getObjectAt(indexA)[columnKey];
+        let valueB = this._dataList.getObjectAt(indexB)[columnKey];
+        if (valueA > valueB) {
+          sortVal = 1;
+        }
+        if (valueA < valueB) {
+          sortVal = -1;
+        }
+        if (sortVal !== 0 && sortDir === SortTypes.ASC) {
+          sortVal = sortVal * -1;
+        }
       }
-      if (valueA < valueB) {
-        sortVal = -1;
-      }
-      if (sortVal !== 0 && sortDir === SortTypes.ASC) {
-        sortVal = sortVal * -1;
-      }
-
       return sortVal;
     });
 
@@ -321,8 +394,8 @@ class HouseholdsGrid extends Component {
   _subRowHeightGetter(index) {
     const { adjustedDataList, groupByHousehold } = this.state;
     let securitiesArray = [];
-    if (adjustedDataList._cache[index]) {
-      let accountsArray = adjustedDataList._cache[index].accounts;
+    if (this._dataList._cache[index]) {
+      let accountsArray = this._dataList._cache[index].accounts;
       accountsArray.forEach(a => {
         a.securities.forEach(s => {
           securitiesArray.push(s);
@@ -794,7 +867,7 @@ class HouseholdsGrid extends Component {
           <Table
             scrollToRow={scrollToRow}
             rowHeight={40}
-            rowsCount={adjustedDataList.size}
+            rowsCount={adjustedDataList.getSize()}
             subRowHeightGetter={this._subRowHeightGetter}
             rowExpanded={this._rowExpandedGetter}
             headerHeight={50}
@@ -821,15 +894,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="name"
               header={
-                <div className="header-spacing">
-                  <div id="name-header-group">
-                    <SortHeaderCell id="name-header"
-                      onSortChange={this._onSortChange}
-                      sortDir={colSortDirs.name}>
-                      Name
-                    </SortHeaderCell>
-                  </div>
-                </div>
+                <SortHeaderCell id="name-header"
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs.name}>
+                  Name
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               width={columnWidths.name}
@@ -837,17 +906,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="description"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell id="description-header"
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.description}>
-                    Model
-                  </SortHeaderCell>
-                  <div id="filter-buffer" className={filtersVisible}>
-                    <input className="grid-filter" id="description-filter" onChange={(e) => this._onFilterChange(e, 'description')} placeholder="Filter by Description"
-                    />
-                  </div>
-                </div>
+                <SortHeaderCell id="description-header"
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs.description}>
+                  Model
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={columnFlexAbout}
@@ -856,17 +919,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="model"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.model}>
-                    Model ID
-                  </SortHeaderCell>
-                  <div id="filter-buffer" className={filtersVisible}>
-                    <input className="grid-filter" id="notes-filter" onChange={(e) => this._onFilterChange(e, 'model')} placeholder="Filter by Notes"
-                    />
-                  </div>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs.model}>
+                  Model ID
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={columnFlexAbout}
@@ -875,13 +932,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="balance"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.percentage}>
-                    % Optimized
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs.percentage}>
+                  % Optimized
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               width={columnWidths.balance}
@@ -889,13 +944,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2017"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2017
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2017']}>
+                  2017
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupOneFlex}
@@ -904,13 +957,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2018"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2018
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2018']}>
+                  2018
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupOneFlex}
@@ -919,13 +970,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2019"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2019
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2019']}>
+                  2019
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupOneFlex}
@@ -934,13 +983,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2020"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2020
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2020']}>
+                  2020
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupOneFlex}
@@ -949,13 +996,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2021"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2021
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2021']}>
+                  2021
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupOneFlex}
@@ -964,13 +1009,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2022"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2022
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2022']}>
+                  2022
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupOneFlex}
@@ -979,13 +1022,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2023"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2023
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2023']}>
+                  2023
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupOneFlex}
@@ -994,13 +1035,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2024"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2024
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2024']}>
+                  2024
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupOneFlex}
@@ -1009,13 +1048,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2025"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2025
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2025']}>
+                  2025
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupOneFlex}
@@ -1024,13 +1061,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2026"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2026
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2026']}>
+                  2026
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupOneFlex}
@@ -1039,13 +1074,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2027"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2027
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2027']}>
+                  2027
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupTwoFlex}
@@ -1054,13 +1087,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2028"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2028
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2028']}>
+                  2028
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupTwoFlex}
@@ -1069,13 +1100,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2029"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2029
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2029']}>
+                  2029
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupTwoFlex}
@@ -1084,13 +1113,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2030"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2030
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2030']}>
+                  2030
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupTwoFlex}
@@ -1099,13 +1126,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2031"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2031
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2031']}>
+                  2031
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupTwoFlex}
@@ -1114,13 +1139,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2032"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2032
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2032']}>
+                  2032
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupTwoFlex}
@@ -1129,13 +1152,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2033"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2033
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2033']}>
+                  2033
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupTwoFlex}
@@ -1144,13 +1165,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2034"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2034
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2034']}>
+                  2034
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupTwoFlex}
@@ -1159,13 +1178,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2035"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2035
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2035']}>
+                  2035
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupTwoFlex}
@@ -1174,13 +1191,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2036"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2036
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2036']}>
+                  2036
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupTwoFlex}
@@ -1189,13 +1204,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2037"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2037
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2037']}>
+                  2037
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupThreeFlex}
@@ -1204,13 +1217,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2038"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2038
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2038']}>
+                  2038
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupThreeFlex}
@@ -1219,13 +1230,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2039"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2039
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2039']}>
+                  2039
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupThreeFlex}
@@ -1234,13 +1243,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2040"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2040
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2040']}>
+                  2040
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupThreeFlex}
@@ -1249,13 +1256,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2041"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2041
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2041']}>
+                  2041
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupThreeFlex}
@@ -1264,13 +1269,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2042"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2042
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2042']}>
+                  2042
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupThreeFlex}
@@ -1279,13 +1282,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2043"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2043
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2043']}>
+                  2043
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupThreeFlex}
@@ -1294,13 +1295,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2044"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2044
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2044']}>
+                  2044
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupThreeFlex}
@@ -1309,13 +1308,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2045"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2045
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2045']}>
+                  2045
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupThreeFlex}
@@ -1324,13 +1321,11 @@ class HouseholdsGrid extends Component {
             <Column
               columnKey="2046"
               header={
-                <div className="header-spacing">
-                  <SortHeaderCell
-                    onSortChange={this._onSortChange}
-                    sortDir={colSortDirs.value}>
-                    2046
-                  </SortHeaderCell>
-                </div>
+                <SortHeaderCell
+                  onSortChange={this._onSortChange}
+                  sortDir={colSortDirs['2046']}>
+                  2046
+                </SortHeaderCell>
               }
               cell={<TextCell data={adjustedDataList} />}
               flexGrow={yearGroupThreeFlex}
@@ -1446,13 +1441,13 @@ class HouseholdsGrid extends Component {
         </div>
         <div id="grid-totals">
           <div>
-            Households: {adjustedDataList.numHouseholds}
+            Households: {this.state.numHouseholds}
           </div>
           <div>
-            Accounts: {adjustedDataList.numAccounts}
+            Accounts: {this.state.numAccounts}
           </div>
           <div>
-            Securities: {adjustedDataList.numSecurities}
+            Securities: {this.state.numSecurities}
           </div>
         </div>
       </div>
