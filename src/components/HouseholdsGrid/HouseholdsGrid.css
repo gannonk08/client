@@ -1,15 +1,22 @@
 #grid-totals {
   width: 100vw;
-  display: flex;
-  justify-content: flex-start;
-  color: black;
-  position: absolute;
-  bottom: 7.5vh;
+  height: 4vh;
+  display: inline-flex;
+  justify-content: center;
+  z-index: 10000;
+  color: #eee;
+  position: fixed;
+  bottom: 0;
+  padding: 6px;
   font-size: 90%;
 }
 
 #grid-totals div {
-  margin-left: 1.5vw;
+  margin-right: 1.5vw;
+}
+
+#grid-totals div:last-child {
+  margin-right: 5px;
 }
 
 .grid-cell-highlighted {
