@@ -252,34 +252,22 @@ class HouseholdsGrid extends Component {
         if (name.toLowerCase().indexOf(filterBy) !== -1) {
           filteredIndexes.push(index);
         }
-      } else if (filteredColumn === 'description') {
+      } else if (filteredColumn === 'balance') {
         let {description} = this._dataList.getObjectAt(index);
         if (description.toLowerCase().indexOf(filterBy) !== -1) {
           filteredIndexes.push(index);
         }
-      } else if (filteredColumn === 'model') {
-        let {model} = this._dataList.getObjectAt(index);
-        if (model.toLowerCase().indexOf(filterBy) !== -1) {
-          filteredIndexes.push(index);
-        }
-      } else if (filteredColumn === 'percentage') {
-        let {percentage} = this._dataList.getObjectAt(index);
-        if (percentage.toLowerCase().indexOf(filterBy) !== -1) {
-          filteredIndexes.push(index);
-        }
       } else if (filteredColumn === 'marketValue') {
-        let {value} = this._dataList.getObjectAt(index);
+        let marketValueYear = document.getElementById('years-input').value;
+        let value = this._dataList.getObjectAt(index)[marketValueYear];
         if (value.toLowerCase().indexOf(filterBy) !== -1) {
           filteredIndexes.push(index);
         }
       }
     }
-    let updatedPercentageValue = document.getElementById('percentage-filter').value;
-    let updatedMarketValue = document.getElementById('market-value-filter').value;
+
     this.setState({
       adjustedDataList: new DataListWrapper(filteredIndexes, this._dataList),
-      percentageFilterValue: updatedPercentageValue,
-      marketValueFilterValue: updatedMarketValue
     });
   }
 
@@ -322,8 +310,6 @@ class HouseholdsGrid extends Component {
         let valueBstr = valueBraw.substring(2);
         let valueA = parseFloat(valueAstr.replace(/,/g, ''));
         let valueB = parseFloat(valueBstr.replace(/,/g, ''));
-        console.log('valueA', valueA);
-        console.log('valueB', valueB);
         if (valueA > valueB) {
           sortVal = 1;
         }
@@ -865,7 +851,7 @@ class HouseholdsGrid extends Component {
                       <div id="years-filter-container" className={filtersVisible}>
                         <div id="years-filter">
                           <label id="years-label">Year</label>
-                          <input className="grid-filter" id="years-input" type="number" min="2017" max="2046" value="2017"/>
+                          <input className="grid-filter" id="years-input" type="number" min="2017" max="2046" placeholder="2017"/>
                           <label id="value-label">Market Value</label>
                           <div>$</div>
                           <input className="grid-filter" id="years-filter" onChange={(e) => this._onFilterChange(e, 'marketValue')} type="number" min='0' max='1000000' placeholder='0'/>
