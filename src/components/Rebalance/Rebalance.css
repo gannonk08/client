@@ -5,9 +5,23 @@ div#add-form-container {
   justify-content: flex-start;
 }
 
+div.modal-content {
+  background-color: #333;
+  color: #eee;
+  opacity: 1.0;
+}
+
+button.close {
+  color: white;
+}
+
+button.close:hover {
+  color: #eee;
+}
+
 div.rebalance-form {
   margin: 2.5vw;
-  width: 20vw;
+  width: 20.5vw;
   background-color: #333;
 }
 
@@ -27,11 +41,10 @@ div.rebalance-form button {
   background-color: gray;
   color: white;
   border: none;
-  font-size: 0.85rem;
+  font-size: 0.90rem;
   margin-top: 10px;
   margin-left: 1px;
   padding: 6px;
-  width: 100%;
 }
 
 div.rebalance-form button:hover {

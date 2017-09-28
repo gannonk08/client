@@ -1,22 +1,22 @@
 import {createStore} from 'redux';
 import {connect} from 'react-redux';
 
-const RECORD_USER_EMAIL = 'RECORD_USER_EMAIL';
+const RECORD_ACCOUNTS = 'RECORD_ACCOUNTS';
 
-const initialState = {emails: ["useremail@domain.com"]};
+const initialState = {accounts: []};
 
 function rootReducer(state=initialState, action) {
 	switch (action.type) {
-		case RECORD_USER_EMAIL:
-			return addUserEmailReducer(state, action);
+		case RECORD_ACCOUNTS:
+			return addAccountsReducer(state, action);
 		default:
 			return state;
 	}
 }
 
-function addUserEmailReducer(state, action) {
-	const newState = {emails: JSON.parse(JSON.stringify(state.emails))};
-	newState.emails.push(action.email);
+function addAccountsReducer(state, action) {
+	const newState = {accounts: JSON.parse(JSON.stringify(state.accounts))};
+	newState.accounts.push(action.account);
 	return newState;
 }
 
@@ -24,13 +24,13 @@ const store = createStore(rootReducer, initialState, window.__REDUX_DEVTOOLS_EXT
 
 function mapStateToProps(state) {
 	return {
-		emails: state.emails
+		accounts: state.accounts
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		addUserEmail: email => dispatch({type: RECORD_USER_EMAIL, email})
+		addAccounts: account => dispatch({type: RECORD_ACCOUNTS, account})
 	};
 }
 

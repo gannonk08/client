@@ -12,7 +12,6 @@ import AccountsGridStore from '../HouseholdsGrid/AccountsGridStore';
 
 let PATH_BASE = '';
 const PATH_GET_CLIENTS = '/clients?uploadId=';
-this.getClients = '';
 
 process.env.NODE_ENV === 'production'
 ? PATH_BASE = process.env.REACT_APP_API_PROD
@@ -25,6 +24,7 @@ class Grid extends Component {
     this.fetchData = this.fetchData.bind(this);
     this.cacheData = this.cacheData.bind(this);
     this.uploadId = 0;
+    this.getClients = '';
     this.state = { loaded: false, data: {}, };
 	}
 

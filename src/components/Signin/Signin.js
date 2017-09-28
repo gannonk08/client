@@ -44,7 +44,6 @@ class Signin extends Component {
 				localStorage.setItem('uuid', res.record.UUID);
 				this.setState({ loaded: true });
 				this.props.history.push('/clients');
-				this.props.addUserEmail(res.record.email);
 			}
 		})
 		.catch(e => {

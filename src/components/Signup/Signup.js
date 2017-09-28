@@ -45,7 +45,6 @@ class Signup extends Component {
 				localStorage.setItem('activeSession', true);
 				localStorage.setItem('user', newUserEmail);
 				this.setState({ loaded: true });
-				this.props.addUserEmail(newUserEmail);
 				this.props.history.push('/clients/import');
 			}
 		})
