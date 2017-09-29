@@ -63,7 +63,7 @@ class Grid extends Component {
           })
         })
         let newCsvData = new AccountsGridStore(result);
-        this.setState({ csvData: newCsvData._cache });
+        this.setState({ csvData: this.state.data._cache });
         return this.state.data;
       }
     })

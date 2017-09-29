@@ -828,21 +828,7 @@ class HouseholdsGrid extends Component {
                   width={columnWidths.name}
                 />
                 <Column
-                  header={
-                    <div id="ladder-filters-header">
-                      <div id="percentage-filter-container" className={filtersVisible}>
-                        <div className="percentage-slider-container">
-                          <select className="percentage-dropdown">
-                            <option value=">" selected>&#62;</option>
-                            <option value="=">=</option>
-                            <option value="<">&#60;</option>
-                          </select>
-                          <input className="grid-filter" id="market-value-filter" onChange={(e) => this._onFilterChange(e, 'balance')} type="number" min='0' max='100' placeholder="0"/>
-                          <div id="percentage-symbol">%</div>
-                        </div>
-                      </div>
-                    </div>
-                  }
+                  header={<Cell></Cell>}
                   width={columnWidths.balance}
                 />
                 <Column
