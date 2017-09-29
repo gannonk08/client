@@ -34,6 +34,7 @@ class Nav extends Component {
 	render() {
     let {csvData, importsVisible} = this.state;
     let { activeTab } = this.props;
+    let csvHeaders = ["name", "balance", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033", "2034", "2035", "2036", "2037", "2038", "2039", "2040", "2041", "2042", "2043", "2044", "2045", "2046"];
 		return (
       <div>
         <nav>
@@ -50,7 +51,7 @@ class Nav extends Component {
             </div>
             <RebalanceFormTrigger activeTab={activeTab}/>
             <div id="exportCsv" className="false">
-              <CSVLink data={csvData} id="csv-link"
+              <CSVLink headers={csvHeaders} data={csvData} id="csv-link"
                 filename={"sampleCSV.csv"}
                 target="_blank">
                 <Tooltip title='Export to CSV' position='top'>
