@@ -30,7 +30,7 @@ class App extends Component {
               render={(props) => <AccountsGrid {...props} importsVisible={false}/>} />
             <Route
               exact path={"/clients/import"}
-              render={(props) => <ClientsImport {...props} uploadIdExists={false}/>} />
+              render={(props) => <ClientsImport {...props} uploadIdExists={false} importsVisible={true}/>} />
             <Route
               exact path={"/clients"}
               render={(props) => <Grid {...props} importsVisible={false}/>} />

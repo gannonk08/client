@@ -2,15 +2,50 @@ div.imports-form-container {
   width: 35vw;
 }
 
+div#uploadTabs {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1.5vh;
+}
+
+button:focus {
+  outline: none;
+}
+
+div#uploadTabs button {
+  padding: 0.75vh 3vw;
+  border: 1px solid #eee;
+}
+
+div#uploadTabs div.true button {
+  color: #333;
+}
+
+div#uploadTabs div.false button {
+  color: #eee;
+  background-color: #333;
+}
+
+div#uploadTabs div.true button:hover {
+  cursor: default;
+}
+
 div.imports {
   background-color: #333;
-  padding: 3rem;
+  padding: 1rem;
+  padding-left: 2px;
   position: relative;
   left: 0;
   right: 0;
   min-height: 20vh;
   display: flex;
   position: relative;
+}
+
+label#demoFile {
+  font-family: arial, sans-serif, serif;
+  font-style: normal;
 }
 
 div.imports-form-container input {
@@ -31,13 +66,12 @@ div.import-loader button {
   font-size: 1.25rem;
   padding: 10px;
   margin-top: 20px;
-  margin-left: 5px;
   border-radius: 6px;
   opacity: 1.0;
   color: black;
+  border: none;
 }
 
-div.login-form-container button:hover {
-  cursor: pointer;
-  transform: scale(1.03);
+div.import-loader button:hover {
+  background-color: #375a7f;
 }

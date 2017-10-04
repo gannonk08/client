@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import Imports from '../Imports/Imports';
 import './Nav.css';
 import {Modal} from 'react-bootstrap';
 import RebalanceFormTrigger from '../Rebalance/RebalanceFormTrigger';
+import ImportsFormTrigger from '../Imports/ImportsFormTrigger';
 import Tooltip from 'react-tooltip-component';
 import {CSVLink} from 'react-csv';
 
@@ -44,12 +44,8 @@ class Nav extends Component {
                 <img className="nav-image" onClick={this.handleHouseholds} src={require("./images/clients.png")} alt="clients" />
               </Tooltip>
             </div>
-            <div id="importsNav" className={importsVisible}>
-              <Tooltip title='Import CSV' position='top'>
-                <img className="nav-image" onClick={this.showImports}  src={require("./images/imports.png")} alt="imports" />
-              </Tooltip>
-            </div>
-            <RebalanceFormTrigger activeTab={activeTab}/>
+            <ImportsFormTrigger activeTab={activeTab} importsVisible={importsVisible} />
+            <RebalanceFormTrigger activeTab={activeTab} />
             <div id="exportCsv" className="false">
               <CSVLink headers={csvHeaders} data={csvData} id="csv-link"
                 filename={"sampleCSV.csv"}
@@ -62,9 +58,6 @@ class Nav extends Component {
           </div>
           <div className="nav-right"></div>
         </nav>
-        <div id="importsVisible" className={importsVisible}>
-          <Imports />
-        </div>
       </div>
 		)
 	}

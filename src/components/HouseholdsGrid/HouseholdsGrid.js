@@ -750,7 +750,7 @@ class HouseholdsGrid extends Component {
                     <Cell onClick={this.toggleTableGrouping}>
                       <UngroupHouseholds />
                     </Cell>}
-                  width={40}
+                  width={39}
                   fixed={true}
                 />
                 <Column
@@ -764,7 +764,7 @@ class HouseholdsGrid extends Component {
                       }
                     </div>
                   }
-                  width={detailsGroupWidth}
+                  width={detailsGroupWidth + 1}
                 />
                 <Column
                   header={
@@ -786,7 +786,7 @@ class HouseholdsGrid extends Component {
                       </div>
                     </div>
                   }
-                  width={ladderGroupWidth}
+                  width={ladderGroupWidth - 1.5}
                 />
               </Table>
             </div>
