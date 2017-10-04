@@ -80,6 +80,7 @@ class DemoFile extends Component {
                 this.setState({ loaded: true });
                 document.getElementById("importsVisible").className = "false";
                 document.getElementById("importsNav").className = "false";
+                this.props.onHide();
                 this.props.history.push('/clients');
               }
             })

@@ -33,8 +33,8 @@ export default class ImportsForm extends Component {
           </div>
           {
             uploadFileActive
-              ? <UploadFile activeTab={true} />
-              : <DemoFile activeTab={true} />
+              ? <UploadFile activeTab={true} onHide={this.props.onHide}/>
+              : <DemoFile activeTab={true} onHide={this.props.onHide} />
           }
         </Modal.Body>
         <Modal.Footer>
