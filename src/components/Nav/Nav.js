@@ -24,8 +24,7 @@ class Nav extends Component {
   }
 
   handleHouseholds() {
-    let { importsVisible } = this.state;
-    if (importsVisible) {
+    if (this.state.importsVisible) {
       this.setState({ importsVisible: false });
     }
     this.props.history.push('/clients');
@@ -36,29 +35,27 @@ class Nav extends Component {
     let { activeTab } = this.props;
     let csvHeaders = ["name", "model", "balance", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033", "2034", "2035", "2036", "2037", "2038", "2039", "2040", "2041", "2042", "2043", "2044", "2045", "2046"];
 		return (
-      <div>
-        <nav>
-          <div className="nav-left">
-            <div id="clientsNav" className={true}>
-              <Tooltip title='Clients' position='top'>
-                <img className="nav-image" onClick={this.handleHouseholds} src={require("./images/clients.png")} alt="clients" />
-              </Tooltip>
-            </div>
-            <ImportsFormTrigger activeTab={activeTab} importsVisible={importsVisible} />
-            <RebalanceFormTrigger activeTab={activeTab} />
-            <div id="exportCsv" className="false">
-              <CSVLink headers={csvHeaders} data={csvData} id="csv-link"
-                filename={"sampleCSV.csv"}
-                target="_blank">
-                <Tooltip title='Export to CSV' position='top'>
-                  <img className="nav-image" src={require("./images/download-csv.png")} alt="csv" />
-                </Tooltip>
-              </CSVLink>
-            </div>
+      <nav>
+        <div className="nav-left">
+          <div id="clientsNav" className={true}>
+            <Tooltip title='Clients' position='top'>
+              <img className="nav-image" onClick={this.handleHouseholds} src={require("./images/clients.png")} alt="clients" />
+            </Tooltip>
           </div>
-          <div className="nav-right"></div>
-        </nav>
-      </div>
+          <ImportsFormTrigger activeTab={activeTab} importsVisible={importsVisible} />
+          <RebalanceFormTrigger activeTab={activeTab} />
+          <div id="exportCsv" className="false">
+            <CSVLink headers={csvHeaders} data={csvData} id="csv-link"
+              filename={"sampleCSV.csv"}
+              target="_blank">
+              <Tooltip title='Export to CSV' position='top'>
+                <img className="nav-image" src={require("./images/download-csv.png")} alt="csv" />
+              </Tooltip>
+            </CSVLink>
+          </div>
+        </div>
+        <div className="nav-right"></div>
+      </nav>
 		)
 	}
 }

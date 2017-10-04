@@ -44,6 +44,7 @@ class Signup extends Component {
 			if (res.status === "OK") {
 				localStorage.setItem('activeSession', true);
 				localStorage.setItem('user', newUserEmail);
+				localStorage.setItem('uploadId', 0);
 				this.setState({ loaded: true });
 				this.props.history.push('/clients/import');
 			}
