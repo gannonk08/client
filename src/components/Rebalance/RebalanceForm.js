@@ -30,10 +30,10 @@ class RebalanceForm extends Component {
 
   componentDidMount() {
     uploadId = localStorage.getItem("uploadId");
-    this.rebalance = '';
+    this.rebalance = PATH_BASE + PATH_REBALANCE + '75';
     uploadId === null || uploadId === undefined
-      ? this.rebalance = PATH_BASE + PATH_REBALANCE + '72'
-      : this.rebalance = PATH_BASE + PATH_REBALANCE + uploadId;
+      ? this.rebalance = PATH_BASE + PATH_REBALANCE + '75'
+      : this.rebalance = PATH_BASE + PATH_REBALANCE + '75';
   }
 
   numberWithCommas(num) {
@@ -61,10 +61,12 @@ class RebalanceForm extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     console.log('this.rebalance', this.rebalance);
+    let quantityRaw = +document.getElementById('rebalance-quantity').value;
+    let quantityParsed = parseFloat(Math.round(quantityRaw * 100) / 100).toFixed(2);
     this.setState({ loaded: false });
 		let formData = JSON.stringify({
 			cusip: document.getElementById('rebalance-cusip').value,
-			quantity: +document.getElementById('rebalance-quantity').value,
+			quantity: quantityParsed,
 			price: +document.getElementById('rebalance-price').value,
 			maturityDate: document.getElementById('rebalance-maturityDate').value
 		})
