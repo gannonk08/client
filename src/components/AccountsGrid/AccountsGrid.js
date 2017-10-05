@@ -7,7 +7,6 @@ import './AccountsGrid.css';
 class AccountsGrid extends Component {
   constructor(props) {
     super(props);
-    console.log("Rebalance Accounts props in constructor", this.props.freshData);
 
     this._dataList = this.props.freshData;
 

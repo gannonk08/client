@@ -45,7 +45,6 @@ class RebalanceForm extends Component {
     let rawTotalNumber = +rawTotal;
     let adjustedTotalNumber = rawTotalNumber.toFixed(0);
     let total = this.numberWithCommas(adjustedTotalNumber);
-    console.log('total result: ', total);
     let result = {
       type: "account",
       id: numAccounts,
@@ -60,7 +59,6 @@ class RebalanceForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    console.log('this.rebalance', this.rebalance);
     let quantityRaw = +document.getElementById('rebalance-quantity').value;
     let quantityParsed = parseFloat(Math.round(quantityRaw * 100) / 100).toFixed(2);
     this.setState({ loaded: false });
@@ -105,8 +103,6 @@ class RebalanceForm extends Component {
             }
           }
         })
-        console.log('uniqueAccounts: ', uniqueAccounts);
-        console.log('rebalanceResult', rebalanceResult);
         this.setState({ loaded: true });
         this.props.history.push('/accounts/rebalanced');
 			}

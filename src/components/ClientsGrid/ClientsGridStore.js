@@ -16,7 +16,6 @@ class ClientsGridStore {
     .then (res => res.json())
     .then(res => {
       if (res.status === "OK") {
-        console.log("dumby data in store constructor: ", res.records);
         this._cache = res.records;
         this._cache.shift();
         this.size = this._cache.length;
@@ -26,14 +25,11 @@ class ClientsGridStore {
   }
 
   getRowData(/*number*/ index) /*object*/ {
-    console.log("getRowData was hit");
-    console.log("getRowData index", index);
     let rowData = this._cache[index];
     return rowData;
   }
 
   getObjectAt(/*number*/ index) /*?object*/ {
-    console.log('getObjectAt index: ', index);
     if (index >= 0) {
       if (index < 0 || index > this.size){
         return undefined;
@@ -57,7 +53,6 @@ class ClientsGridStore {
   }
 
   getAll() {
-    console.log("getAll was hit");
     if (this._cache.length < this.size) {
       for (var i = 0; i < this.size; i++) {
         this.getObjectAt(i);
@@ -67,7 +62,6 @@ class ClientsGridStore {
   }
 
   getSize() {
-    console.log('getSize was hit');
     return this.size;
   }
 }

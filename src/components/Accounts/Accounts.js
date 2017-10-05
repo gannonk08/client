@@ -30,13 +30,11 @@ class Accounts extends Component {
 
   addAccountData(accountsArray) {
     let numAccounts = 13;
-    console.log('accountsArray:::', accountsArray);
     for (let i = 0; i < numAccounts; i++) {
       if (accountsArray[i]) {
         this.accounts.push(accountsArray[i]);
       }
     }
-    console.log('this.accounts:::', this.accounts);
     this.accounts
       ? this.setState({ accountsReceived: true })
       : this.setState({ accountsReceived: false });

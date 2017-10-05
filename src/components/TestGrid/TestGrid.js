@@ -22,8 +22,6 @@ const SortTypes = {
 class TestGrid extends Component {
   constructor(props) {
     super(props);
-    console.log("Households props in constructor", this.props.freshData);
-
     this._dataList = this.props.freshData;
     let accountsArray = this._dataList._cache;
     let result = [];
@@ -38,9 +36,6 @@ class TestGrid extends Component {
     })
     this._allAccountsList = new AccountsGridStore(result);
     this._allSecuritiesList = new SecuritiesGridStore(securitiesList);
-    console.log('this._allAccountList::', this._allAccountsList);
-    console.log('this._allSecuritiesList::', this._allSecuritiesList);
-
     this._defaultSortIndexes = [];
     let size = this._dataList.size;
     for (let index = 0; index < size; index++) {
@@ -347,14 +342,10 @@ class TestGrid extends Component {
       insertIndex++;
     })
     newDataList._cache.splice(rowIndex + 1, 0, securityHeader);
-    console.log('adjustedDataList:()()()(): ', newDataList);
-    console.log('dataListSize: ', adjustedDataList._cache.length);
 
     for (let i = 0; i < newDataList._cache.length; i++) {
       indexMap.push(i);
     }
-
-    console.log('indexMap :', indexMap);
 
     this.setState({
       adjustedDataList: new DataListWrapper(indexMap, newDataList),

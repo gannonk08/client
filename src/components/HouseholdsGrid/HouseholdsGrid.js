@@ -72,8 +72,6 @@ class DataListWrapper {
 class HouseholdsGrid extends Component {
   constructor(props) {
     super(props);
-    console.log("Households props in constructor", this.props.freshData);
-
     this._dataList = this.props.freshData;
     let accountsArray = this._dataList._cache;
     let result = [];
@@ -88,8 +86,6 @@ class HouseholdsGrid extends Component {
     })
     this._allAccountsList = new AccountsGridStore(result);
     this._allSecuritiesList = new SecuritiesGridStore(securitiesList);
-    console.log('this._allAccountList::', this._allAccountsList);
-    console.log('this._allSecuritiesList::', this._allSecuritiesList);
 
     this._defaultSortIndexes = [];
     let size = this._dataList.size;
