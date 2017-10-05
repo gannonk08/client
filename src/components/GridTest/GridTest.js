@@ -22,7 +22,6 @@ class Grid extends Component {
 		super(props);
 
     this.fetchData = this.fetchData.bind(this);
-    this.cacheData = this.cacheData.bind(this);
     this.uploadId = 0;
     this.state = { loaded: false, data: {}, };
 	}
@@ -59,71 +58,13 @@ class Grid extends Component {
           })
         })
         let newCsvData = new TestAccountsGridStore(result);
-        this.setState({ csvData: newCsvData._cache });
-        return this.state.data;
+        this.setState({
+          csvData: newCsvData._cache,
+          loaded: true
+        });
       }
     })
-    .then(data => this.cacheData(data))
-    .then(() => this.setState({ loaded: true }))
     .catch(e => console.log(e));
-  }
-
-  cacheData(data) {
-    let indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-
-    let open = indexedDB.open("BLPro", 1);
-    let indexArray = [];
-    // Create the schema
-    open.onupgradeneeded = function() {
-        let db = open.result;
-        let store = db.createObjectStore("ClientsDataStore", {keyPath: "id"});
-        let index = store.createIndex("NameIndex", "name");
-    };
-
-    open.onsuccess = function() {
-        // Start a new transaction
-        let db = open.result;
-        let tx = db.transaction("ClientsDataStore", "readwrite");
-        let store = tx.objectStore("ClientsDataStore");
-        let index = store.index("NameIndex");
-
-        // Add some data
-        data.accountsData.forEach(accountsArray => {
-          accountsArray.forEach(a => {
-            indexArray.push(a.id);
-            let storedItem = {
-              id: a.id,
-              houseIndex: a.houseIndex,
-              name: a.name,
-              accountNumber: a.accountNumber,
-              balance: a.balance,
-              2017: a['2017'],
-              2018: a['2018'],
-              2019: a['2019'],
-              2020: a['2020'],
-              2021: a['2021'],
-              securities: a.securities
-            };
-            store.put(storedItem);
-            // console.log('storedItem:', storedItem);
-          })
-        })
-
-        // Query the data
-        // indexArray.forEach(i => {
-        //   let getAccount = store.get(i);
-        //   getAccount.onsuccess = () => {
-        //     console.log("getAccount from IDB", getAccount.result);
-        //   };
-        // })
-        // let getBob = index.get("Hall Monitor");
-
-        // Close the db when the transaction is done
-        tx.oncomplete = function() {
-          db.close();
-        };
-    }
-    return data;
   }
 
   render() {

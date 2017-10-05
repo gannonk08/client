@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import {connector} from '../../redux/userStore';
 import {Table, Column, Cell} from 'fixed-data-table-2';
 import Loader from 'react-loader';
@@ -20,7 +19,7 @@ class ClientsImport extends Component {
   }
 
   render() {
-    let { data, loaded } = this.state;
+    let { loaded } = this.state;
     let { uploadIdExists } = this.props;
     let tableWidth = window.innerWidth - 10;
     let aboutWidth = (window.innerWidth - 95) / 8;

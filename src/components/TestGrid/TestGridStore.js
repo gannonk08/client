@@ -463,7 +463,6 @@ class HouseholdsGridStore {
         balance: s.cusip,
         description: s.price,
         model: faceValue,
-        balance: '-',
         maturityDate: maturityDate,
         2017: '$ ' + marketValue17.toLocaleString(),
         2018: '$ ' + marketValue18.toLocaleString(),

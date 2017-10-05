@@ -8,10 +8,9 @@ import Nav from '../Nav/Nav';
 import Header from '../Header/Header';
 import HouseholdsGrid from '../HouseholdsGrid/HouseholdsGrid';
 import HouseholdsGridStore from '../HouseholdsGrid/HouseholdsGridStore';
-import AccountsGridStore from '../HouseholdsGrid/AccountsGridStore';
 
 let PATH_BASE = '';
-const PATH_GET_CLIENTS = '/clients?uploadId=';
+// const PATH_GET_CLIENTS = '/clients?uploadId=';
 
 process.env.NODE_ENV === 'production'
 ? PATH_BASE = process.env.REACT_APP_API_PROD
@@ -61,7 +60,6 @@ class Grid extends Component {
             })
           })
         })
-        let newCsvData = new AccountsGridStore(result);
         this.setState({
           csvData: this.state.data._cache,
           loaded: true

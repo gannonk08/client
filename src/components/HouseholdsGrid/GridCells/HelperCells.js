@@ -125,7 +125,6 @@ export class RemovableHeaderCell extends React.PureComponent {
 export class TextCell extends React.PureComponent {
   render() {
     const {data, rowIndex, columnKey, ...props} = this.props;
-    let shouldHighlight = false;
     let isHighlighted = false;
     if (data.getObjectAt(rowIndex)[columnKey] === '$ 0') {
       isHighlighted = true;

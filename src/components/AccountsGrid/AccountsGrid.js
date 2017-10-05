@@ -4,11 +4,6 @@ import {TextCell} from './GridCells/HelperCells';
 import 'fixed-data-table-2/dist/fixed-data-table.min.css';
 import './AccountsGrid.css';
 
-const SortTypes = {
-  ASC: 'ASC',
-  DESC: 'DESC',
-};
-
 class AccountsGrid extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +43,6 @@ class AccountsGrid extends Component {
   render() {
     let {adjustedDataList, dataListSize, colWidth, tableWidth, height} = this.state;
 
-    let rowWidth = (tableWidth - 60) / 6;
     let tableHeight = (height * 0.79) - 45;
 
     return (

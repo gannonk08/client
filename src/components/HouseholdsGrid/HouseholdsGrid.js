@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Table, Column, Cell} from 'fixed-data-table-2';
-import {ExpandAllRows, CollapseAllRows} from './GridCells/ExpandCollapseAllRows';
 import {HideFilters, ShowFilters} from './GridCells/ToggleFilters';
 import {CollapseCell, TextCell} from './GridCells/HelperCells';
 import UngroupHouseholds from './GridCells/UngroupHouseholds';
@@ -173,12 +172,10 @@ class HouseholdsGrid extends Component {
   }
 
   getYearsStart() {
-    let {showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
     this.setState({showYearGroupOne: true, showYearGroupTwo: false, showYearGroupThree: false});
   }
 
   getYearsEnd() {
-    let {showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
     this.setState({showYearGroupOne: false, showYearGroupTwo: false, showYearGroupThree: true});
   }
 
@@ -396,7 +393,7 @@ class HouseholdsGrid extends Component {
   }
 
   _subRowHeightGetter(index) {
-    const { adjustedDataList, groupByHousehold } = this.state;
+    const { groupByHousehold } = this.state;
     let securitiesArray = [];
     if (this._dataList._cache[index]) {
       let accountsArray = this._dataList._cache[index].accounts;
@@ -415,7 +412,7 @@ class HouseholdsGrid extends Component {
     if (!this.state.collapsedRows.has(rowIndex)) {
       return null;
     }
-    let { adjustedDataList, tableWidth, aboutColumnsHidden, columnWidths, showYearGroupOne, showYearGroupTwo, showYearGroupThree } = this.state;
+    let { tableWidth, aboutColumnsHidden, columnWidths, showYearGroupOne, showYearGroupTwo, showYearGroupThree } = this.state;
 
     let securitiesArray = [];
     let numAccounts = 0;
@@ -435,7 +432,6 @@ class HouseholdsGrid extends Component {
     let expandedHeight = (25 * numSecurities) + 42;
 
     let nameWidth = (window.innerWidth - 95) / 8;
-    let detailsWidths = (window.innerWidth - 95) / 12.5;
     let cusipWidth = (window.innerWidth - 95) / 12;
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
     let hiddenColumnsWidth = aboutColumnsHidden ? 0 : (window.innerWidth - 95) / 8;
@@ -713,7 +709,7 @@ class HouseholdsGrid extends Component {
   }
 
   render() {
-    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, accountsDataList, acctSecuritiesDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold, showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
+    let {adjustedDataList, acctSecuritiesDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, filtersVisible, columnWidths, tableWidth, groupByHousehold, showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
 
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
 
@@ -728,7 +724,6 @@ class HouseholdsGrid extends Component {
     let yearGroupTwoFlex = showYearGroupTwo ? 1 : 0;
     let yearGroupThreeFlex = showYearGroupThree ? 1 : 0;
     let ladderGroupWidth = tableWidth - 65 - detailsGroupWidth;
-    let detailsGroupFlex = aboutColumnsHidden ? 0 : 1;
 
     let yearFiltersWidth = ladderGroupWidth - columnWidths.balance;
     return (

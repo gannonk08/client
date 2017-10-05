@@ -53,6 +53,7 @@ export class CollapseCell extends React.PureComponent {
     if (data) {
       doesDataExist = true;
       let rowType = data[rowIndex].type;
+      // eslint-disable-next-line
       let rowId = data[rowIndex].id;
 
       if (rowType === 'header') {

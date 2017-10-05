@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import './Nav.css';
-import {Modal} from 'react-bootstrap';
 import RebalanceFormTrigger from '../Rebalance/RebalanceFormTrigger';
 import ImportsFormTrigger from '../Imports/ImportsFormTrigger';
 import Tooltip from 'react-tooltip-component';

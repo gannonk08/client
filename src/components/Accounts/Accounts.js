@@ -7,7 +7,6 @@ import './Accounts.css';
 import Nav from '../Nav/Nav';
 import Header from '../Header/Header';
 import AccountsGrid from '../AccountsGrid/AccountsGrid';
-import HouseholdsGridStore from '../AccountsGrid/HouseholdsGridStore';
 import AccountsGridStore from '../AccountsGrid/AccountsGridStore';
 
 class Accounts extends Component {

@@ -118,12 +118,10 @@ class TestGrid extends Component {
   }
 
   getYearsStart() {
-    let {showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
     this.setState({showYearGroupOne: true, showYearGroupTwo: false, showYearGroupThree: false});
   }
 
   getYearsEnd() {
-    let {showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
     this.setState({showYearGroupOne: false, showYearGroupTwo: false, showYearGroupThree: true});
   }
 
@@ -285,7 +283,7 @@ class TestGrid extends Component {
   }
 
   _handleCollapseClick(rowIndex) {
-    const {collapsedRows, adjustedDataList, dataListSize} = this.state;
+    const {collapsedRows, adjustedDataList} = this.state;
     const shallowCopyOfCollapsedRows = new Set([...collapsedRows]);
 
     if (shallowCopyOfCollapsedRows.has(rowIndex)) {
@@ -299,19 +297,14 @@ class TestGrid extends Component {
     });
     let indexMap = [];
     let securitiesArray = [];
-    let numAccounts = 0;
     let accountsArray = adjustedDataList._cache[rowIndex].accounts;
     accountsArray.forEach(a => {
-      numAccounts++;
       a.securities.forEach(s => {
         securitiesArray.push(s);
       })
     })
-    let securitiesDataList = new SecuritiesGridStore(securitiesArray);
-    let numSecurities = securitiesArray.length;
     let newDataList = _.clone(adjustedDataList);
     let insertIndex = rowIndex;
-    let rowsCount = adjustedDataList.size + 1;
     let securityHeader = {
       name: 'Account Number',
       type: 'header',
@@ -352,10 +345,8 @@ class TestGrid extends Component {
     securitiesArray.forEach(s => {
       newDataList._cache.splice(insertIndex + 1, 0, s);
       insertIndex++;
-      rowsCount++;
     })
     newDataList._cache.splice(rowIndex + 1, 0, securityHeader);
-    rowsCount++;
     console.log('adjustedDataList:()()()(): ', newDataList);
     console.log('dataListSize: ', adjustedDataList._cache.length);
 
@@ -406,7 +397,7 @@ class TestGrid extends Component {
   // }
 
   render() {
-    let {percentageFilterValue, marketValueFilterValue, adjustedDataList, expandedDataList, accountsDataList, acctSecuritiesDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold, showYearGroupOne, showYearGroupTwo, showYearGroupThree, dataListSize} = this.state;
+    let {adjustedDataList, acctSecuritiesDataList, colSortDirs, collapsedRows, scrollToRow, aboutColumnsHidden, allRowsExpanded, filtersVisible, columnWidths, tableWidth, groupByHousehold, showYearGroupOne, showYearGroupTwo, showYearGroupThree} = this.state;
 
     let columnFlexAbout = aboutColumnsHidden ? 0 : 1;
 
@@ -421,7 +412,6 @@ class TestGrid extends Component {
     let yearGroupTwoFlex = showYearGroupTwo ? 1 : 0;
     let yearGroupThreeFlex = showYearGroupThree ? 1 : 0;
     let ladderGroupWidth = tableWidth - 65 - detailsGroupWidth;
-    let detailsGroupFlex = aboutColumnsHidden ? 0 : 1;
 
     return (
       <div>

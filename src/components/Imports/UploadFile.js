@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Modal, Button} from 'react-bootstrap';
 import {connector} from '../../redux/userStore';
 import {withRouter} from 'react-router-dom';
 import Loader from 'react-loader';
