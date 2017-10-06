@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {connector} from '../../redux/userStore';
+import {connector} from '../../redux/store';
 import './Authenticate.css';
 import Header from '../Header/Header';
 import Hero from '../Hero/Hero';
@@ -53,4 +53,4 @@ class Authenticate extends Component {
 	}
 }
 
-export default connector(Authenticate);
+export default Authenticate;

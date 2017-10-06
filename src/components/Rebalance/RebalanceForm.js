@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Modal, Button} from 'react-bootstrap';
-import {connector} from '../../redux/userStore';
+import {connector} from '../../redux/store';
 import {withRouter} from 'react-router-dom';
 import Loader from 'react-loader';
 
@@ -150,4 +150,4 @@ class RebalanceForm extends Component {
 	}
 }
 
-export default withRouter(connector(RebalanceForm));
+export default withRouter(RebalanceForm);

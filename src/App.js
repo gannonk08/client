@@ -4,7 +4,7 @@ import {
   Route
 } from 'react-router-dom';
 import {Provider} from 'react-redux';
-import store from './redux/gridStore';
+import store from './redux/store';
 
 import Authenticate from './components/Authenticate/Authenticate';
 import About from './components/About/About';

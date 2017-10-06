@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import {connector} from '../../redux/userStore';
+import {connector} from '../../redux/store';
 import Loader from 'react-loader';
 
 let PATH_BASE = '';
@@ -95,4 +95,4 @@ class Signup extends Component {
 	}
 }
 
-export default withRouter(connector(Signup));
+export default withRouter(Signup);

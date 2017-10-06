@@ -72,19 +72,18 @@ class DataListWrapper {
 class HouseholdsGrid extends Component {
   constructor(props) {
     super(props);
-    this._dataList = this.props.freshData;
+    this._dataList = this.props.households;
+    this._allAccountsList = this.props.accounts;
+
     let accountsArray = this._dataList._cache;
-    let result = [];
     let securitiesList = [];
     accountsArray.forEach(a => {
       a.accounts.forEach(account => {
-        result.push(account);
         account.securities.forEach(s => {
           securitiesList.push(s);
         })
       })
     })
-    this._allAccountsList = new AccountsGridStore(result);
     this._allSecuritiesList = new SecuritiesGridStore(securitiesList);
 
     this._defaultSortIndexes = [];

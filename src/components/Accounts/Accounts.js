@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {connector} from '../../redux/userStore';
 import Loader from 'react-loader';
 import './Accounts.css';
 
@@ -91,4 +90,4 @@ class Accounts extends Component {
   }
 }
 
-export default connector(Accounts);
+export default Accounts;

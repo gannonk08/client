@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {connector} from '../../redux/userStore';
+import {connector} from '../../redux/store';
 import {Table, Column, Cell} from 'fixed-data-table-2';
 import Loader from 'react-loader';
 import './ClientsImport.css';
@@ -72,4 +72,4 @@ class ClientsImport extends Component {
   }
 }
 
-export default connector(ClientsImport);
+export default ClientsImport;

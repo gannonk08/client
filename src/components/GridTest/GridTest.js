@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-// import {connector} from '../../redux/userStore';
+// import {connector} from '../../redux/store';
 import Loader from 'react-loader';
 import './GridTest.css';
 

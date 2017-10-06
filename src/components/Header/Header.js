@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {connector} from '../../redux/userStore';
+import {connector} from '../../redux/store';
 import onClickOutside from 'react-onclickoutside';
 import './Header.css';
 import HeaderMenu from '../HeaderMenu/HeaderMenu';
@@ -57,4 +57,4 @@ class Header extends Component {
 	}
 }
 
-export default connector(onClickOutside(Header));
+export default onClickOutside(Header);

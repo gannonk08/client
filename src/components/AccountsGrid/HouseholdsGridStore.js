@@ -5,122 +5,122 @@ class HouseholdsGridStore {
       this.size = 200;
       this._cache = [];
     } else {
-      this.householdsData = records.households;
-      this.accountsData = [];
+      let householdsData = records.households;
+      let accountsData = [];
       let result = [];
-      this.size = this.householdsData.length;
+      this.size = householdsData.length;
       this.numHouseholds = 0;
       this.numAccounts = 0;
       this.numSecurities = 0;
-      this.householdName = '';
-      this.accounts2017 = 0;
-      this.accounts2018 = 0;
-      this.accounts2019 = 0;
-      this.accounts2020 = 0;
-      this.accounts2021 = 0;
-      this.accounts2022 = 0;
-      this.accounts2023 = 0;
-      this.accounts2024 = 0;
-      this.accounts2025 = 0;
-      this.accounts2026 = 0;
-      this.accounts2027 = 0;
-      this.accounts2028 = 0;
-      this.accounts2029 = 0;
-      this.accounts2030 = 0;
-      this.accounts2031 = 0;
-      this.accounts2032 = 0;
-      this.accounts2033 = 0;
-      this.accounts2034 = 0;
-      this.accounts2035 = 0;
-      this.accounts2036 = 0;
-      this.accounts2037 = 0;
-      this.accounts2038 = 0;
-      this.accounts2039 = 0;
-      this.accounts2040 = 0;
-      this.accounts2041 = 0;
-      this.accounts2042 = 0;
-      this.accounts2043 = 0;
-      this.accounts2044 = 0;
-      this.accounts2045 = 0;
-      this.accounts2046 = 0;
+      let householdName = '';
+      let accounts2017 = 0;
+      let accounts2018 = 0;
+      let accounts2019 = 0;
+      let accounts2020 = 0;
+      let accounts2021 = 0;
+      let accounts2022 = 0;
+      let accounts2023 = 0;
+      let accounts2024 = 0;
+      let accounts2025 = 0;
+      let accounts2026 = 0;
+      let accounts2027 = 0;
+      let accounts2028 = 0;
+      let accounts2029 = 0;
+      let accounts2030 = 0;
+      let accounts2031 = 0;
+      let accounts2032 = 0;
+      let accounts2033 = 0;
+      let accounts2034 = 0;
+      let accounts2035 = 0;
+      let accounts2036 = 0;
+      let accounts2037 = 0;
+      let accounts2038 = 0;
+      let accounts2039 = 0;
+      let accounts2040 = 0;
+      let accounts2041 = 0;
+      let accounts2042 = 0;
+      let accounts2043 = 0;
+      let accounts2044 = 0;
+      let accounts2045 = 0;
+      let accounts2046 = 0;
 
       this.latestYear = 2017;
 
-      this.householdsData.forEach(h => {
-        this.houses2017 = 0;
-        this.houses2018 = 0;
-        this.houses2019 = 0;
-        this.houses2020 = 0;
-        this.houses2021 = 0;
-        this.houses2022 = 0;
-        this.houses2023 = 0;
-        this.houses2024 = 0;
-        this.houses2025 = 0;
-        this.houses2026 = 0;
-        this.houses2027 = 0;
-        this.houses2028 = 0;
-        this.houses2029 = 0;
-        this.houses2030 = 0;
-        this.houses2031 = 0;
-        this.houses2032 = 0;
-        this.houses2033 = 0;
-        this.houses2034 = 0;
-        this.houses2035 = 0;
-        this.houses2036 = 0;
-        this.houses2037 = 0;
-        this.houses2038 = 0;
-        this.houses2039 = 0;
-        this.houses2040 = 0;
-        this.houses2041 = 0;
-        this.houses2042 = 0;
-        this.houses2043 = 0;
-        this.houses2044 = 0;
-        this.houses2045 = 0;
-        this.houses2046 = 0;
-        this.householdName = h.household.name;
+      householdsData.forEach(h => {
+        let houses2017 = 0;
+        let houses2018 = 0;
+        let houses2019 = 0;
+        let houses2020 = 0;
+        let houses2021 = 0;
+        let houses2022 = 0;
+        let houses2023 = 0;
+        let houses2024 = 0;
+        let houses2025 = 0;
+        let houses2026 = 0;
+        let houses2027 = 0;
+        let houses2028 = 0;
+        let houses2029 = 0;
+        let houses2030 = 0;
+        let houses2031 = 0;
+        let houses2032 = 0;
+        let houses2033 = 0;
+        let houses2034 = 0;
+        let houses2035 = 0;
+        let houses2036 = 0;
+        let houses2037 = 0;
+        let houses2038 = 0;
+        let houses2039 = 0;
+        let houses2040 = 0;
+        let houses2041 = 0;
+        let houses2042 = 0;
+        let houses2043 = 0;
+        let houses2044 = 0;
+        let houses2045 = 0;
+        let houses2046 = 0;
+        householdName = h.household.name;
         if (!h.accounts.length) {
           this.size--;
         } else {
           let addAccounts = this.addAccountsData(h.accounts);
           let getBalance = this.getBalancePercentage();
-          this.accountsData.push(addAccounts);
+          accountsData.push(addAccounts);
           result.push({
             houseIndex: this.numHouseholds,
             type: "household",
-            name: this.householdName,
+            name: householdName,
             description: 'sector',
             model: 'model id',
             balance: getBalance + ' %',
-            2017: '$ ' + this.houses2017.toLocaleString(),
-            2018: '$ ' + this.houses2018.toLocaleString(),
-            2019: '$ ' + this.houses2019.toLocaleString(),
-            2020: '$ ' + this.houses2020.toLocaleString(),
-            2021: '$ ' + this.houses2021.toLocaleString(),
-            2022: '$ ' + this.houses2022.toLocaleString(),
-            2023: '$ ' + this.houses2023.toLocaleString(),
-            2024: '$ ' + this.houses2024.toLocaleString(),
-            2025: '$ ' + this.houses2025.toLocaleString(),
-            2026: '$ ' + this.houses2026.toLocaleString(),
-            2027: '$ ' + this.houses2027.toLocaleString(),
-            2028: '$ ' + this.houses2028.toLocaleString(),
-            2029: '$ ' + this.houses2029.toLocaleString(),
-            2030: '$ ' + this.houses2030.toLocaleString(),
-            2031: '$ ' + this.houses2031.toLocaleString(),
-            2032: '$ ' + this.houses2032.toLocaleString(),
-            2033: '$ ' + this.houses2033.toLocaleString(),
-            2034: '$ ' + this.houses2034.toLocaleString(),
-            2035: '$ ' + this.houses2035.toLocaleString(),
-            2036: '$ ' + this.houses2036.toLocaleString(),
-            2037: '$ ' + this.houses2037.toLocaleString(),
-            2038: '$ ' + this.houses2038.toLocaleString(),
-            2039: '$ ' + this.houses2039.toLocaleString(),
-            2040: '$ ' + this.houses2040.toLocaleString(),
-            2041: '$ ' + this.houses2041.toLocaleString(),
-            2042: '$ ' + this.houses2042.toLocaleString(),
-            2043: '$ ' + this.houses2043.toLocaleString(),
-            2044: '$ ' + this.houses2044.toLocaleString(),
-            2045: '$ ' + this.houses2045.toLocaleString(),
-            2046: '$ ' + this.houses2046.toLocaleString(),
+            2017: '$ ' + houses2017.toLocaleString(),
+            2018: '$ ' + houses2018.toLocaleString(),
+            2019: '$ ' + houses2019.toLocaleString(),
+            2020: '$ ' + houses2020.toLocaleString(),
+            2021: '$ ' + houses2021.toLocaleString(),
+            2022: '$ ' + houses2022.toLocaleString(),
+            2023: '$ ' + houses2023.toLocaleString(),
+            2024: '$ ' + houses2024.toLocaleString(),
+            2025: '$ ' + houses2025.toLocaleString(),
+            2026: '$ ' + houses2026.toLocaleString(),
+            2027: '$ ' + houses2027.toLocaleString(),
+            2028: '$ ' + houses2028.toLocaleString(),
+            2029: '$ ' + houses2029.toLocaleString(),
+            2030: '$ ' + houses2030.toLocaleString(),
+            2031: '$ ' + houses2031.toLocaleString(),
+            2032: '$ ' + houses2032.toLocaleString(),
+            2033: '$ ' + houses2033.toLocaleString(),
+            2034: '$ ' + houses2034.toLocaleString(),
+            2035: '$ ' + houses2035.toLocaleString(),
+            2036: '$ ' + houses2036.toLocaleString(),
+            2037: '$ ' + houses2037.toLocaleString(),
+            2038: '$ ' + houses2038.toLocaleString(),
+            2039: '$ ' + houses2039.toLocaleString(),
+            2040: '$ ' + houses2040.toLocaleString(),
+            2041: '$ ' + houses2041.toLocaleString(),
+            2042: '$ ' + houses2042.toLocaleString(),
+            2043: '$ ' + houses2043.toLocaleString(),
+            2044: '$ ' + houses2044.toLocaleString(),
+            2045: '$ ' + houses2045.toLocaleString(),
+            2046: '$ ' + houses2046.toLocaleString(),
             accounts: addAccounts
           })
           this.numHouseholds++;
@@ -131,7 +131,7 @@ class HouseholdsGridStore {
   }
 
   getBalancePercentage() {
-    let yearArray = [ this.houses2017, this.houses2018, this.houses2019, this.houses2020, this.houses2021, this.houses2022, this.houses2023, this.houses2024, this.houses2025, this.houses2026, this.houses2027, this.houses2028, this.houses2029, this.houses2030, this.houses2031, this.houses2032, this.houses2033, this.houses2034, this.houses2035, this.houses2036, this.houses2037, this.houses2038, this.houses2039, this.houses2040, this.houses2041, this.houses2042, this.houses2043, this.houses2044, this.houses2045, this.houses2046];
+    let yearArray = [ houses2017, houses2018, houses2019, houses2020, houses2021, houses2022, houses2023, houses2024, houses2025, houses2026, houses2027, houses2028, houses2029, houses2030, houses2031, houses2032, houses2033, houses2034, houses2035, houses2036, houses2037, houses2038, houses2039, houses2040, houses2041, houses2042, houses2043, houses2044, houses2045, houses2046];
     let count = 0;
     for (let i = 0; i < yearArray.length; i++) {
       if (yearArray[i] !== 0) {
@@ -145,106 +145,106 @@ class HouseholdsGridStore {
 
   addAccountsData(accounts) {
     let result = [];
-    this.houses2017 = 0;
-    this.houses2018 = 0;
-    this.houses2019 = 0;
-    this.houses2020 = 0;
-    this.houses2021 = 0;
-    this.houses2022 = 0;
-    this.houses2023 = 0;
-    this.houses2024 = 0;
-    this.houses2025 = 0;
-    this.houses2026 = 0;
-    this.houses2027 = 0;
-    this.houses2028 = 0;
-    this.houses2029 = 0;
-    this.houses2030 = 0;
-    this.houses2031 = 0;
-    this.houses2032 = 0;
-    this.houses2033 = 0;
-    this.houses2034 = 0;
-    this.houses2035 = 0;
-    this.houses2036 = 0;
-    this.houses2037 = 0;
-    this.houses2038 = 0;
-    this.houses2039 = 0;
-    this.houses2040 = 0;
-    this.houses2041 = 0;
-    this.houses2042 = 0;
-    this.houses2043 = 0;
-    this.houses2044 = 0;
-    this.houses2045 = 0;
-    this.houses2046 = 0;
+    houses2017 = 0;
+    houses2018 = 0;
+    houses2019 = 0;
+    houses2020 = 0;
+    houses2021 = 0;
+    houses2022 = 0;
+    houses2023 = 0;
+    houses2024 = 0;
+    houses2025 = 0;
+    houses2026 = 0;
+    houses2027 = 0;
+    houses2028 = 0;
+    houses2029 = 0;
+    houses2030 = 0;
+    houses2031 = 0;
+    houses2032 = 0;
+    houses2033 = 0;
+    houses2034 = 0;
+    houses2035 = 0;
+    houses2036 = 0;
+    houses2037 = 0;
+    houses2038 = 0;
+    houses2039 = 0;
+    houses2040 = 0;
+    houses2041 = 0;
+    houses2042 = 0;
+    houses2043 = 0;
+    houses2044 = 0;
+    houses2045 = 0;
+    houses2046 = 0;
     accounts.forEach(a => {
       let addSecurities = this.addSecuritiesData(a.securities, a.account_number);
-      this.houses2017 += this.accounts2017;
-      this.houses2018 += this.accounts2018;
-      this.houses2019 += this.accounts2019;
-      this.houses2020 += this.accounts2020;
-      this.houses2021 += this.accounts2021;
-      this.houses2022 += this.accounts2022;
-      this.houses2023 += this.accounts2023;
-      this.houses2024 += this.accounts2024;
-      this.houses2025 += this.accounts2025;
-      this.houses2026 += this.accounts2026;
-      this.houses2027 += this.accounts2027;
-      this.houses2028 += this.accounts2028;
-      this.houses2029 += this.accounts2029;
-      this.houses2030 += this.accounts2030;
-      this.houses2031 += this.accounts2031;
-      this.houses2032 += this.accounts2032;
-      this.houses2033 += this.accounts2033;
-      this.houses2034 += this.accounts2034;
-      this.houses2035 += this.accounts2035;
-      this.houses2036 += this.accounts2036;
-      this.houses2037 += this.accounts2037;
-      this.houses2038 += this.accounts2038;
-      this.houses2039 += this.accounts2039;
-      this.houses2040 += this.accounts2040;
-      this.houses2041 += this.accounts2041;
-      this.houses2042 += this.accounts2042;
-      this.houses2043 += this.accounts2043;
-      this.houses2044 += this.accounts2044;
-      this.houses2045 += this.accounts2045;
-      this.houses2046 += this.accounts2046;
+      houses2017 += accounts2017;
+      houses2018 += accounts2018;
+      houses2019 += accounts2019;
+      houses2020 += accounts2020;
+      houses2021 += accounts2021;
+      houses2022 += accounts2022;
+      houses2023 += accounts2023;
+      houses2024 += accounts2024;
+      houses2025 += accounts2025;
+      houses2026 += accounts2026;
+      houses2027 += accounts2027;
+      houses2028 += accounts2028;
+      houses2029 += accounts2029;
+      houses2030 += accounts2030;
+      houses2031 += accounts2031;
+      houses2032 += accounts2032;
+      houses2033 += accounts2033;
+      houses2034 += accounts2034;
+      houses2035 += accounts2035;
+      houses2036 += accounts2036;
+      houses2037 += accounts2037;
+      houses2038 += accounts2038;
+      houses2039 += accounts2039;
+      houses2040 += accounts2040;
+      houses2041 += accounts2041;
+      houses2042 += accounts2042;
+      houses2043 += accounts2043;
+      houses2044 += accounts2044;
+      houses2045 += accounts2045;
+      houses2046 += accounts2046;
       result.push({
         type: "account",
-        name: this.householdName,
+        name: householdName,
         id: this.numAccounts + 1,
         houseIndex: this.numHouseholds,
         accountNumLabel: 'Acct #',
         accountNumber: a.account_number,
         balance: 0,
-        2017: this.accounts2017,
-        2018: this.accounts2018,
-        2019: this.accounts2019,
-        2020: this.accounts2020,
-        2021: this.accounts2021,
-        2022: this.accounts2022,
-        2023: this.accounts2023,
-        2024: this.accounts2024,
-        2025: this.accounts2025,
-        2026: this.accounts2026,
-        2027: this.accounts2027,
-        2028: this.accounts2028,
-        2029: this.accounts2029,
-        2030: this.accounts2030,
-        2031: this.accounts2031,
-        2032: this.accounts2032,
-        2033: this.accounts2033,
-        2034: this.accounts2034,
-        2035: this.accounts2035,
-        2036: this.accounts2036,
-        2037: this.accounts2037,
-        2038: this.accounts2038,
-        2039: this.accounts2039,
-        2040: this.accounts2040,
-        2041: this.accounts2041,
-        2042: this.accounts2042,
-        2043: this.accounts2043,
-        2044: this.accounts2044,
-        2045: this.accounts2045,
-        2046: this.accounts2046,
+        2017: accounts2017,
+        2018: accounts2018,
+        2019: accounts2019,
+        2020: accounts2020,
+        2021: accounts2021,
+        2022: accounts2022,
+        2023: accounts2023,
+        2024: accounts2024,
+        2025: accounts2025,
+        2026: accounts2026,
+        2027: accounts2027,
+        2028: accounts2028,
+        2029: accounts2029,
+        2030: accounts2030,
+        2031: accounts2031,
+        2032: accounts2032,
+        2033: accounts2033,
+        2034: accounts2034,
+        2035: accounts2035,
+        2036: accounts2036,
+        2037: accounts2037,
+        2038: accounts2038,
+        2039: accounts2039,
+        2040: accounts2040,
+        2041: accounts2041,
+        2042: accounts2042,
+        2043: accounts2043,
+        2044: accounts2044,
+        2045: accounts2045,
+        2046: accounts2046,
         securities: addSecurities
       })
       this.numAccounts++;
@@ -255,36 +255,36 @@ class HouseholdsGridStore {
   addSecuritiesData(securities, accountNumber) {
     let result = [];
     let securitiesIndex = 1;
-    this.accounts2017 = 0;
-    this.accounts2018 = 0;
-    this.accounts2019 = 0;
-    this.accounts2020 = 0;
-    this.accounts2021 = 0;
-    this.accounts2022 = 0;
-    this.accounts2023 = 0;
-    this.accounts2024 = 0;
-    this.accounts2025 = 0;
-    this.accounts2026 = 0;
-    this.accounts2027 = 0;
-    this.accounts2028 = 0;
-    this.accounts2029 = 0;
-    this.accounts2030 = 0;
-    this.accounts2031 = 0;
-    this.accounts2032 = 0;
-    this.accounts2033 = 0;
-    this.accounts2034 = 0;
-    this.accounts2035 = 0;
-    this.accounts2036 = 0;
-    this.accounts2037 = 0;
-    this.accounts2038 = 0;
-    this.accounts2039 = 0;
-    this.accounts2040 = 0;
-    this.accounts2041 = 0;
-    this.accounts2042 = 0;
-    this.accounts2043 = 0;
-    this.accounts2044 = 0;
-    this.accounts2045 = 0;
-    this.accounts2046 = 0;
+    accounts2017 = 0;
+    accounts2018 = 0;
+    accounts2019 = 0;
+    accounts2020 = 0;
+    accounts2021 = 0;
+    accounts2022 = 0;
+    accounts2023 = 0;
+    accounts2024 = 0;
+    accounts2025 = 0;
+    accounts2026 = 0;
+    accounts2027 = 0;
+    accounts2028 = 0;
+    accounts2029 = 0;
+    accounts2030 = 0;
+    accounts2031 = 0;
+    accounts2032 = 0;
+    accounts2033 = 0;
+    accounts2034 = 0;
+    accounts2035 = 0;
+    accounts2036 = 0;
+    accounts2037 = 0;
+    accounts2038 = 0;
+    accounts2039 = 0;
+    accounts2040 = 0;
+    accounts2041 = 0;
+    accounts2042 = 0;
+    accounts2043 = 0;
+    accounts2044 = 0;
+    accounts2045 = 0;
+    accounts2046 = 0;
 
     securities.forEach(s => {
       let marketValue17 = 0;
@@ -334,7 +334,7 @@ class HouseholdsGridStore {
             marketValue17 = '-';
           } else {
             marketValue17 = s.price * faceValue / 100;
-            this.accounts2017 += marketValue17;
+            accounts2017 += marketValue17;
           }
           break;
         case '2018':
@@ -342,7 +342,7 @@ class HouseholdsGridStore {
             marketValue18 = '-';
           } else {
             marketValue18 = s.price * faceValue / 100;
-            this.accounts2018 += marketValue18;
+            accounts2018 += marketValue18;
           }
           break;
         case '2019':
@@ -350,7 +350,7 @@ class HouseholdsGridStore {
             marketValue19 = '-';
           } else {
             marketValue19 = s.price * faceValue / 100;
-            this.accounts2019 += marketValue19;
+            accounts2019 += marketValue19;
           }
           break;
         case '2020':
@@ -358,7 +358,7 @@ class HouseholdsGridStore {
             marketValue20 = '-';
           } else {
             marketValue20 = s.price * faceValue / 100;
-            this.accounts2020 += marketValue20;
+            accounts2020 += marketValue20;
           }
           break;
         case '2021':
@@ -366,7 +366,7 @@ class HouseholdsGridStore {
             marketValue21 = '-';
           } else {
             marketValue21 = s.price * faceValue / 100;
-            this.accounts2021 += marketValue21;
+            accounts2021 += marketValue21;
           }
           break;
         case '2022':
@@ -374,7 +374,7 @@ class HouseholdsGridStore {
             marketValue22 = '-';
           } else {
             marketValue22 = s.price * faceValue / 100;
-            this.accounts2022 += marketValue22;
+            accounts2022 += marketValue22;
           }
           break;
         case '2023':
@@ -382,7 +382,7 @@ class HouseholdsGridStore {
             marketValue23 = '-';
           } else {
             marketValue23 = s.price * faceValue / 100;
-            this.accounts2023 += marketValue23;
+            accounts2023 += marketValue23;
           }
           break;
         case '2024':
@@ -390,7 +390,7 @@ class HouseholdsGridStore {
             marketValue24 = '-';
           } else {
             marketValue24 = s.price * faceValue / 100;
-            this.accounts2024 += marketValue24;
+            accounts2024 += marketValue24;
           }
           break;
         case '2025':
@@ -398,7 +398,7 @@ class HouseholdsGridStore {
             marketValue25 = '-';
           } else {
             marketValue25 = s.price * faceValue / 100;
-            this.accounts2025 += marketValue25;
+            accounts2025 += marketValue25;
           }
           break;
         case '2026':
@@ -406,7 +406,7 @@ class HouseholdsGridStore {
             marketValue26 = '-';
           } else {
             marketValue26 = s.price * faceValue / 100;
-            this.accounts2026 += marketValue26;
+            accounts2026 += marketValue26;
           }
           break;
         case '2027':
@@ -414,7 +414,7 @@ class HouseholdsGridStore {
             marketValue27 = '-';
           } else {
             marketValue27 = s.price * faceValue / 100;
-            this.accounts2027 += marketValue27;
+            accounts2027 += marketValue27;
           }
           break;
         case '2028':
@@ -422,7 +422,7 @@ class HouseholdsGridStore {
             marketValue28 = '-';
           } else {
             marketValue28 = s.price * faceValue / 100;
-            this.accounts2028 += marketValue28;
+            accounts2028 += marketValue28;
           }
           break;
         case '2029':
@@ -430,7 +430,7 @@ class HouseholdsGridStore {
             marketValue29 = '-';
           } else {
             marketValue29 = s.price * faceValue / 100;
-            this.accounts2029 += marketValue29;
+            accounts2029 += marketValue29;
           }
           break;
         case '2030':
@@ -438,7 +438,7 @@ class HouseholdsGridStore {
             marketValue30 = '-';
           } else {
             marketValue30 = s.price * faceValue / 100;
-            this.accounts2030 += marketValue30;
+            accounts2030 += marketValue30;
           }
           break;
         case '2031':
@@ -446,7 +446,7 @@ class HouseholdsGridStore {
             marketValue31 = '-';
           } else {
             marketValue31 = s.price * faceValue / 100;
-            this.accounts2031 += marketValue31;
+            accounts2031 += marketValue31;
           }
           break;
         case '2032':
@@ -454,7 +454,7 @@ class HouseholdsGridStore {
             marketValue32 = '-';
           } else {
             marketValue32 = s.price * faceValue / 100;
-            this.accounts2032 += marketValue32;
+            accounts2032 += marketValue32;
           }
           break;
         case '2033':
@@ -462,7 +462,7 @@ class HouseholdsGridStore {
             marketValue33 = '-';
           } else {
             marketValue33 = s.price * faceValue / 100;
-            this.accounts2033 += marketValue33;
+            accounts2033 += marketValue33;
           }
           break;
         case '2034':
@@ -470,7 +470,7 @@ class HouseholdsGridStore {
             marketValue34 = '-';
           } else {
             marketValue34 = s.price * faceValue / 100;
-            this.accounts2034 += marketValue34;
+            accounts2034 += marketValue34;
           }
           break;
         case '2035':
@@ -478,7 +478,7 @@ class HouseholdsGridStore {
             marketValue35 = '-';
           } else {
             marketValue35 = s.price * faceValue / 100;
-            this.accounts2035 += marketValue35;
+            accounts2035 += marketValue35;
           }
           break;
         case '2036':
@@ -486,7 +486,7 @@ class HouseholdsGridStore {
             marketValue36 = '-';
           } else {
             marketValue36 = s.price * faceValue / 100;
-            this.accounts2036 += marketValue36;
+            accounts2036 += marketValue36;
           }
           break;
         case '2037':
@@ -494,7 +494,7 @@ class HouseholdsGridStore {
             marketValue37 = '-';
           } else {
             marketValue37 = s.price * faceValue / 100;
-            this.accounts2037 += marketValue37;
+            accounts2037 += marketValue37;
           }
           break;
         case '2038':
@@ -502,7 +502,7 @@ class HouseholdsGridStore {
             marketValue38 = '-';
           } else {
             marketValue38 = s.price * faceValue / 100;
-            this.accounts2038 += marketValue38;
+            accounts2038 += marketValue38;
           }
           break;
         case '2039':
@@ -510,7 +510,7 @@ class HouseholdsGridStore {
             marketValue39 = '-';
           } else {
             marketValue39 = s.price * faceValue / 100;
-            this.accounts2039 += marketValue39;
+            accounts2039 += marketValue39;
           }
           break;
         case '2040':
@@ -518,7 +518,7 @@ class HouseholdsGridStore {
             marketValue40 = '-';
           } else {
             marketValue40 = s.price * faceValue / 100;
-            this.accounts2040 += marketValue40;
+            accounts2040 += marketValue40;
           }
           break;
         case '2041':
@@ -526,7 +526,7 @@ class HouseholdsGridStore {
             marketValue41 = '-';
           } else {
             marketValue41 = s.price * faceValue / 100;
-            this.accounts2041 += marketValue41;
+            accounts2041 += marketValue41;
           }
           break;
         case '2042':
@@ -534,7 +534,7 @@ class HouseholdsGridStore {
             marketValue42 = '-';
           } else {
             marketValue42 = s.price * faceValue / 100;
-            this.accounts2042 += marketValue42;
+            accounts2042 += marketValue42;
           }
           break;
         case '2043':
@@ -542,7 +542,7 @@ class HouseholdsGridStore {
             marketValue43 = '-';
           } else {
             marketValue43 = s.price * faceValue / 100;
-            this.accounts2043 += marketValue43;
+            accounts2043 += marketValue43;
           }
           break;
         case '2044':
@@ -550,7 +550,7 @@ class HouseholdsGridStore {
             marketValue44 = '-';
           } else {
             marketValue44 = s.price * faceValue / 100;
-            this.accounts2044 += marketValue44;
+            accounts2044 += marketValue44;
           }
           break;
         case '2045':
@@ -558,7 +558,7 @@ class HouseholdsGridStore {
             marketValue45 = '-';
           } else {
             marketValue45 = s.price * faceValue / 100;
-            this.accounts2045 += marketValue45;
+            accounts2045 += marketValue45;
           }
           break;
         case '2046':
@@ -566,7 +566,7 @@ class HouseholdsGridStore {
             marketValue46 = '-';
           } else {
             marketValue46 = s.price * faceValue / 100;
-            this.accounts2046 += marketValue46;
+            accounts2046 += marketValue46;
           }
           break;
         default:
@@ -575,7 +575,7 @@ class HouseholdsGridStore {
       result.push({
         type: "security",
         accountNumber: accountNumber,
-        name: this.householdName,
+        name: householdName,
         id: securitiesIndex,
         accountsIndex: this.numAccounts,
         houseIndex: this.numHouseholds,

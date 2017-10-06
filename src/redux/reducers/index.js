@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
 import households from './householdsReducer';
-import user from './userReducer';
+import accounts from './accountsReducer';
 
 export default combineReducers({
   households,
-  user
+  accounts
 })
