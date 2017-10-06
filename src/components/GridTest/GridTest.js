@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {connector} from '../../redux/userStore';
+// import {connector} from '../../redux/userStore';
 import Loader from 'react-loader';
 import './GridTest.css';
 
@@ -106,4 +106,4 @@ class Grid extends Component {
   }
 }
 
-export default connector(Grid);
+export default Grid;
