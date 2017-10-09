@@ -16,9 +16,11 @@ class HeaderMenu extends Component {
     super(props);
     this.getLogout = this.getLogout.bind(this);
     this.toggleChangeForm = this.toggleChangeForm.bind(this);
+    this.setVisibility = this.setVisibility.bind(this);
 		this.state = {
       changeFormVisible: false,
-			loaded: true
+			loaded: true,
+			isActive: true
     };
   }
 
@@ -49,10 +51,14 @@ class HeaderMenu extends Component {
 		this.setState({ changeFormVisible: !this.state.changeFormVisible });
 	}
 
+	setVisibility() {
+		this.setState({ isActive: true });
+	}
+
 	render() {
 		let { loaded } = this.state;
 		return (
-			<Loader loaded={loaded}>
+			<Loader loaded={loaded} onMouseEnter={this.setVisibility} onMouseLeave={this.props.onHide}>
 	      <div id="header-menu">
 					<div id="log-out" onClick={this.getLogout}>Log Out</div>
 					<div id="change-password" onClick={this.toggleChangeForm}>Change Password</div>

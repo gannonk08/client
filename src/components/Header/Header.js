@@ -36,22 +36,22 @@ class Header extends Component {
 		const { flipped, userEmail } = this.state;
 		const { showMenu } = this.props;
 		return (
-      <div>
+      <div onMouseEnter={this.toggleHeaderMenu} onMouseLeave={this.toggleHeaderMenu}>
         <header>
           <Link to={"/clients"}>
             <h1>BondLadderPro</h1>
           </Link>
-					<div id="nav-dropdown" className={showMenu} onClick={this.toggleHeaderMenu} onMouseEnter={this.mouseEnter}>
+					<div id="nav-dropdown" className={showMenu}>
 						<div id="user-name">{userEmail}</div>
 						<img className={flipped} id="down-arrow" src={require("./images/down.png")} alt="down" />
 						<img className={flipped} id="up-arrow" src={require("./images/up.png")} alt="up" />
 					</div>
         </header>
 				{
-          flipped
-          	? <HeaderMenu />
-            : null
-        }
+					flipped
+					? <HeaderMenu onHide={this.toggleHeaderMenu}/>
+					: null
+				}
       </div>
 		)
 	}
